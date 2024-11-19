@@ -1,4 +1,4 @@
-package itumulator.simulator.NonblockingAgents;
+package NonblockingAgents;
 
 import itumulator.simulator.BlockingAgents.Rabbit;
 import itumulator.world.Location;

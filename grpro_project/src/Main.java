@@ -3,9 +3,8 @@ import java.awt.Color;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.simulator.BlockingAgents.Rabbit;
-import itumulator.simulator.NonblockingAgents.Grass;
-import itumulator.simulator.NonblockingAgents.RabbitBurrow;
-import itumulator.world.Location;
+import NonblockingAgents.Grass;
+import NonblockingAgents.RabbitBurrow;
 import itumulator.world.World;
 
 public class Main {
