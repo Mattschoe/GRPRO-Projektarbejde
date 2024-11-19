@@ -1,4 +1,4 @@
 package itumulator.simulator.NonblockingAgents;
 
-public class RabbitHoles {
+public class RabbitBurrow {
 }
