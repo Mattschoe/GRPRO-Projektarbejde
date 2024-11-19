@@ -21,7 +21,7 @@ public class Main {
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green));
-        
+
         program.show();
         program.simulate();
     }
