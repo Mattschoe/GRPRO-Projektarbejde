@@ -17,10 +17,11 @@ public class Main {
         Program program = new Program(size, displaySize, delay);
         World world = program.getWorld();
 
+
         //Display Information
-        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white));
-        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black));
-        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green));
+        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
+        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
+        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         
         program.show();
         program.simulate();
