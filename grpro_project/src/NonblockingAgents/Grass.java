@@ -19,7 +19,7 @@ public class Grass implements Actor, NonBlocking {
 
     private void spread() {
         for (int i = 0; i < world.getEmptySurroundingTiles().size(); i++) {
-            if
+
         }
     }
 
