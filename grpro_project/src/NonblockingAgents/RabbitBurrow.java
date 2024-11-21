@@ -6,34 +6,27 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class RabbitBurrow implements NonBlocking {
-    Rabbit rabbit;
-    Location spawnLocation;
-    World world;
+    private Rabbit rabbit;
+    private World world;
 
     //Spawned by Rabbit
-    RabbitBurrow(World world, Rabbit rabbit) {
+    public RabbitBurrow(World world, Rabbit rabbit) {
         this.world = world;
         this.rabbit = rabbit;
     }
 
-    //Spawned by File
-    RabbitBurrow(World world, Location spawnLocation) {
+    //Spawned by anything other than rabbit
+    public RabbitBurrow(World world) {
         this.world = world;
-        this.spawnLocation = spawnLocation;
     }
 
     /*
      * Spawns the burrow either from the rabbits location or the location given in file
      */
-    public void spawn() {
+    public void spawnBurrow() {
         //Spawns under rabbit
         if (rabbit != null) {
-            spawnLocation = world.getLocation(rabbit);
-            world.setTile(spawnLocation, this);
-        }
-        //Spawns from File location
-        else if (spawnLocation != null) {
-            world.setTile(spawnLocation, this);
+            world.setTile(world.getLocation(rabbit), this);
         }
     }
 }
