@@ -16,7 +16,7 @@ public class Grass implements Actor, NonBlocking {
     /*
      * Initializes the world and runs Grass.spread() for each simulation
      */
-    Grass() {
+    public Grass() {
 
     }
 
