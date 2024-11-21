@@ -12,10 +12,11 @@ import java.util.Set;
 
 
 public class Rabbit implements Actor {
-    int age;
-    int energyLevel;
-    int maxEnergy;
-    RabbitBurrow burrow;
+    private int age;
+    private int energyLevel;
+    private int maxEnergy;
+    private RabbitBurrow burrow;
+
     public Rabbit(){}
 
     @Override
