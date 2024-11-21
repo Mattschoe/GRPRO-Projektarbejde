@@ -14,9 +14,12 @@ public class Main {
         int size = 15;
         int delay = 1000;
         int displaySize = 800;
+
         Program program = new Program(size, displaySize, delay);
         World world = program.getWorld();
 
+        Rabbit rabbit = new Rabbit();
+        world.setTile(new Location(1,1), rabbit);
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));

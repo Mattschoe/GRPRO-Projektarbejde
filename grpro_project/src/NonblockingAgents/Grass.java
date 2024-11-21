@@ -16,6 +16,10 @@ public class Grass implements Actor, NonBlocking {
     /*
      * Initializes the world and runs Grass.spread() for each simulation
      */
+    Grass() {
+
+    }
+
     @Override
     public void act(World world) {
         this.world = world;
