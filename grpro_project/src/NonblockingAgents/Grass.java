@@ -1,4 +1,4 @@
-package itumulator.simulator.NonblockingAgents;
+package NonblockingAgents;
 
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
@@ -32,7 +32,12 @@ public class Grass implements Actor, NonBlocking {
             if (random.nextInt(4) == 0) {
                 Set<Location> emptySurrounding = world.getSurroundingTiles();
                 List<Location> list = new ArrayList<>(emptySurrounding);
-                world.setTile(list.get(emptySurrounding.size()), this);
+
+                Location newGrassLocation = list.get(random.nextInt(list.size()));
+                //Only instantiates the object if the location DOESNT contain a non-blocking
+                if (!world.containsNonBlocking(newGrassLocation)) {
+                    world.setTile(newGrassLocation, new Grass());
+                }
             }
         }
     }
