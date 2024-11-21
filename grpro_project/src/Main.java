@@ -2,9 +2,10 @@ import java.awt.Color;
 
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
-import itumulator.simulator.BlockingAgents.Rabbit;
+import BlockingAgents.Rabbit;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public class Main {
@@ -16,7 +17,8 @@ public class Main {
         Program program = new Program(size, displaySize, delay);
         World world = program.getWorld();
 
-
+        Rabbit rabbit = new Rabbit();
+        world.setTile(new Location(1,1), rabbit);
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));

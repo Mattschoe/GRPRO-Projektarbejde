@@ -1,6 +1,6 @@
 package NonblockingAgents;
 
-import itumulator.simulator.BlockingAgents.Rabbit;
+import BlockingAgents.Rabbit;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
