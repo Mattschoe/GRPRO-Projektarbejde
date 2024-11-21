@@ -45,7 +45,7 @@ public class Rabbit implements Actor {
         List<Location> neighbourList = new ArrayList<>(neighbours);
 
 
-        if (neighbourList.isEmpty()){
+        if (!neighbourList.isEmpty()){
             Location l = neighbourList.get(r.nextInt(neighbourList.size()));
             world.move(this, l);
         }
