@@ -6,9 +6,9 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class RabbitBurrow implements NonBlocking {
-    Rabbit rabbit;
-    Location spawnLocation;
-    World world;
+    private Rabbit rabbit;
+    private Location spawnLocation;
+    private World world;
 
     //Spawned by Rabbit
     RabbitBurrow(World world, Rabbit rabbit) {
