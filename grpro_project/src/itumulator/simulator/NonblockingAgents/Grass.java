@@ -36,6 +36,4 @@ public class Grass implements Actor, NonBlocking {
             }
         }
     }
-
-
 }
