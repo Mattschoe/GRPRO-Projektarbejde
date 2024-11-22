@@ -1,48 +1,32 @@
-import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
 
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.Program;
-import BlockingAgents.Rabbit;
-import NonblockingAgents.Grass;
-import NonblockingAgents.RabbitBurrow;
-import itumulator.world.Location;
-import itumulator.world.World;
+import Testning.ParseTest;
 
 public class Main {
     public static void main(String[] args) {
-        //Sets up world
-        int size = 15;
-        int delay = 1000;
-        int displaySize = 800;
-
-        Program program = new Program(size, displaySize, delay);
-        World world = program.getWorld();
-
-        Rabbit rabbit = new Rabbit();
-        world.setTile(new Location(1,1), rabbit);
-
-        Rabbit rabbit2 = new Rabbit();
-        world.setTile(new Location(2,1), rabbit2);
-        //Display Information
-        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
-        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
-        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
-
-        //Adds agents
-        world.setTile(new Location(0, 1), new RabbitBurrow(world));
-
-
-        world.setTile(new Location(1,1),new Grass());
-
-        program.show();
-        program.simulate();
+        Week1TestCases();
     }
 
-    private static void demoWeek1(Program program) {
-        World world = program.getWorld();
+    public static void Week1TestCases() {
+        //Program descriptions
+        int delay = 1000;
+        int displaySize = 400;
 
-        //Adds grass
-        
+        //File setup, saves all files dropped in folder
+        File[] files;
+        File directory = new File ("./src/Testning/DropTestHere");
+        files = directory.listFiles();
 
+        ArrayList<ParseTest> tests = new ArrayList<>();
+        for (File file : files) {
+            System.out.println(file.getName());
+            ParseTest test = new ParseTest(file, displaySize, delay);
+            tests.add(test);
+        }
+
+        for (ParseTest test : tests) {
+            test.simulateTest();
+        }
     }
 }
