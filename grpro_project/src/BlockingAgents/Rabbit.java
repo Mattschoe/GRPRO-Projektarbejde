@@ -32,6 +32,9 @@ public class Rabbit implements Actor {
         if (world.getCurrentTime() == 19){ // morning
             if (burrow != null) {
                 energyLevel -= 8;
+                age++;
+                maxEnergy = maxEnergy - 1;
+                System.out.println("age: " + age);
                 world.setTile(world.getLocation(burrow), this);
                 world.setCurrentLocation(world.getLocation(burrow));
             }
@@ -98,32 +101,48 @@ public class Rabbit implements Actor {
 
 
     /**
-     * Goes to random rabbitBurrow in the world, if the rabbitBurrow doesn't have a rabbit
+     * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one. 
       */
     void findBurrow(){
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof RabbitBurrow rabbitBurrow){
-                if (world.isTileEmpty(world.getLocation(rabbitBurrow))){
-                    world.move(this, world.getLocation(rabbitBurrow));
-                    burrow = rabbitBurrow;
+            if (object instanceof RabbitBurrow ){
+                if (world.isTileEmpty(world.getLocation(object))){
+                    world.move(this, world.getLocation(object));
+                    burrow = (RabbitBurrow) object;
                 } else {
                     digBurrow();
                 }
             }
         }
     }
+
+    /**
+     * instantiates a new RabbitBurrow on the current location.
+     */
     void digBurrow(){
         burrow = new RabbitBurrow(world,this);
         burrow.spawnBurrow();
     }
+
+    /**
+     * Deletes the rabbit from the world.
+     *
+     */
     void die(){
         System.out.println("Dying....:(");
         world.delete(this);
     }
+
+    /**
+     * Removes the rabbit temporarily from the world, so it looks like it is sleeping.
+     */
     void sleep(){
         world.remove(this);
 
     }
+    /**
+     * Instantiates a new Rabbit, in one of the neighbouring empty tiles.
+     */
     void reproduce(){
         Rabbit kid = new Rabbit();
         //neighbourList = getNeighbours(world);
