@@ -37,4 +37,12 @@ public class Main {
         program.show();
         program.simulate();
     }
+
+    private static void demoWeek1(Program program) {
+        World world = program.getWorld();
+
+        //Adds grass
+        
+
+    }
 }
