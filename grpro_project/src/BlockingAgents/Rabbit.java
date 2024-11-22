@@ -32,6 +32,9 @@ public class Rabbit implements Actor {
         if (world.getCurrentTime() == 19){ // morning
             if (burrow != null) {
                 energyLevel -= 8;
+                age++;
+                maxEnergy = maxEnergy - 1;
+                System.out.println("age: " + age);
                 world.setTile(world.getLocation(burrow), this);
                 world.setCurrentLocation(world.getLocation(burrow));
             }
@@ -102,10 +105,10 @@ public class Rabbit implements Actor {
       */
     void findBurrow(){
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof RabbitBurrow rabbitBurrow){
-                if (world.isTileEmpty(world.getLocation(rabbitBurrow))){
-                    world.move(this, world.getLocation(rabbitBurrow));
-                    burrow = rabbitBurrow;
+            if (object instanceof RabbitBurrow ){
+                if (world.isTileEmpty(world.getLocation(object))){
+                    world.move(this, world.getLocation(object));
+                    burrow = (RabbitBurrow) object;
                 } else {
                     digBurrow();
                 }
