@@ -21,8 +21,8 @@ public class Main {
         Rabbit rabbit = new Rabbit();
         world.setTile(new Location(1,1), rabbit);
 
-        //Rabbit rabbit2 = new Rabbit();
-        //world.setTile(new Location(5,1), rabbit2);
+        Rabbit rabbit2 = new Rabbit();
+        world.setTile(new Location(2,1), rabbit2);
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));

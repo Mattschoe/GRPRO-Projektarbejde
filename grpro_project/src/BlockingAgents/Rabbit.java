@@ -54,10 +54,12 @@ public class Rabbit implements Actor {
 
             if (energyLevel < maxEnergy) eat();
 
-            /*Set<Location> neighbours = world.getSurroundingTiles();
+            Set<Location> neighbours = world.getSurroundingTiles();
             if (world.getAll(Rabbit.class,neighbours ).size() > 1) {
-                reproduce(world);
-            }*/
+                if (new Random().nextInt(12) == 0) {
+                reproduce();
+                }
+            }
 
         }
 
