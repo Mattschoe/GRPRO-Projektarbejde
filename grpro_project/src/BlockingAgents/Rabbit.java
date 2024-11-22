@@ -84,20 +84,16 @@ public class Rabbit implements Actor {
      * If there is no grass, the rabbit can't eat it. If the grass is eaten, it disappears.
      */
     void eat(){
-
             Location location = world.getLocation(this);
             if (world.containsNonBlocking(location)){
 
                 Object nonBlocking = world.getNonBlocking(location);
                 if (nonBlocking instanceof Grass){ // maybe not this
-                    System.out.println("Eating  " + energyLevel);
                     world.delete(nonBlocking);
                     energyLevel++;
                 }
 
             }
-
-
         }
 
 
@@ -107,11 +103,9 @@ public class Rabbit implements Actor {
     void findBurrow(){
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof RabbitBurrow rabbitBurrow){
-                System.out.println("Nej her");
-                if (rabbitBurrow.getRabbit() == null){
-                    System.out.println("Er jeg her?");
+                if (world.isTileEmpty(world.getLocation(rabbitBurrow))){
                     world.move(this, world.getLocation(rabbitBurrow));
-                    rabbitBurrow.setRabbit(this);
+                    burrow = rabbitBurrow;
                 } else {
                     digBurrow();
                 }
@@ -127,7 +121,6 @@ public class Rabbit implements Actor {
         world.delete(this);
     }
     void sleep(){
-        System.out.println("Sleeping...");
         world.remove(this);
 
     }
@@ -141,8 +134,4 @@ public class Rabbit implements Actor {
 
         world.setTile(birthPlace, kid);
     }}
-
-
-
-
 }

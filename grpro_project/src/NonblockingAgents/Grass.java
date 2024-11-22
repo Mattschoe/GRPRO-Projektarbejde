@@ -24,7 +24,9 @@ public class Grass implements Actor, NonBlocking {
     @Override
     public void act(World world) {
         this.world = world;
-        spread();
+        if (world.isDay()) {
+            spread();
+        }
     }
 
     /**
