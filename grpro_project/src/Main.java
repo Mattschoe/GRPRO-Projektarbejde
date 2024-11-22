@@ -20,7 +20,6 @@ public class Main {
 
         ArrayList<ParseTest> tests = new ArrayList<>();
         for (File file : files) {
-            System.out.println(file.getName());
             ParseTest test = new ParseTest(file, displaySize, delay);
             tests.add(test);
         }
