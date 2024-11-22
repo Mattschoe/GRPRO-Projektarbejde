@@ -101,7 +101,7 @@ public class Rabbit implements Actor {
 
 
     /**
-     * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one. 
+     * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
       */
     void findBurrow(){
         for (Object object : world.getEntities().keySet()) {
