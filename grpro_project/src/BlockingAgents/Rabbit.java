@@ -16,47 +16,83 @@ public class Rabbit implements Actor {
     int energyLevel;
     int maxEnergy;
     RabbitBurrow burrow;
-    public Rabbit(){}
+    World world;
 
-    @Override
-    public void act(World world ){
-       /* if (energyLevel <= 0){
-            die(world);
-        }
-        if (world.isNight()){
-            sleep(world);
-
-        } else {
-*/
-            movement(world);
-            /*
-            eat(world);
-        }
-*/
-
+    public Rabbit(){
+        this.age = 0;
+        this.maxEnergy = 10 - age;
+        this.energyLevel = maxEnergy;
 
 
     }
-    void movement(World world){
+
+    @Override
+    public void act(World world ){
+        this.world = world;
+        if (world.getCurrentTime() == 19){ // morning
+            if (burrow != null) {
+                energyLevel -= 8;
+                world.setTile(world.getLocation(burrow), this);
+                world.setCurrentLocation(world.getLocation(burrow));
+            }
+        }
+       if (energyLevel <= 0) die();
+       if (world.getCurrentTime() == 9 ) {
+           if (burrow != null){
+               findBurrow();
+           }else {
+               digBurrow();
+           }
+       }
+
+
+       if (world.getCurrentTime() == 10) sleep(); // 10 == nighttime
+
+        else if (world.isDay()){
+
+            movement();
+
+            if (energyLevel < maxEnergy) eat();
+
+            /*Set<Location> neighbours = world.getSurroundingTiles();
+            if (world.getAll(Rabbit.class,neighbours ).size() > 1) {
+                reproduce(world);
+            }*/
+
+        }
+
+    }
+
+    /**
+     * Gives the rabbit random movement.
+     *
+     */
+    void movement(){
         Random r = new Random();
 
         Set<Location> neighbours = world.getEmptySurroundingTiles();
         List<Location> neighbourList = new ArrayList<>(neighbours);
 
 
-        if (neighbourList.isEmpty()){
+        if (!neighbourList.isEmpty()){
             Location l = neighbourList.get(r.nextInt(neighbourList.size()));
             world.move(this, l);
         }
     }
-    void eat(World world){
-        if (energyLevel < maxEnergy){
-            // get tile
+
+    /**
+     * Is used by the rabbit to eat the tile of grass, that it is standing on.
+     * The rabbits energyLevel increments by 1, when a tile of grass is eaten
+     * If there is no grass, the rabbit can't eat it. If the grass is eaten, it disappears.
+     */
+    void eat(){
+
             Location location = world.getLocation(this);
             if (world.containsNonBlocking(location)){
 
                 Object nonBlocking = world.getNonBlocking(location);
                 if (nonBlocking instanceof Grass){ // maybe not this
+                    System.out.println("Eating  " + energyLevel);
                     world.delete(nonBlocking);
                     energyLevel++;
                 }
@@ -65,13 +101,23 @@ public class Rabbit implements Actor {
 
 
         }
+
+    void findBurrow(){
+
+        world.move(this, world.getLocation(burrow));
+
+
     }
-    void findBurrow(){}
-    void digBurrow(){}
-    void die(World world){
+    void digBurrow(){
+        burrow = new RabbitBurrow(world,this);
+        burrow.spawnBurrow();
+    }
+    void die(){
+        System.out.println("Dying....:(");
         world.delete(this);
     }
-    void sleep(World world){
+    void sleep(){
+        System.out.println("Sleeping...");
         if (burrow != null){
             findBurrow();
         }else {
@@ -79,8 +125,17 @@ public class Rabbit implements Actor {
         }
         world.remove(this);
 
-
     }
+    void reproduce(){
+        Rabbit kid = new Rabbit();
+        //neighbourList = getNeighbours(world);
+        Set<Location> neighbours = world.getEmptySurroundingTiles();
+        List<Location> neighbourList = new ArrayList<>(neighbours);
+        if (!neighbourList.isEmpty()){
+        Location birthPlace =  neighbourList.get(0);
+
+        world.setTile(birthPlace, kid);
+    }}
 
 
 

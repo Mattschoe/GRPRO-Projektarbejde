@@ -16,7 +16,7 @@ public class Grass implements Actor, NonBlocking {
     /*
      * Initializes the world and runs Grass.spread() for each simulation
      */
-    Grass() {
+    public Grass() {
 
     }
 
@@ -33,7 +33,7 @@ public class Grass implements Actor, NonBlocking {
         Random random = new Random();
         for (int i = 0; i < world.getEmptySurroundingTiles().size(); i++) {
             //Spawns grass in a empty surrounding tile with a (25%) chance of doing so
-            if (random.nextInt(4) == 0) {
+            if (random.nextInt(12) == 0) {
                 Set<Location> emptySurrounding = world.getSurroundingTiles();
                 List<Location> list = new ArrayList<>(emptySurrounding);
 

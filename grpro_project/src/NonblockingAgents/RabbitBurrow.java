@@ -26,7 +26,11 @@ public class RabbitBurrow implements NonBlocking {
     public void spawnBurrow() {
         //Spawns under rabbit
         if (rabbit != null) {
+            if (world.containsNonBlocking(world.getLocation(rabbit))) { // if there is grass on the tile
+                world.delete(world.getNonBlocking(world.getLocation(rabbit)));
+            }
             world.setTile(world.getLocation(rabbit), this);
+
         }
     }
 }
