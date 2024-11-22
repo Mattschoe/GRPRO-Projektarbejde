@@ -22,8 +22,6 @@ public class Rabbit implements Actor {
         this.age = 0;
         this.maxEnergy = 10 - age;
         this.energyLevel = maxEnergy;
-
-
     }
 
     @Override
@@ -37,23 +35,17 @@ public class Rabbit implements Actor {
             }
         }
        if (energyLevel <= 0) die();
-       if (world.getCurrentTime() == 9 ) {
-           if (burrow != null){
-               findBurrow();
-           }else {
-               digBurrow();
-           }
+       //Finds or digs burrow when nightfall
+       if (world.getCurrentTime() == 10 ) {
+           findBurrow();
+       }
+       if (world.getCurrentTime() == 11) {
+           sleep();
        }
 
-
-       if (world.getCurrentTime() == 10) sleep(); // 10 == nighttime
-
-        else if (world.isDay()){
-
+        if (world.isDay()){
             movement();
-
             if (energyLevel < maxEnergy) eat();
-
             /*Set<Location> neighbours = world.getSurroundingTiles();
             if (world.getAll(Rabbit.class,neighbours ).size() > 1) {
                 reproduce(world);
@@ -102,11 +94,23 @@ public class Rabbit implements Actor {
 
         }
 
+
+    /**
+     * Goes to random rabbitBurrow in the world, if the rabbitBurrow doesn't have a rabbit
+      */
     void findBurrow(){
-
-        world.move(this, world.getLocation(burrow));
-
-
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof RabbitBurrow rabbitBurrow){
+                System.out.println("Nej her");
+                if (rabbitBurrow.getRabbit() == null){
+                    System.out.println("Er jeg her?");
+                    world.move(this, world.getLocation(rabbitBurrow));
+                    rabbitBurrow.setRabbit(this);
+                } else {
+                    digBurrow();
+                }
+            }
+        }
     }
     void digBurrow(){
         burrow = new RabbitBurrow(world,this);
@@ -116,13 +120,8 @@ public class Rabbit implements Actor {
         System.out.println("Dying....:(");
         world.delete(this);
     }
-    void sleep(){
+    void sleep() {
         System.out.println("Sleeping...");
-        if (burrow != null){
-            findBurrow();
-        }else {
-            digBurrow();
-        }
         world.remove(this);
 
     }

@@ -20,7 +20,7 @@ public class RabbitBurrow implements NonBlocking {
         this.world = world;
     }
 
-    /*
+    /**
      * Spawns the burrow either from the rabbits location or the location given in file
      */
     public void spawnBurrow() {
@@ -32,5 +32,13 @@ public class RabbitBurrow implements NonBlocking {
             world.setTile(world.getLocation(rabbit), this);
 
         }
+    }
+
+    public Rabbit getRabbit() {
+        return rabbit;
+    }
+
+    public void setRabbit(Rabbit rabbit) {
+        this.rabbit = rabbit;
     }
 }

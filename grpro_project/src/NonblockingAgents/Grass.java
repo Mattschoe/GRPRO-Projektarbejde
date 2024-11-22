@@ -13,20 +13,21 @@ import java.util.Set;
 public class Grass implements Actor, NonBlocking {
     World world;
 
-    /*
-     * Initializes the world and runs Grass.spread() for each simulation
-     */
+
     public Grass() {
 
     }
 
+    /**
+     * Initializes the world and runs Grass.spread() for each simulation
+     */
     @Override
     public void act(World world) {
         this.world = world;
         spread();
     }
 
-    /*
+    /**
      * Spawns grass with a 25% chance in each of the empty surrounding tiles nearby.
      */
     private void spread() {
