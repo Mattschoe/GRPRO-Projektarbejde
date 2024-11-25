@@ -1,5 +1,6 @@
 package BlockingAgents;
 
+import itumulator.executable.DisplayInformation;
 import itumulator.world.World;
 
 import java.util.List;
@@ -114,6 +115,8 @@ public class Wolf extends Predator{
     }
 
 
-
-
+    @Override
+    public DisplayInformation getInformation() {
+        return null;
+    }
 }
