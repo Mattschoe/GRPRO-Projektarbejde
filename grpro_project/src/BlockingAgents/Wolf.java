@@ -1,5 +1,6 @@
 package BlockingAgents;
 
+import itumulator.executable.DisplayInformation;
 import itumulator.world.World;
 
 import java.util.List;
@@ -8,104 +9,101 @@ import java.util.List;
 public class Wolf extends Predator{
 
     boolean currentlyFighting;
+    boolean iscurrentlyHunting;
+    boolean calledForHunt;
 
     public Wolf(World world) {
         super(20, world);
         this.world = world;
+
         this.currentlyFighting = false;
+        this.iscurrentlyHunting = false;
+        this.calledForHunt = false;
     }
 
     public void act() {
 
 
-        if (currentlyFighting()) {
+        if (this.currentlyFighting) {
             if (currentlyWinning()) {
                 fight();
             } else {
                 flee();
             }
-        } else if (this.maxHealth / this.health < 2) {
+        } else if (haslowHealth() && energyLevel > 5) {
             // Recover health
-            this.energyLevel--;
-            this.health++;
-
-        } else if (isHunting()) {
-
-            // call pack
-
-            hunt();
-
-
-        } else if (calledForHunt()) {
-            // call pack
-
-            hunt();
-
-        } else if (isHungry()) {
-            // Find pray
-
-            // Start hunt (probably "tell" pack to join)
+            recoverHealth();
 
         }
 
+        if (this.iscurrentlyHunting) {
 
+            // call pack
+
+            hunt();
+
+        } else if (this.calledForHunt) {
+            // call pack
+
+            hunt();
+
+        }
+
+        if (this.energyLevel + 9 < maxEnergy) {
+            // call pack
+
+            hunt();
+
+        }
+
+        if (this.energyLevel > 12) {
+            recoverHealth();
+        } else if (this.energyLevel + 9 > maxEnergy) {
+            recoverHealth();
+        }
 
     }
 
-    private boolean calledForHunt() {
+    private void calledForHunt() {
 
-        return false;
+        if (this.calledForHunt) {
+            if (haslowHealth()) {
+                this.calledForHunt = false;
+            } else {
+
+                hunt();
+            }
+
+        }
     }
 
-    private boolean isHunting() {
-
-        return false; // XXX temp
-    }
 
     protected void flee() {
 
     }
 
+    protected void createDen() {
+
+
+    }
+
     void fight() {
-        startFight();
 
 
 
-    }
-
-    public void joinPack() {
 
     }
-
 
     public List<Animal> getPack() {
 
         return null;
     }
 
-    public List<Animal> getEnemies() {
+    public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
 
         return null;
     }
 
-    public boolean isHungry() {
-
-        return (this.maxEnergy / this.energyLevel ) < 2; // Needs tweaking
-    }
-
-
-    // check if currently fighting
-    public boolean currentlyFighting() {
-        return currentlyFighting;
-    }
-
-    public void startFight() {
-        this.currentlyFighting = true;
-    }
-
-    public void endFight() {
-        this.currentlyFighting = false;
-    }
 
     // Get winning chances
     public boolean currentlyWinning() {
@@ -113,7 +111,15 @@ public class Wolf extends Predator{
         return true; // XXX temp
     }
 
+    public boolean haslowHealth() {
+
+        return maxHealth / this.health < 4;
+    }
 
 
+    @Override
+    public DisplayInformation getInformation() {
 
+        return null;
+    }
 }
