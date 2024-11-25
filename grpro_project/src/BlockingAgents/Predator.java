@@ -1,10 +1,18 @@
 package BlockingAgents;
 
+import NonblockingAgents.Territory;
+import itumulator.world.Location;
+import itumulator.world.World;
+
+import java.util.List;
+import java.util.Set;
+
 public class Predator extends Animal{
     int strength;
     List<Territory> territory;
     World world;
-    Predator(int strength ){
+    Predator(int strength , World world){
+        super(world,0,10, 10, 5 );
         this. strength = strength;
 
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));

@@ -3,9 +3,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
+import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
+import NonblockingAgents.Territory;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
@@ -55,10 +57,12 @@ public class Main {
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
-
+        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
+        program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
+        
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit());
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
 
         //Shows world
         program.show();

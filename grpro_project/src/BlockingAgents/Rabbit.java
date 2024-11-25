@@ -16,7 +16,7 @@ public class Rabbit extends Prey {
     World world;
 
     public Rabbit(World world) {
-        super()
+        super();
     }
 
     @Override
