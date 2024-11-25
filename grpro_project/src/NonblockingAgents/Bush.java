@@ -11,6 +11,7 @@ import java.awt.*;
 public class Bush extends Plant implements Actor, DynamicDisplayInformationProvider {
     World world;
     boolean hasBerries;
+    int reGrowDays;
     public Bush(World world) {
         super(world);
         this.world = world;
@@ -26,9 +27,11 @@ public class Bush extends Plant implements Actor, DynamicDisplayInformationProvi
         }
 
         if (world.getCurrentTime() == 19){
+            reGrowDays --;
+        }
+        if (reGrowDays == 0){
             grow();
         }
-
 
     }
 
@@ -43,6 +46,7 @@ public class Bush extends Plant implements Actor, DynamicDisplayInformationProvi
 
     public void getEaten() {
         hasBerries = false;
+        reGrowDays = 2;
     }
     void grow(){
         hasBerries = true;

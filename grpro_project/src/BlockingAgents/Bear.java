@@ -1,5 +1,6 @@
 package BlockingAgents;
 
+import NonblockingAgents.Bush;
 import NonblockingAgents.Grass;
 import NonblockingAgents.Territory;
 import itumulator.executable.DisplayInformation;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Bear extends Predator implements DynamicDisplayInformationProvider {
+public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore {
     World world;
     ArrayList<Territory> territory;
     boolean sleeping ;
@@ -35,6 +36,12 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider 
         else {
             sleeping = world.isNight();
         }
+        if (world.getCurrentTime() == 10) {
+            energyLevel--;
+        }
+        if (energyLevel < maxEnergy) {
+            eatPlant();
+        }
     }
 
     @Override
@@ -47,6 +54,13 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider 
     }
     @Override
     protected void sleep(){
+
+
+    }
+    public void eatPlant(){
+
+
+          
 
 
     }
