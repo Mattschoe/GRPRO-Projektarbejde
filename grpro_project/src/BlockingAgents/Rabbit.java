@@ -11,12 +11,30 @@ import java.util.Random;
 import java.util.Set;
 
 
-public class Rabbit implements Actor {
-    int age;
-    int energyLevel;
-    int maxEnergy;
+public class Rabbit extends Prey {
     RabbitBurrow burrow;
     World world;
+
+    public Rabbit(World world) {
+        super()
+    }
+
+    @Override
+    public void act(World world) {
+        this.world = world;
+        super.move();
+    }
+
+    private void updateMaxEnergy() {
+    }
+
+
+
+
+
+
+    /* int age;
+
 
     public Rabbit(){
         this.age = 0;
@@ -68,7 +86,7 @@ public class Rabbit implements Actor {
      * Gives the rabbit random movement.
      *
      */
-    void movement(){
+    /* void movement(){
         Random r = new Random();
 
         Set<Location> neighbours = world.getEmptySurroundingTiles();
@@ -86,7 +104,7 @@ public class Rabbit implements Actor {
      * The rabbits energyLevel increments by 1, when a tile of grass is eaten
      * If there is no grass, the rabbit can't eat it. If the grass is eaten, it disappears.
      */
-    void eat(){
+    /* void eat(){
             Location location = world.getLocation(this);
             if (world.containsNonBlocking(location)){
 
@@ -103,7 +121,7 @@ public class Rabbit implements Actor {
     /**
      * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
       */
-    void findBurrow(){
+    /* void findBurrow(){
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof RabbitBurrow ){
                 if (world.isTileEmpty(world.getLocation(object))){
@@ -119,7 +137,7 @@ public class Rabbit implements Actor {
     /**
      * instantiates a new RabbitBurrow on the current location.
      */
-    void digBurrow(){
+    /* void digBurrow(){
         burrow = new RabbitBurrow(world,this);
         burrow.spawnBurrow();
     }
@@ -128,7 +146,7 @@ public class Rabbit implements Actor {
      * Deletes the rabbit from the world.
      *
      */
-    void die(){
+    /* void die(){
         System.out.println("Dying....:(");
         world.delete(this);
     }
@@ -136,14 +154,14 @@ public class Rabbit implements Actor {
     /**
      * Removes the rabbit temporarily from the world, so it looks like it is sleeping.
      */
-    void sleep(){
+    /* void sleep(){
         world.remove(this);
 
     }
     /**
      * Instantiates a new Rabbit, in one of the neighbouring empty tiles.
      */
-    void reproduce(){
+    /*void reproduce(){
         Rabbit kid = new Rabbit();
         //neighbourList = getNeighbours(world);
         Set<Location> neighbours = world.getEmptySurroundingTiles();
@@ -152,5 +170,5 @@ public class Rabbit implements Actor {
         Location birthPlace =  neighbourList.get(0);
 
         world.setTile(birthPlace, kid);
-    }}
+    }} */
 }

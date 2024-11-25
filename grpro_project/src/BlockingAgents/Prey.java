@@ -3,11 +3,8 @@ package BlockingAgents;
 import itumulator.world.World;
 
 public abstract class Prey extends Animal {
-    World world;
-
-    Prey() {
-        super();
-        world = super.getWorld();
+    Prey(World world, int age, int energyLevel, int maxEnergy, int health) {
+        super(world, age, energyLevel, maxEnergy, health);
     }
 
     /***
@@ -25,9 +22,8 @@ public abstract class Prey extends Animal {
         for (Object object : world.getSurroundingTiles(fleeRadius)) {
             if (object instanceof Predator) {
                 flee();
+                System.out.println(this.getClass() + " i am fleeing!");
             }
         }
     }
-
-
 }
