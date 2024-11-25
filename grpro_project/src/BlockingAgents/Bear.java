@@ -29,7 +29,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider 
     public void act(World world){
         this.world = world;
         if (world.isDay()){
-            move();}
+            move();
+            sleeping = false;
+        }
         else {
             sleeping = world.isNight();
         }
