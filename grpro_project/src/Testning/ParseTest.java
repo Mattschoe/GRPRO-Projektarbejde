@@ -1,5 +1,6 @@
 package Testning;
 
+import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
@@ -66,6 +67,7 @@ public class ParseTest {
             String[] lineSplit = line.split("[-\\s]");
 
             //If it is a amount
+            System.out.println(lineSplit.length);
             if (lineSplit.length == 2) {
                 object = lineSplit[0];
                 amount = Integer.parseInt(lineSplit[1]);
@@ -75,6 +77,7 @@ public class ParseTest {
                 int max = Integer.parseInt(lineSplit[2]);
                 amount = random.nextInt(max - min + 1) + min;
             }
+
 
             //Instantiate objects.
             random = new Random();
@@ -93,7 +96,8 @@ public class ParseTest {
                     world.setTile(location, new Rabbit());
                 } else if (object.equals("burrow")) {
                     world.setTile(location, new RabbitBurrow(world));
-
+                } else if (object.equals("bear")) {
+                    world.setTile(location, new Bear(world));
                     if (world.isTileEmpty(location) && !world.containsNonBlocking(location)) {
                         if (object.equals("grass")) world.setTile(location, new Grass());
                         else if (object.equals("rabbit")) world.setTile(location, new Rabbit());
