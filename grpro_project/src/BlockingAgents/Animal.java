@@ -51,10 +51,11 @@ public abstract class Animal implements Actor {
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
      */
     public void moveTo(Location moveToLocation) {
+        energyLevel--;
+
         int x = 0;
         int y = 0;
 
-        System.out.println("Old location " + world.getLocation(this));
         //Calculates x
         if (world.getLocation(this).getX() == moveToLocation.getX()) {
             x = moveToLocation.getX();
@@ -66,7 +67,7 @@ public abstract class Animal implements Actor {
 
         //Calculates y
         if (world.getLocation(this).getY() == moveToLocation.getY()) {
-            x = moveToLocation.getY();
+            y = moveToLocation.getY();
         } else if (world.getLocation(this).getY() < moveToLocation.getY()) {
             y = world.getLocation(this).getY() + 1;
         } else if (world.getLocation(this).getY() > moveToLocation.getY()) {
@@ -75,7 +76,6 @@ public abstract class Animal implements Actor {
 
         //Moves
         Location newLocation = new Location(x, y);
-        System.out.println("New location: " + newLocation);
         world.move(this, newLocation);
     }
 
@@ -89,6 +89,8 @@ public abstract class Animal implements Actor {
     }
 
     protected void move() {
+        energyLevel--;
+
         Random random = new Random();
         Set<Location> neighbours = world.getEmptySurroundingTiles();
         List<Location> neighbourList = new ArrayList<>(neighbours);

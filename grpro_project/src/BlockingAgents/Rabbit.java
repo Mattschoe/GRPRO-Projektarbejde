@@ -14,23 +14,30 @@ import java.util.Set;
 public class Rabbit extends Prey implements DenAnimal, Herbivore {
     RabbitBurrow burrow;
     World world;
+    boolean hasFoundGrass = false;
+    Location grassLocation = null;
 
     public Rabbit(World world) {
-        super(world, 0, 4, 4, 1);
+        super(world, 1, 40, 40, 1);
         this.world = world;
     }
 
     @Override
     public void act(World world) {
-        if (detectPredator()) {
+        eatPlant();
+
+        if (detectPredator()) { //If predator nearby
             flee();
-        } else if (energyLevel < maxEnergy) {
-            eatPlant();
-        } else {
+        } else if (energyLevel + 9 < maxEnergy) { //If hungry
+            moveTo(getEatablePlantLocation());
+            System.out.println("Græss: " + grassLocation);
+            System.out.println("Kanin: " + world.getLocation(this));
+        } else { //Else moves randomly
             move();
         }
 
         //Loses energy at night
+        System.out.println("Energi Level: " + energyLevel);
         updateMaxEnergy();
     }
 
@@ -68,15 +75,38 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
     }
 
 
-
+    /***
+     * Returns location of a grass spot
+     * @return
+     */
+    public void findEatablePlant() {
+        //Finds a spot of grass if the rabbit hasn't found it
+        if (!hasFoundGrass) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Grass grass) {
+                    grassLocation = world.getLocation(grass);
+                    hasFoundGrass = true;
+                    break;
+                }
+            }
+        }
+    }
 
     /***
-     * Checks if we are on a
+     * Checks if we are on a grass tile and eats it if so
      */
     public void eatPlant() {
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
+            world.delete(grass);
+            energyLevel = energyLevel + 5;
+        }
+    }
 
-            world.delete(world.getNonBlocking(world.getLocation(this)));
-            energyLevel = energyLevel + 2;
-
+    public Location getEatablePlantLocation() {
+        if (grassLocation == null) {
+            findEatablePlant();
+            return grassLocation;
+        }
+        return grassLocation;
     }
 }
