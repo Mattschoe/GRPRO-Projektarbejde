@@ -88,6 +88,8 @@ public abstract class Animal implements Actor {
         moveTo(moveToLocation);
     }
 
+    protected void flee() {};
+
     protected void move() {
         energyLevel--;
 
