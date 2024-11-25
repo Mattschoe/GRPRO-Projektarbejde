@@ -8,9 +8,10 @@ import java.util.Set;
 public class Bear extends Predator{
     World world;
 
-    public Bear(World world){
+    public Bear(World world ){
         super(20, world);
         this.world = world;
+        //world.setTile(location, this );
 
     }
 

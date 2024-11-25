@@ -14,8 +14,10 @@ public class Grass implements Actor, NonBlocking {
     World world;
 
 
-    public Grass() {
 
+
+    public Grass(World world) {
+        this.world = world;
     }
 
     /**
@@ -43,7 +45,7 @@ public class Grass implements Actor, NonBlocking {
                 Location newGrassLocation = list.get(random.nextInt(list.size()));
                 //Only instantiates the object if the location DOESNT contain a non-blocking
                 if (!world.containsNonBlocking(newGrassLocation)) {
-                    world.setTile(newGrassLocation, new Grass());
+                    world.setTile(newGrassLocation, new Grass(world));
                 }
             }
         }

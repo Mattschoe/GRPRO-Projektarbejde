@@ -59,11 +59,12 @@ public class Main {
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
-        
+
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         //Shows world
         program.show();
     }
