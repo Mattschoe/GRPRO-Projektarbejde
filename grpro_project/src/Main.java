@@ -58,7 +58,7 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit());
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
 
         //Shows world
         program.show();

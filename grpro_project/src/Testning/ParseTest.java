@@ -93,14 +93,14 @@ public class ParseTest {
                 if (object.equals("grass")) {
                     world.setTile(location, new Grass());
                 } else if (object.equals("rabbit")) {
-                    world.setTile(location, new Rabbit());
+                    world.setTile(location, new Rabbit(world));
                 } else if (object.equals("burrow")) {
                     world.setTile(location, new RabbitBurrow(world));
                 } else if (object.equals("bear")) {
                     world.setTile(location, new Bear(world));
                     if (world.isTileEmpty(location) && !world.containsNonBlocking(location)) {
                         if (object.equals("grass")) world.setTile(location, new Grass());
-                        else if (object.equals("rabbit")) world.setTile(location, new Rabbit());
+                        else if (object.equals("rabbit")) world.setTile(location, new Rabbit(world));
                         else if (object.equals("burrow")) world.setTile(location, new RabbitBurrow(world));
                     }
                     testObject = world.getTile(location);
