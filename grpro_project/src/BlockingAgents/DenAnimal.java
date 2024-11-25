@@ -1,6 +1,8 @@
 package BlockingAgents;
 
+import itumulator.world.Location;
+
 public interface DenAnimal {
-    public void findDen();
-    public void digDen();
+    public Location findDen();
+    public Location digDen();
 }

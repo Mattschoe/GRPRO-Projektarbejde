@@ -42,10 +42,10 @@ public class Main {
 
     }
 
-    //Skal slettes længere
+    //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
-        int size = 20;
+        int size = 6;
         int delay = 1000;
         int displaySize = 400;
 
@@ -64,7 +64,7 @@ public class Main {
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new RabbitBurrow(world));
         //Shows world
         program.show();
     }

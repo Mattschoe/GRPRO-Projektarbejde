@@ -15,5 +15,8 @@ public class Bear extends Predator{
 
     }
 
+    protected void sleep() {}
+
+    protected void reproduce() {}
 
 }

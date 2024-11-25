@@ -13,7 +13,6 @@ public class Wolf extends Predator{
     }
 
     public void act() {
-
         // Currently fighting
         if (currentlyFighting()) {
             System.out.println("Wolf Fighting");
@@ -34,6 +33,11 @@ public class Wolf extends Predator{
 
 
     }
+
+
+    protected void reproduce() {}
+
+    protected void sleep() {}
 
     protected void flee() {
 

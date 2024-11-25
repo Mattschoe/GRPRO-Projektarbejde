@@ -1,5 +1,7 @@
 package BlockingAgents;
 
+import itumulator.executable.DisplayInformation;
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -16,10 +18,10 @@ public abstract class Animal implements Actor {
     protected int maxEnergy;
     protected int health;
 
-    Animal(World world, int age, int energyLevel, int maxEnergy, int health) {
+    Animal(World world, int age, int maxEnergy, int health) {
         this.world = world;
         this.age = age;
-        this.energyLevel = energyLevel;
+        this.energyLevel = maxEnergy;
         this.maxEnergy = maxEnergy;
         this.health = health;
     }
@@ -31,21 +33,13 @@ public abstract class Animal implements Actor {
         world.delete(this);
     }
 
-    protected void sleep() {
+    protected abstract void sleep();
+
+    protected void remove() {
         world.remove(this);
     }
 
-    protected void reproduce() {
-        Rabbit kid = new Rabbit(world);
-        //neighbourList = getNeighbours(world);
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
-        List<Location> neighbourList = new ArrayList<>(neighbours);
-        if (!neighbourList.isEmpty()) {
-            Location birthPlace = neighbourList.get(0);
-
-            world.setTile(birthPlace, kid);
-        }
-    }
+    protected abstract void reproduce();
 
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
@@ -76,7 +70,13 @@ public abstract class Animal implements Actor {
 
         //Moves
         Location newLocation = new Location(x, y);
-        world.move(this, newLocation);
+        //Tries to move unless there is a object in the way
+        try {
+            world.move(this, newLocation);
+        } catch (IllegalArgumentException e) {
+            move();
+        }
+        world.setCurrentLocation(newLocation);
     }
 
     /***
