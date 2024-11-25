@@ -5,6 +5,8 @@ import java.util.Random;
 
 import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
+import BlockingAgents.Wolf;
+import NonblockingAgents.Bush;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
 import NonblockingAgents.Territory;
@@ -59,12 +61,14 @@ public class Main {
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
-
+        program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
+        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.red, "bush-berries" ));
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
         //Shows world
         program.show();
     }

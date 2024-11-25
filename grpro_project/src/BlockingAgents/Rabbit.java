@@ -1,6 +1,7 @@
 package BlockingAgents;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
+import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
 import itumulator.simulator.Actor;
@@ -38,6 +39,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
         }
 
         updateMaxEnergy();
+    }
+
+    @Override
+    public DisplayInformation getInformation() {
+        return null;
     }
 
     protected void flee() {
