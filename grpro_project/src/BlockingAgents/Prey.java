@@ -7,6 +7,7 @@ public abstract class Prey extends Animal {
 
     Prey(World world, int age, int energyLevel, int maxEnergy, int health) {
         super(world, age, energyLevel, maxEnergy, health);
+        this.world = world;
     }
 
     /***

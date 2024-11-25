@@ -17,6 +17,7 @@ public abstract class Animal implements Actor {
     protected int health;
 
     Animal(World world, int age, int energyLevel, int maxEnergy, int health) {
+        this.world = world;
         this.age = age;
         this.energyLevel = energyLevel;
         this.maxEnergy = maxEnergy;

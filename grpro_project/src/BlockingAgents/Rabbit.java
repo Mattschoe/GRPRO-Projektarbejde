@@ -11,12 +11,11 @@ import java.util.Random;
 import java.util.Set;
 
 
-public class Rabbit extends Prey implements DenAnimal {
+public class Rabbit extends Prey implements DenAnimal, Herbivore {
     RabbitBurrow burrow;
     World world;
 
     public Rabbit(World world) {
-
         super(world, 0, 4, 4, 1);
         this.world = world;
     }
@@ -28,18 +27,17 @@ public class Rabbit extends Prey implements DenAnimal {
         } else {
             move();
         }
+
+        if (energyLevel < maxEnergy) {
+            eatPlant();
+        }
+
+        //Mister energi om aftenen
+        if (world.getCurrentTime() == 10) {
+            energyLevel--;
+        }
+
         updateMaxEnergy();
-    }
-
-    private void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
-    }
-
-    public void findDen() {
-
-    }
-    public void digDen() {
-
     }
 
     protected void flee() {
@@ -50,76 +48,21 @@ public class Rabbit extends Prey implements DenAnimal {
         }
     }
 
-    /*
-    @Override
-    public void act(World world ){
-        this.world = world;
-        if (world.getCurrentTime() == 19){ // morning
-            if (burrow != null) {
-                energyLevel -= 8;
-                age++;
-                maxEnergy = maxEnergy - 1;
-                System.out.println("age: " + age);
-                world.setTile(world.getLocation(burrow), this);
-                world.setCurrentLocation(world.getLocation(burrow));
-            }
-        }
-       if (energyLevel <= 0) die();
-       //Finds or digs burrow when nightfall
-       if (world.getCurrentTime() == 10 ) {
-           findBurrow();
-       }
-       if (world.getCurrentTime() == 11) {
-           sleep();
-       }
-
-        if (world.isDay()){
-            movement();
-
-            if (energyLevel < maxEnergy) eat();
-
-            Set<Location> neighbours = world.getSurroundingTiles();
-            if (world.getAll(Rabbit.class,neighbours ).size() > 1) {
-                if (new Random().nextInt(12) == 0) {
-                reproduce();
-                }
-            }
-
-        }
-
+    private void updateMaxEnergy() {
+        maxEnergy = maxEnergy - age;
     }
-
-
-    /**
-     * Is used by the rabbit to eat the tile of grass, that it is standing on.
-     * The rabbits energyLevel increments by 1, when a tile of grass is eaten
-     * If there is no grass, the rabbit can't eat it. If the grass is eaten, it disappears.
-     */
-    /* void eat(){
-            Location location = world.getLocation(this);
-            if (world.containsNonBlocking(location)){
-
-                Object nonBlocking = world.getNonBlocking(location);
-                if (nonBlocking instanceof Grass){ // maybe not this
-                    world.delete(nonBlocking);
-                    energyLevel++;
-                }
-
-            }
-        }
-
 
     /**
      * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
-      */
-    /* void findBurrow(){
+     */
+    public void findDen() {
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof RabbitBurrow ){
                 if (world.isTileEmpty(world.getLocation(object))){
                     world.move(this, world.getLocation(object));
                     burrow = (RabbitBurrow) object;
                 } else {
-                    digBurrow();
+                    digDen();
                 }
             }
         }
@@ -128,8 +71,19 @@ public class Rabbit extends Prey implements DenAnimal {
     /**
      * instantiates a new RabbitBurrow on the current location.
      */
-    /* void digBurrow(){
+    public void digDen() {
         burrow = new RabbitBurrow(world,this);
         burrow.spawnBurrow();
-    } */
+    }
+
+
+
+    public void eatPlant() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Grass grass ){
+                world.move(this, world.getLocation(grass));
+                world.delete(grass);
+            }
+        }
+    }
 }
