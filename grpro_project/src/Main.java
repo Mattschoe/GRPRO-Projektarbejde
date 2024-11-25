@@ -36,6 +36,8 @@ public class Main {
         for (ParseTest test : tests) {
             test.simulateTest();
         }
+
+
     }
 
     //Skal slettes længere
