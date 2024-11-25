@@ -6,7 +6,7 @@ import itumulator.world.World;
 import java.util.List;
 
 
-public class Wolf extends Predator{
+public class Wolf extends Predator {
 
     boolean currentlyFighting;
 
@@ -63,6 +63,11 @@ public class Wolf extends Predator{
         return false; // XXX temp
     }
 
+
+    protected void reproduce() {}
+
+    protected void sleep() {}
+
     protected void flee() {
 
     }
@@ -114,6 +119,10 @@ public class Wolf extends Predator{
         return true; // XXX temp
     }
 
+    public DisplayInformation getInformation() {
+
+        return null;
+    }
 
     @Override
     public DisplayInformation getInformation() {

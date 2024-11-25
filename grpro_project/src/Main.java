@@ -44,7 +44,7 @@ public class Main {
 
     }
 
-    //Skal slettes længere
+    //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
         int size = 20;
