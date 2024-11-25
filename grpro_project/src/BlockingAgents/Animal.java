@@ -47,7 +47,46 @@ public abstract class Animal implements Actor {
         }
     }
 
-    protected void sprint() {}
+    /***
+     * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
+     */
+    public void moveTo(Location moveToLocation) {
+        int x = 0;
+        int y = 0;
+
+        System.out.println("Old location " + world.getLocation(this));
+        //Calculates x
+        if (world.getLocation(this).getX() == moveToLocation.getX()) {
+            x = moveToLocation.getX();
+        } else if (world.getLocation(this).getX() < moveToLocation.getX()) {
+            x = world.getLocation(this).getX() + 1;
+        } else if (world.getLocation(this).getX() > moveToLocation.getX()) {
+            x = world.getLocation(this).getX() - 1;
+        }
+
+        //Calculates y
+        if (world.getLocation(this).getY() == moveToLocation.getY()) {
+            x = moveToLocation.getY();
+        } else if (world.getLocation(this).getY() < moveToLocation.getY()) {
+            y = world.getLocation(this).getY() + 1;
+        } else if (world.getLocation(this).getY() > moveToLocation.getY()) {
+            y = world.getLocation(this).getY() - 1;
+        }
+
+        //Moves
+        Location newLocation = new Location(x, y);
+        System.out.println("New location: " + newLocation);
+        world.move(this, newLocation);
+    }
+
+    /***
+     * Moves twice towards chosen location
+     * @param moveToLocation
+     */
+    protected void sprintTo(Location moveToLocation) {
+        moveTo(moveToLocation);
+        moveTo(moveToLocation);
+    }
 
     protected void move() {
         Random random = new Random();

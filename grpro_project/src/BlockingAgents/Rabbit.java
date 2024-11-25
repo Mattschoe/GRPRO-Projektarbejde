@@ -24,32 +24,23 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
     public void act(World world) {
         if (detectPredator()) {
             flee();
+        } else if (energyLevel < maxEnergy) {
+            eatPlant();
         } else {
             move();
         }
 
-        if (energyLevel < maxEnergy) {
-            eatPlant();
-        }
-
-        //Mister energi om aftenen
-        if (world.getCurrentTime() == 10) {
-            energyLevel--;
-        }
-
+        //Loses energy at night
         updateMaxEnergy();
     }
 
     protected void flee() {
-        if (burrow != null) {
-            sprint();
-        } else {
-
-        }
     }
 
     private void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
+        if (world.getCurrentTime() == 10) {
+            maxEnergy = maxEnergy - age;
+        }
     }
 
     /**
@@ -78,12 +69,14 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
 
 
 
+
+    /***
+     * Checks if we are on a
+     */
     public void eatPlant() {
-        for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Grass grass ){
-                world.move(this, world.getLocation(grass));
-                world.delete(grass);
-            }
-        }
+
+            world.delete(world.getNonBlocking(world.getLocation(this)));
+            energyLevel = energyLevel + 2;
+
     }
 }
