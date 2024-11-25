@@ -1,5 +1,6 @@
 package NonblockingAgents;
 
+import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
@@ -10,13 +11,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class Grass implements Actor, NonBlocking {
+public class Grass extends Plant implements Actor, NonBlocking {
     World world;
 
 
 
 
     public Grass(World world) {
+        super(world);
         this.world = world;
     }
 
@@ -27,27 +29,14 @@ public class Grass implements Actor, NonBlocking {
     public void act(World world) {
         this.world = world;
         if (world.isDay()) {
-            spread();
+            spread(new Grass(world), 10);
         }
     }
 
-    /**
-     * Spawns grass with a 25% chance in each of the empty surrounding tiles nearby.
-     */
-    private void spread() {
-        Random random = new Random();
-        for (int i = 0; i < world.getEmptySurroundingTiles().size(); i++) {
-            //Spawns grass in a empty surrounding tile with a (25%) chance of doing so
-            if (random.nextInt(12) == 0) {
-                Set<Location> emptySurrounding = world.getSurroundingTiles();
-                List<Location> list = new ArrayList<>(emptySurrounding);
-
-                Location newGrassLocation = list.get(random.nextInt(list.size()));
-                //Only instantiates the object if the location DOESNT contain a non-blocking
-                if (!world.containsNonBlocking(newGrassLocation)) {
-                    world.setTile(newGrassLocation, new Grass(world));
-                }
-            }
-        }
+    @Override
+    public DisplayInformation getInformation() {
+        return null;
     }
+
+
 }

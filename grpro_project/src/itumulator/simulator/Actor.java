@@ -1,5 +1,6 @@
 package itumulator.simulator;
 
+import itumulator.executable.DisplayInformation;
 import itumulator.world.World;
 
 /**
@@ -16,5 +17,6 @@ public interface Actor {
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     public void act(World world);
-    
+
+    DisplayInformation getInformation();
 }
