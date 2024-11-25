@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 
 public abstract class Animal implements Actor {
+    protected World world;
     protected int age;
     protected int energyLevel;
     protected int maxEnergy;
@@ -25,13 +26,36 @@ public abstract class Animal implements Actor {
     @Override
     public void act(World world){}
 
-    protected void die() {}
+    protected void die() {
+        world.delete(this);
+    }
 
-    protected void sleep() {}
+    protected void sleep() {
+        world.remove(this);
+    }
 
-    protected void reproduce() {}
+    protected void reproduce() {
+        Rabbit kid = new Rabbit(world);
+        //neighbourList = getNeighbours(world);
+        Set<Location> neighbours = world.getEmptySurroundingTiles();
+        List<Location> neighbourList = new ArrayList<>(neighbours);
+        if (!neighbourList.isEmpty()) {
+            Location birthPlace = neighbourList.get(0);
+
+            world.setTile(birthPlace, kid);
+        }
+    }
 
     protected void sprint() {}
 
-    protected void move() {}
+    protected void move() {
+        Random random = new Random();
+        Set<Location> neighbours = world.getEmptySurroundingTiles();
+        List<Location> neighbourList = new ArrayList<>(neighbours);
+
+        if (!neighbourList.isEmpty()){
+            Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+            world.move(this, location);
+        }
+    }
 }

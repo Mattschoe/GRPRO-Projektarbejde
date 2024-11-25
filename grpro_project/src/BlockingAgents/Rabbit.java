@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 
-public class Rabbit extends Prey {
+public class Rabbit extends Prey implements DenAnimal {
     RabbitBurrow burrow;
     World world;
 
@@ -23,28 +23,34 @@ public class Rabbit extends Prey {
 
     @Override
     public void act(World world) {
-        this.move();
+        if (detectPredator()) {
+            flee();
+        } else {
+            move();
+        }
+        updateMaxEnergy();
     }
 
     private void updateMaxEnergy() {
+        maxEnergy = maxEnergy - age;
     }
 
+    public void findDen() {
 
-
-
-
-
-    /* int age;
-
-
-    public Rabbit(){
-        this.age = 0;
-        this.maxEnergy = 10 - age;
-        this.energyLevel = maxEnergy;
-
+    }
+    public void digDen() {
 
     }
 
+    protected void flee() {
+        if (burrow != null) {
+            sprint();
+        } else {
+
+        }
+    }
+
+    /*
     @Override
     public void act(World world ){
         this.world = world;
@@ -83,22 +89,6 @@ public class Rabbit extends Prey {
 
     }
 
-    /**
-     * Gives the rabbit random movement.
-     *
-     */
-    /* void movement(){
-        Random r = new Random();
-
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
-        List<Location> neighbourList = new ArrayList<>(neighbours);
-
-
-        if (!neighbourList.isEmpty()){
-            Location l = neighbourList.get(r.nextInt(neighbourList.size()));
-            world.move(this, l);
-        }
-    }
 
     /**
      * Is used by the rabbit to eat the tile of grass, that it is standing on.
@@ -141,35 +131,5 @@ public class Rabbit extends Prey {
     /* void digBurrow(){
         burrow = new RabbitBurrow(world,this);
         burrow.spawnBurrow();
-    }
-
-    /**
-     * Deletes the rabbit from the world.
-     *
-     */
-    /* void die(){
-        System.out.println("Dying....:(");
-        world.delete(this);
-    }
-
-    /**
-     * Removes the rabbit temporarily from the world, so it looks like it is sleeping.
-     */
-    /* void sleep(){
-        world.remove(this);
-
-    }
-    /**
-     * Instantiates a new Rabbit, in one of the neighbouring empty tiles.
-     */
-    /*void reproduce(){
-        Rabbit kid = new Rabbit();
-        //neighbourList = getNeighbours(world);
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
-        List<Location> neighbourList = new ArrayList<>(neighbours);
-        if (!neighbourList.isEmpty()){
-        Location birthPlace =  neighbourList.get(0);
-
-        world.setTile(birthPlace, kid);
-    }} */
+    } */
 }
