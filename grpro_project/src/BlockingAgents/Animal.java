@@ -88,6 +88,8 @@ public abstract class Animal implements Actor {
         moveTo(moveToLocation);
     }
 
+    protected void flee() {};
+
     protected void move() {
         Random random = new Random();
         Set<Location> neighbours = world.getEmptySurroundingTiles();
