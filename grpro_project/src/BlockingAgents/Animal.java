@@ -17,12 +17,12 @@ public abstract class Animal implements Actor {
     protected int health;
     protected int maxHealth;
 
-    Animal(World world, int age, int energyLevel, int maxEnergy, int health) {
+    Animal(World world, int age, int energyLevel, int maxEnergy, int maxHealth) {
         this.world = world;
         this.age = age;
         this.energyLevel = energyLevel;
         this.maxEnergy = maxEnergy;
-        this.health = health;
+        this.health = maxHealth;
     }
 
     @Override
@@ -90,6 +90,8 @@ public abstract class Animal implements Actor {
     }
 
     protected void flee() {};
+
+    protected void recoverHealth() {}
 
     protected void move() {
         energyLevel--;
