@@ -9,7 +9,7 @@ public class Bear extends Predator{
     World world;
 
     public Bear(World world){
-        super(20);
+        super(20, world);
         this.world = world;
 
     }
