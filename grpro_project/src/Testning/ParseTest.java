@@ -3,6 +3,7 @@ package Testning;
 import BlockingAgents.Rabbit;
 import NonblockingAgents.Grass;
 import NonblockingAgents.RabbitBurrow;
+import NonblockingAgents.Territory;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -50,6 +51,7 @@ public class ParseTest {
 
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
+        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
 
