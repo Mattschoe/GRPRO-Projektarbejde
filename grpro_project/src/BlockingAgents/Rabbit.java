@@ -16,7 +16,7 @@ public class Rabbit extends Prey {
     World world;
 
     public Rabbit(World world) {
-        super();
+
         super(world, 0, 4, 4, 1);
         this.world = world;
     }
