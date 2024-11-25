@@ -15,29 +15,30 @@ import java.util.Set;
 public class Rabbit extends Prey implements DenAnimal, Herbivore {
     RabbitBurrow burrow;
     World world;
+    boolean hasFoundGrass = false;
+    Location grassLocation = null;
 
     public Rabbit(World world) {
-        super(world, 0, 4, 4, 1);
+        super(world, 1, 40, 40, 1);
         this.world = world;
     }
 
     @Override
     public void act(World world) {
-        if (detectPredator()) {
+        eatPlant();
+
+        if (detectPredator()) { //If predator nearby
             flee();
-        } else {
+        } else if (energyLevel + 9 < maxEnergy) { //If hungry
+            moveTo(getEatablePlantLocation());
+            System.out.println("Græss: " + grassLocation);
+            System.out.println("Kanin: " + world.getLocation(this));
+        } else { //Else moves randomly
             move();
         }
 
-        if (energyLevel < maxEnergy) {
-            eatPlant();
-        }
-
-        //Mister energi om aftenen
-        if (world.getCurrentTime() == 10) {
-            energyLevel--;
-        }
-
+        //Loses energy at night
+        System.out.println("Energi Level: " + energyLevel);
         updateMaxEnergy();
     }
 
@@ -47,15 +48,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
     }
 
     protected void flee() {
-        if (burrow != null) {
-            sprint();
-        } else {
-
-        }
     }
 
     private void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
+        if (world.getCurrentTime() == 10) {
+            maxEnergy = maxEnergy - age;
+        }
     }
 
     /**
@@ -83,13 +81,38 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
     }
 
 
-
-    public void eatPlant() {
-        for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Grass grass ){
-                world.move(this, world.getLocation(grass));
-                world.delete(grass);
+    /***
+     * Returns location of a grass spot
+     * @return
+     */
+    public void findEatablePlant() {
+        //Finds a spot of grass if the rabbit hasn't found it
+        if (!hasFoundGrass) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Grass grass) {
+                    grassLocation = world.getLocation(grass);
+                    hasFoundGrass = true;
+                    break;
+                }
             }
         }
+    }
+
+    /***
+     * Checks if we are on a grass tile and eats it if so
+     */
+    public void eatPlant() {
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
+            world.delete(grass);
+            energyLevel = energyLevel + 5;
+        }
+    }
+
+    public Location getEatablePlantLocation() {
+        if (grassLocation == null) {
+            findEatablePlant();
+            return grassLocation;
+        }
+        return grassLocation;
     }
 }
