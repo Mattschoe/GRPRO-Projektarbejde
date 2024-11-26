@@ -58,7 +58,13 @@ public class Main {
         program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
+<<<<<<< Updated upstream
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
+=======
+        program.setDisplayInformation(WolfDen.class, new DisplayInformation(Color.black, "hole"));
+        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries" ));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass-small" ));
+>>>>>>> Stashed changes
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));

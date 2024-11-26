@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class WolfPack {
+public abstract class WolfPack {
 
     Wolf wolf;
     Set<Wolf> pack;

@@ -1,5 +1,6 @@
 package BlockingAgents;
 
+import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
@@ -33,7 +34,12 @@ public abstract class Animal implements Actor {
     }
 
     protected void die() {
+        Location tempLocation = world.getLocation(this);
         world.delete(this);
+        System.out.println(tempLocation);
+        world.setTile(tempLocation, new Meat(world,this));
+
+
     }
 
     protected abstract void sleep();
