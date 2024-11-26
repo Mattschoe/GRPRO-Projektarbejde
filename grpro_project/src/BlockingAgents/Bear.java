@@ -163,8 +163,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
-    public void findEatablePlant() {}
-    public Location getEatablePlantLocation() { return null; }
 
 
     protected void reproduce() {}
