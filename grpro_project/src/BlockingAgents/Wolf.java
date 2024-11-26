@@ -77,6 +77,10 @@ public class Wolf extends Predator{
         }
     }
 
+    private boolean isHunting() {
+
+        return false; // XXX temp
+    }
 
     protected void flee() {
 
@@ -117,9 +121,9 @@ public class Wolf extends Predator{
     }
 
 
+
     @Override
     public DisplayInformation getInformation() {
-
         return null;
     }
 }

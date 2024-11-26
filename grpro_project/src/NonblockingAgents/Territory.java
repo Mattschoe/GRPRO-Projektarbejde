@@ -12,14 +12,18 @@ import java.util.Set;
 public class Territory implements NonBlocking {
     World world;
     Predator owner;
+    Location location;
 
     public Territory (Location location, World world, Predator owner) {
-        //world.setTile(location, this);
+        this.location = location;
         this.world = world;
         this.owner = owner;
 
-
-
     }
+    public Predator getOwner(){
+        return owner;
+    }
+
+
 
 }
