@@ -82,6 +82,13 @@ public class Wolf extends Predator{
         return false; // XXX temp
     }
 
+    protected void reproduce() {}
+
+    @Override
+    protected void sleep() {
+
+    }
+
     protected void flee() {
 
     }
