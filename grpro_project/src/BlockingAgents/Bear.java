@@ -9,6 +9,7 @@ import itumulator.world.World;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore {
@@ -16,6 +17,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     ArrayList<Location> territory;
     boolean sleeping;
     Location bushLocation = null;
+    Boolean wantsToBreed;
+    int breedingDelay;
 
 
 
@@ -23,8 +26,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         super(20, world);
         this.world = world;
         territory = new ArrayList<>();
+        wantsToBreed = false;
+        breedingDelay = 5;
 
-        //world.setTile(location, this );
 
     }
     @Override
@@ -37,6 +41,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (world.isDay()){
             if (territory.contains(world.getLocation(this))){
                 move();
+                protectTerritory();
             } else {
                 moveTo(territory.get(0));
             }
@@ -47,20 +52,25 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
         if (world.getCurrentTime() == 10) {
             energyLevel--;
+            birthday();
+            breedingDelay--;
+            if (age > 1 && breedingDelay == 0) wantsToBreed = true;
+
         }
+
         if (energyLevel < maxEnergy) { //If hungry
             //moveTo(getEatablePlantLocation());
             findEatablePlant();
-            for (Location location: territory){
+            /*for (Location location: territory){
                 if (world.getTile(location) instanceof Rabbit){
                     hunt();
                     //moveTo(location);
                 }
 
-            }
-
+            }*/
 
         }
+
     }
 
     @Override
@@ -70,11 +80,19 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     @Override
     public DisplayInformation getInformation() {
-        if (sleeping){
+        if (sleeping && age > 1){
             return new DisplayInformation(Color.BLUE, "bear-sleeping");
-        } else {
+        } else if (age > 1){
             return new DisplayInformation(Color.GRAY, "bear");
         }
+
+        if (sleeping && age <= 1){
+            return new DisplayInformation(Color.GREEN, "bear-small-sleeping");
+        } else {
+            return new DisplayInformation(Color.RED, "bear-small");
+        }
+
+
     }
     @Override
 
@@ -83,7 +101,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         for (Location location : surroundingTiles) {
             if (world.getTile(location) instanceof Bush bush) {
                 bush.getEaten();
-                energyLevel = energyLevel + 5;
+                energyLevel = energyLevel + 1;
                 break;
             }
         }
@@ -171,7 +189,40 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     public ArrayList<Location> getTerritory(){
         return territory;
     }
+    void protectTerritory(){
+        for (Object entity : world.getEntities().keySet()){
 
-    protected void reproduce() {}
+            if (entity instanceof Bear){
+                if (territory.contains(world.getLocation(entity))){
+                    if (!wantsToBreed){
+                    System.out.println("AAAAAAAheurheef");
+                    fight();}
+                    else if (((Bear) entity).wantsToBreed){
+                        if (world.getSurroundingTiles().contains(world.getLocation(entity))){
+                            reproduce();
+                        }
+                    }
+                }
 
+            }
+        }
+    }
+
+    protected void reproduce() {
+            Bear cup = new Bear(world);
+            //neighbourList = getNeighbours(world);
+            Set<Location> neighbours = world.getEmptySurroundingTiles();
+            List<Location> neighbourList = new ArrayList<>(neighbours);
+            if (!neighbourList.isEmpty()){
+                Location birthPlace =  neighbourList.get(0);
+                world.setTile(birthPlace, cup);
+            }
+            wantsToBreed = false;
+            breedingDelay = 5;
+
+    }
+
+    public Boolean getWantsToBreed() {
+        return wantsToBreed;
+    }
 }

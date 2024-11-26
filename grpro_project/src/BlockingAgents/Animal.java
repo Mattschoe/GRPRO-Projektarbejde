@@ -145,4 +145,20 @@ public abstract class Animal implements Actor {
             world.move(this, location);
         }
     }
+
+    void birthday() {
+        age += 1;
+
+    }
+    public int getAge(){
+        return age;
+    }
+
+    public int getEnergyLevel() {
+        return energyLevel;
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
 }
