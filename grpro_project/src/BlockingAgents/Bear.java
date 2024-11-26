@@ -78,8 +78,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
 
     }
-
-
     public void eatPlant(){
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
         for (Location location : surroundingTiles) {
@@ -165,6 +163,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
+    public void findEatablePlant() {}
+    public Location getEatablePlantLocation() { return null; }
 
 
     protected void reproduce() {}

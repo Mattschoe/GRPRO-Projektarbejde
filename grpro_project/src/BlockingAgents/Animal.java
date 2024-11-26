@@ -47,7 +47,7 @@ public abstract class Animal implements Actor {
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
      */
-    public void moveTo(Location moveToLocation) {
+    protected void moveTo(Location moveToLocation) {
         energyLevel--;
 
         int x = 0;
@@ -76,19 +76,50 @@ public abstract class Animal implements Actor {
         //Tries to move unless there is a object in the way
         try {
             world.move(this, newLocation);
+            world.setCurrentLocation(newLocation);
         } catch (IllegalArgumentException e) {
             move();
         }
-        world.setCurrentLocation(newLocation);
+
     }
 
-    /***
+    /**
      * Moves twice towards chosen location
      * @param moveToLocation
      */
     protected void sprintTo(Location moveToLocation) {
         moveTo(moveToLocation);
         moveTo(moveToLocation);
+    }
+
+    protected void moveAwayFrom(Location moveAwayFromLocation) {
+        energyLevel--;
+
+        int x = 0;
+        int y = 0;
+
+        //Calculates x
+        if (world.getLocation(this).getX() < moveAwayFromLocation.getX()) {
+            x = world.getLocation(this).getX() - 1;
+        } else if (world.getLocation(this).getX() > moveAwayFromLocation.getX()) {
+            x = world.getLocation(this).getX() + 1;
+        }
+
+        //Calculates y
+        if (world.getLocation(this).getY() < moveAwayFromLocation.getY()) {
+            y = world.getLocation(this).getY() - 1;
+        } else if (world.getLocation(this).getY() > moveAwayFromLocation.getY()) {
+            y = world.getLocation(this).getY() + 1;
+        }
+
+        //Tries to move unless there is a object in the way
+        Location newLocation = new Location(x, y);
+        try {
+            world.move(this, newLocation);
+            world.setCurrentLocation(newLocation);
+        } catch (IllegalArgumentException e) {
+            move();
+        }
     }
 
     protected void flee() {};
