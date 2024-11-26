@@ -119,10 +119,7 @@ public class Wolf extends Predator {
         return true; // XXX temp
     }
 
-    public DisplayInformation getInformation() {
 
-        return null;
-    }
 
     @Override
     public DisplayInformation getInformation() {

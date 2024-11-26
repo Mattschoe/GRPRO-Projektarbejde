@@ -32,7 +32,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     @Override
     public void act(World world){
         this.world = world;
-        if (territory.size() == 0){
+        if (territory.isEmpty()){
             setTerritory();
         }
 
@@ -53,6 +53,14 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (energyLevel < maxEnergy) { //If hungry
             //moveTo(getEatablePlantLocation());
             findEatablePlant();
+            for (Location location: territory){
+                if (world.getTile(location) instanceof Rabbit){
+
+                    //moveTo(location);
+                }
+
+            }
+
 
         }
     }
@@ -70,6 +78,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
 
     }
+
+
     public void eatPlant(){
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
         for (Location location : surroundingTiles) {
@@ -140,7 +150,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
         for (int i = 0; i < surroundingTiles.toArray().length; i++) {
             territory.add((Location) surroundingTiles.toArray()[i]);
-            world.setTile(territory.get(i), new Territory(territory.get(i), world, this));
+            //world.setTile(territory.get(i), new Territory(territory.get(i), world, this));
         }
 
 
@@ -155,8 +165,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
-    public void findEatablePlant() {}
-    public Location getEatablePlantLocation() { return null; }
 
 
     protected void reproduce() {}
