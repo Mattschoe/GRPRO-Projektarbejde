@@ -28,7 +28,9 @@ public abstract class Animal implements Actor {
     }
 
     @Override
-    public void act(World world){}
+    public void act(World world){
+        this.world = world;
+    }
 
     protected void die() {
         world.delete(this);

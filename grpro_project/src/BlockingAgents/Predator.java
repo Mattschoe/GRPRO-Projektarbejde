@@ -9,8 +9,9 @@ import java.util.Set;
 
 public abstract class Predator extends Animal{
     int strength;
-
     World world;
+
+
     Predator(int strength , World world){
         super(world,0,10, 10);
         this.strength = strength;
