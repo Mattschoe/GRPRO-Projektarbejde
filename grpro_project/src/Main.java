@@ -15,14 +15,17 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        Week2Test();
+        ShowDropTestHereTests();
     }
 
+
+
+
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
-    /* public static void Week1TestCases() {
+    public static void ShowDropTestHereTests() {
         //Program descriptions
         int delay = 1000;
-        int displaySize = 400;
+        int displaySize = 1000;
 
         //File setup, saves all files dropped in folder
         File[] files;
@@ -38,8 +41,7 @@ public class Main {
         for (ParseTest test : tests) {
             test.simulateTest();
         }
-
-    } */
+    }
 
     //Skal slettes senere
     public static void Week2Test() {

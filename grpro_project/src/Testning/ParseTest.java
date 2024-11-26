@@ -2,8 +2,8 @@ package Testning;
 
 import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
-import NonblockingAgents.Grass;
-import NonblockingAgents.Territory;
+import BlockingAgents.Wolf;
+import NonblockingAgents.*;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ParseTest {
-    /* File file;
+    File file;
 
     //Program fields
     int worldSize;
@@ -43,6 +43,7 @@ public class ParseTest {
 
     public void readFile() throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
+        Random random = new Random();
 
         //Gets world size and initializes world
         worldSize = scanner.nextInt();
@@ -50,23 +51,24 @@ public class ParseTest {
         world = program.getWorld();
 
         //Display Information
-        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
-        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
-        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
+        program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.yellow, "wolf" ));
+        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
+        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
+        program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));
 
         //Initializes objects in world
         String object = "";
         int amount = 0;
-        Random random = new Random();
+        Location bearTerritoryCentrum;
+
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             //Saves object and amount
             String line = scanner.nextLine();
-            String[] lineSplit = line.split("[-\\s]");
+            String[] lineSplit = line.split("[-\\s(),]+");
 
-            //If it is a amount
-            System.out.println(lineSplit.length);
             if (lineSplit.length == 2) {
                 object = lineSplit[0];
                 amount = Integer.parseInt(lineSplit[1]);
@@ -75,6 +77,10 @@ public class ParseTest {
                 int min = Integer.parseInt(lineSplit[1]);
                 int max = Integer.parseInt(lineSplit[2]);
                 amount = random.nextInt(max - min + 1) + min;
+            } else if (lineSplit.length == 4) { //Object with a territory
+                object = lineSplit[0];
+                amount = Integer.parseInt(lineSplit[1]);
+                bearTerritoryCentrum = new Location(Integer.parseInt(lineSplit[2]), Integer.parseInt(lineSplit[3]));
             }
 
 
@@ -89,27 +95,20 @@ public class ParseTest {
                     location = new Location(random.nextInt(worldSize), random.nextInt(worldSize));
                 }
 
-                if (object.equals("grass")) {
-                    world.setTile(location, new Grass(world));
-                } else if (object.equals("rabbit")) {
-                    world.setTile(location, new Rabbit(world));
-                } else if (object.equals("burrow")) {
-                    world.setTile(location, new RabbitBurrow(world));
-                } else if (object.equals("bear")) {
-                    world.setTile(location, new Bear(world));
-                    if (world.isTileEmpty(location) && !world.containsNonBlocking(location)) {
-                        if (object.equals("grass")) world.setTile(location, new Grass(world));
-                        else if (object.equals("rabbit")) world.setTile(location, new Rabbit(world));
-                        else if (object.equals("burrow")) world.setTile(location, new RabbitBurrow(world));
-                    }
-                    testObject = world.getTile(location);
+                if (world.isTileEmpty(location) && !world.containsNonBlocking(location)) {
+                    if (object.equals("grass")) world.setTile(location, new Grass(world));
+                    else if (object.equals("rabbit")) world.setTile(location, new Rabbit(world));
+                    else if (object.equals("burrow")) world.setTile(location, new Den(world, null, false));
+                    else if (object.equals("bear")) world.setTile(location, new Bear(world));
+                    else if (object.equals("wolf")) world.setTile(location, new Wolf(world));
+                    else if (object.equals("berry")) world.setTile(location, new Bush(world));
                 }
+                testObject = world.getTile(location);
             }
 
         }
     }
-
     public void simulateTest() {
         program.show();
-    } */
+    }
 }
