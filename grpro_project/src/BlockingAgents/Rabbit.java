@@ -1,6 +1,6 @@
 package BlockingAgents;
+import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
-import NonblockingAgents.RabbitBurrow;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
-    RabbitBurrow burrow;
+    Den burrow;
     World world;
     boolean hasFoundGrass = false;
     Location grassLocation = null;
@@ -76,7 +76,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 }
             }
         }
-
+        System.out.println("EnergyLevel: " + energyLevel + " maxEnergy: " + maxEnergy);
     }
 
     protected void sleep() {
@@ -100,14 +100,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         }
     }
 
-
-
     /**
      * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
      */
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof RabbitBurrow burrow){
+            if (object instanceof Den burrow && burrow.getOwner() == this){
                 if (world.isTileEmpty(world.getLocation(burrow))){
                     this.burrow = burrow;
                     return world.getLocation(burrow);
@@ -121,8 +119,8 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * instantiates a new RabbitDens on the current location.
      */
     public Location digDen() {
-        burrow = new RabbitBurrow(world,this);
-        burrow.spawnBurrow();
+        burrow = new Den(world, this, false);
+        burrow.spawnDen();
         return world.getLocation(burrow);
     }
 

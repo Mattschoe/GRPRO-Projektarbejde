@@ -18,7 +18,8 @@ public class Main {
         Week2Test();
     }
 
-    public static void Week1TestCases() {
+    //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
+    /* public static void Week1TestCases() {
         //Program descriptions
         int delay = 1000;
         int displaySize = 400;
@@ -38,29 +39,26 @@ public class Main {
             test.simulateTest();
         }
 
-
-    }
+    } */
 
     //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
         int size = 15;
         int delay = 500;
-        int displaySize = 400;
+        int displaySize = 1000;
 
         //Sets up world
-        Program program = new Program(size, delay, displaySize);
+        Program program = new Program(size, displaySize, delay);
         World world = program.getWorld();
 
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
-        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole-small"));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
-        program.setDisplayInformation(WolfDen.class, new DisplayInformation(Color.black, "hole"));
-        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries" ));
+        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
@@ -68,7 +66,6 @@ public class Main {
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new RabbitBurrow(world));
         //Shows world
         program.show();
     }

@@ -1,7 +1,6 @@
 package BlockingAgents;
 
-import NonblockingAgents.RabbitBurrow;
-import NonblockingAgents.WolfDen;
+import NonblockingAgents.Den;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 public class Wolf extends Predator implements DenAnimal{
 
-    WolfDen den;
+    Den den;
     World world;
 
     boolean currentlyFighting = false;
@@ -140,7 +139,7 @@ public class Wolf extends Predator implements DenAnimal{
 
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof WolfDen den){
+            if (object instanceof Den den && den.getOwner() == this){
                 if (world.isTileEmpty(world.getLocation(den))){
                     this.den = den;
                     return world.getLocation(den);
@@ -151,7 +150,7 @@ public class Wolf extends Predator implements DenAnimal{
     }
 
     public Location digDen() {
-        den = new WolfDen(world,this);
+        den = new Den(world,this, true);
         den.spawnDen();
         return world.getLocation(den);
     }

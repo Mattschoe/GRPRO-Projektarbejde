@@ -3,7 +3,6 @@ package Testning;
 import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
 import NonblockingAgents.Grass;
-import NonblockingAgents.RabbitBurrow;
 import NonblockingAgents.Territory;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
@@ -17,7 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ParseTest {
-    File file;
+    /* File file;
 
     //Program fields
     int worldSize;
@@ -112,5 +111,5 @@ public class ParseTest {
 
     public void simulateTest() {
         program.show();
-    }
+    } */
 }
