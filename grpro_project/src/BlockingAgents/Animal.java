@@ -141,8 +141,8 @@ public abstract class Animal implements Actor {
 
         if (!neighbourList.isEmpty()){
             Location location = neighbourList.get(random.nextInt(neighbourList.size()));
-            System.out.println("Empty Neighbours for: " + this);
             world.move(this, location);
+            world.setCurrentLocation(location);
         }
     }
 }
