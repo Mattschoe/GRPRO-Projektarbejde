@@ -8,12 +8,12 @@ import itumulator.world.World;
 
 import java.awt.*;
 
-public class Bush extends Plant implements Actor, DynamicDisplayInformationProvider {
+public class Bush implements Actor, DynamicDisplayInformationProvider {
     World world;
     boolean hasBerries;
     int reGrowDays;
     public Bush(World world) {
-        super(world);
+
         this.world = world;
         hasBerries = false;
     }
@@ -21,10 +21,7 @@ public class Bush extends Plant implements Actor, DynamicDisplayInformationProvi
     @Override
     public void act(World world) {
         this.world = world;
-        if (world.isDay()) {
-            spread(new Bush(world), 20 );
 
-        }
 
         if (world.getCurrentTime() == 19){
             reGrowDays --;

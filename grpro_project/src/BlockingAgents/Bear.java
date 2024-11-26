@@ -1,7 +1,6 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
-import NonblockingAgents.Territory;
 import itumulator.executable.DisplayInformation;
 
 import itumulator.executable.DynamicDisplayInformationProvider;
@@ -16,8 +15,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     World world;
     ArrayList<Location> territory;
     boolean sleeping;
-    boolean hasFoundBush = false;
-    Location BushLocation = null;
+    Location bushLocation = null;
 
 
 
@@ -55,7 +53,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             findEatablePlant();
             for (Location location: territory){
                 if (world.getTile(location) instanceof Rabbit){
-
+                    hunt();
                     //moveTo(location);
                 }
 
@@ -63,6 +61,11 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
 
         }
+    }
+
+    @Override
+    protected void sleep() {
+
     }
 
     @Override
@@ -74,10 +77,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
     @Override
-    protected void sleep(){
 
-
-    }
     public void eatPlant(){
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
         for (Location location : surroundingTiles) {
@@ -98,12 +98,12 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             Set<Location>  surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
             for (Location location : surroundingTiles) {
                 if (world.getTile(location) instanceof Bush bush) {
-                    BushLocation = location;
+                    bushLocation = location;
                     bush.getEaten();
                     break;
                 }
             }
-            /*Set<Location> emptysurroundingTiles = world.getEmptySurroundingTiles(BushLocation);
+            /*Set<Location> emptysurroundingTiles = world.getEmptySurroundingTiles(bushLocation);
             System.out.println(emptysurroundingTiles.toArray());
             moveTo((Location )emptysurroundingTiles.toArray()[0]);
 
@@ -111,15 +111,15 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Bush bush) {
                     Set<Location>  bushNeighbours = world.getEmptySurroundingTiles(world.getLocation(bush));
-                    BushLocation = (Location) bushNeighbours.toArray()[0];
-                    System.out.println(BushLocation.toString());
+                    bushLocation = (Location) bushNeighbours.toArray()[0];
+                    System.out.println(bushLocation.toString());
                     hasFoundBush = true;
                     break;
                 }
             }
             for (int i = 0; i < territory.size(); i++) {
                 if (world.getTile(territory.get(i)) instanceof Bush) {
-                    BushLocation = territory.get(i);
+                    bushLocation = territory.get(i);
                     hasFoundBush = true;
                     break;
                 }
@@ -132,11 +132,11 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     @Override
     public Location getEatablePlantLocation() {
 
-        if (BushLocation == null){
+        if (bushLocation == null){
             findEatablePlant();
-            return BushLocation;
+            return bushLocation;
         }
-        return BushLocation;
+        return bushLocation;
     }
 
 
@@ -163,7 +163,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
-
+    public ArrayList<Location> getTerritory(){
+        return territory;
+    }
 
     protected void reproduce() {}
 
