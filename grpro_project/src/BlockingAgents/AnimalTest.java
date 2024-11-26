@@ -53,7 +53,7 @@ class AnimalTest {
         rabbit.moveAwayFrom(enemyLocation);
         assertNull(w.getTile(location));
         assertNull(w.getTile(enemyLocation));
-        assertNotNull(w.getTile(expectedLocation));   
+        assertNotNull(w.getTile(expectedLocation));
 
 
 

@@ -200,5 +200,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     protected void reproduce() {}
 
+    public boolean getHasFoundGrass() {
+        return hasFoundGrass;
+    }
 
+    public Location getGrassLocation() {
+        return grassLocation;
+    }
 }
