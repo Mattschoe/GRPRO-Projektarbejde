@@ -47,4 +47,19 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
     public DenAnimal getOwner() {
         return owner;
     }
+
+    /**
+     * Returns whether the owner of the Den is standing on Den. Used to hide and sleep
+     * @return
+     */
+    public boolean isOwnerOnDen() {
+        try {
+            if (world.getLocation(this).equals(world.getLocation(owner))) {
+                return true;
+            }
+        } catch ( IllegalArgumentException e ) {
+            System.out.println("Error!: " + e.getMessage() + ". Remember that i need a owner and need to exist before you call this method!");
+        }
+        return false;
+    }
 }

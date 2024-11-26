@@ -30,14 +30,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     public Wolf(World world) {
         super(20, world);
         this.world = world;
-
     }
 
     public void act(World world) {
         this.world = world;
         hasMoved = false;
-
-
 
         // Daytime activities
         if (world.isDay()) {
