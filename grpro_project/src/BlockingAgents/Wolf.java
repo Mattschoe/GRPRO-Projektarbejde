@@ -18,6 +18,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     World world;
     WolfPack pack;
 
+
     boolean currentlyFighting = false;
     boolean isCurrentlyHunting = false;
     boolean calledForHunt = false;
@@ -30,7 +31,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     public Wolf(World world) {
         super(20, world);
         this.world = world;
-    }
+        }
 
     public void act(World world) {
         this.world = world;
@@ -38,6 +39,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
 
         // Daytime activities
         if (world.isDay()) {
+            if (this.pack == null) {
+                this.pack = new WolfPack(this) {};
+            }
 
             // Fighting actions
             if (this.currentlyFighting) {
@@ -70,7 +74,19 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                 getEatableMeatLocation();
 
             } else if (!hasMoved) { // Moving actions
-                move();
+                // Move toward other pack members
+                if (this.pack != null && pack.getWolves().size() > 1) {
+                    int packDistanceX = 0;
+                    int packDistanceY = 0;
+                    for (Wolf wolf : pack.getWolves()) {
+                        packDistanceX += world.getLocation(wolf).getX();
+                        packDistanceY += world.getLocation(wolf).getY();
+                    }
+                    moveTo(new Location(packDistanceX, packDistanceY));
+
+                } else {
+                    move();
+                }
                 hasMoved = true;
             } else if (this.energyLevel > 12) { // Healing actions
                 recoverHealth();
