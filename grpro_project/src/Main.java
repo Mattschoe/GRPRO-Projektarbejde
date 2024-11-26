@@ -44,7 +44,7 @@ public class Main {
     //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
-        int size = 6;
+        int size = 15;
         int delay = 500;
         int displaySize = 1000;
 
