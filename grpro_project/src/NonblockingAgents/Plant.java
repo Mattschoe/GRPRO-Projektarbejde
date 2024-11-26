@@ -38,9 +38,7 @@ public abstract class Plant implements Actor {
                     if (type instanceof Grass){
                         world.setTile(newGrassLocation, new Grass(world));
                     }
-                    else if (type instanceof Bush){
-                        world.setTile(newGrassLocation, new Bush(world));
-                    }
+
                 }
             }
         }

@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 
-public class Wolf extends Predator implements DenAnimal{
+public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     Den den;
     World world;
+    WolfPack pack;
 
     boolean currentlyFighting = false;
     boolean iscurrentlyHunting = false;
@@ -96,11 +97,9 @@ public class Wolf extends Predator implements DenAnimal{
             }
         }
         moveTo(world.getLocation(prey));
-        callPack();
+        pack.callPack();
         this.hasMoved = true;
     }
-
-    private void callPack() {}
 
     private void calledForHunt() {
         if (this.health > 5) {
@@ -124,11 +123,6 @@ public class Wolf extends Predator implements DenAnimal{
     public boolean currentlyWinning() {
 
         return true; // XXX temp
-    }
-
-    public List<Animal> getPack() {
-
-        return null;
     }
 
     public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
@@ -166,6 +160,15 @@ public class Wolf extends Predator implements DenAnimal{
 
     private void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    public void eatMeat() {}
+
+    public void findEatableMeat() {}
+
+    public Location getEatableMeatLocation() {
+
+        return null;
     }
 
 
