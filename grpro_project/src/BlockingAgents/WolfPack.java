@@ -7,13 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class wolfPack {
+public class WolfPack {
 
     Wolf wolf;
     Set<Wolf> pack;
     WolfDen den;
 
-    wolfPack(Wolf wolf) {
+    WolfPack(Wolf wolf) {
         pack = new HashSet<Wolf>();
         this.wolf = wolf;
         pack.add(this.wolf);

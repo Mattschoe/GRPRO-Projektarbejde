@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 
-public class Wolf extends Predator implements DenAnimal{
+public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     WolfDen den;
     World world;
-    wolfPack pack;
+    WolfPack pack;
 
     boolean currentlyFighting = false;
     boolean iscurrentlyHunting = false;
@@ -161,6 +161,15 @@ public class Wolf extends Predator implements DenAnimal{
 
     private void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    public void eatMeat() {}
+
+    public void findEatableMeat() {}
+
+    public Location getEatableMeatLocation() {
+
+        return null;
     }
 
 

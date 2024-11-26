@@ -87,9 +87,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 break;
             }
         }
-
-
-
     }
 
     @Override
@@ -139,6 +136,14 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         return BushLocation;
     }
 
+    public void eatMeat() {}
+
+    public void findEatableMeat() {}
+
+    public Location getEatableMeatLocation() {
+
+        return null;
+    }
 
     void setTerritory(){
 
