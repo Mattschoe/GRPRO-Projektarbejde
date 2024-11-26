@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class Meat implements Actor {
     World world;
-    int energyLevel;
+    public int energyLevel;
     Animal animal;
 
     public Meat(World world, Animal animal) {
@@ -28,7 +28,6 @@ public class Meat implements Actor {
     @Override
     public void act(World world) {
         this.world = world;
-
     }
 
     @Override

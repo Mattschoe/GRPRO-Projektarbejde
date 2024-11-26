@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
+import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 
 import itumulator.executable.DynamicDisplayInformationProvider;
@@ -17,6 +18,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     ArrayList<Location> territory;
     boolean sleeping;
     Location bushLocation = null;
+    boolean hasFoundMeat = false;
+    Location meatLocation = null;
     Boolean wantsToBreed;
     int breedingDelay;
 
@@ -29,6 +32,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         wantsToBreed = false;
         breedingDelay = 5;
 
+        //world.setTile(location, this );
 
     }
     @Override
@@ -60,17 +64,18 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
         if (energyLevel < maxEnergy) { //If hungry
             //moveTo(getEatablePlantLocation());
+            // findEatableMeat();
             findEatablePlant();
-            /*for (Location location: territory){
+            for (Location location: territory){
                 if (world.getTile(location) instanceof Rabbit){
                     hunt();
                     //moveTo(location);
                 }
 
-            }*/
+            }
+
 
         }
-
     }
 
     @Override
@@ -154,13 +159,33 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         return bushLocation;
     }
 
-    public void eatMeat() {}
 
-    public void findEatableMeat() {}
+    public void findEatableMeat() {
+        //Finds a spot of grass if the rabbit hasn't found it
+        if (!hasFoundMeat) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Meat meat) {
+                    meatLocation = world.getLocation(meat);
+                    hasFoundMeat = true;
+                    break;
+                }
+            }
+        }
+    }
 
     public Location getEatableMeatLocation() {
+        if (meatLocation == null) {
+            findEatableMeat();
+            return meatLocation;
+        }
+        return meatLocation;
+    }
 
-        return null;
+    public void eatMeat() {
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
+            energyLevel = meat.energyLevel;
+            world.delete(meat);
+        }
     }
 
     void setTerritory(){

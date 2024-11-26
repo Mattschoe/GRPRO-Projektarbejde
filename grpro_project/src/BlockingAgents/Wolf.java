@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -22,6 +23,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     boolean isSleeping = false;
     Location sleepingLocation = null;
     boolean hasMoved = false;
+    boolean hasFoundMeat = false;
+    Location meatLocation = null;
 
     public Wolf(World world) {
         super(20, world);
@@ -80,7 +83,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
-                    System.out.println(sleepingLocation);
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
@@ -162,13 +164,32 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
         maxEnergy = maxEnergy - age;
     }
 
-    public void eatMeat() {}
-
-    public void findEatableMeat() {}
+    public void findEatableMeat() {
+        //Finds a spot of grass if the rabbit hasn't found it
+        if (!hasFoundMeat) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Meat meat) {
+                    meatLocation = world.getLocation(meat);
+                    hasFoundMeat = true;
+                    break;
+                }
+            }
+        }
+    }
 
     public Location getEatableMeatLocation() {
+        if (meatLocation == null) {
+            findEatableMeat();
+            return meatLocation;
+        }
+        return meatLocation;
+    }
 
-        return null;
+    public void eatMeat() {
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
+            energyLevel = meat.energyLevel;
+            world.delete(meat);
+        }
     }
 
 
