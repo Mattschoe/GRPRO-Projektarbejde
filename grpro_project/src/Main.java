@@ -44,7 +44,7 @@ public class Main {
     //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
-        int size = 6;
+        int size = 15;
         int delay = 500;
         int displaySize = 1000;
 
@@ -65,14 +65,11 @@ public class Main {
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
         //Shows world
         program.show();
-
-
-
     }
 }
