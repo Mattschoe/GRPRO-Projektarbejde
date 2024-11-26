@@ -20,11 +20,12 @@ public abstract class Animal implements Actor {
     protected int health;
     protected int maxHealth;
 
-    Animal(World world, int age, int maxEnergy, int health) {
+    Animal(World world, int age, int maxEnergy, int maxHealth) {
         this.world = world;
         this.age = age;
         this.energyLevel = maxEnergy;
         this.maxEnergy = maxEnergy;
+        this.maxHealth = maxHealth;
         this.health = maxHealth;
     }
 
@@ -33,10 +34,13 @@ public abstract class Animal implements Actor {
         this.world = world;
     }
 
+    public void takeDamage(int damage) {
+        this.health -= damage;
+    }
+
     protected void die() {
         Location tempLocation = world.getLocation(this);
         world.delete(this);
-        System.out.println(tempLocation);
         world.setTile(tempLocation, new Meat(world,this));
 
 
