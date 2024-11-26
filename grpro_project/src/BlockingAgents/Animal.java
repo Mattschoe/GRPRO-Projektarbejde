@@ -18,17 +18,22 @@ public abstract class Animal implements Actor {
     protected int health;
     protected int maxHealth;
 
-    Animal(World world, int age, int maxEnergy, int health) {
+    Animal(World world, int age, int maxEnergy, int maxHealth) {
         this.world = world;
         this.age = age;
         this.energyLevel = maxEnergy;
         this.maxEnergy = maxEnergy;
+        this.maxHealth = maxHealth;
         this.health = maxHealth;
     }
 
     @Override
     public void act(World world){
         this.world = world;
+    }
+
+    public void takeDamage(int damage) {
+        this.health -= damage;
     }
 
     protected void die() {

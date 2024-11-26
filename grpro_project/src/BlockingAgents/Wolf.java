@@ -4,11 +4,12 @@ import NonblockingAgents.Den;
 import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Set;
+import java.util.Random;
 
 
 public class Wolf extends Predator implements DenAnimal, Carnivore{
@@ -17,8 +18,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     World world;
     WolfPack pack;
 
+
     boolean currentlyFighting = false;
-    boolean iscurrentlyHunting = false;
+    boolean isCurrentlyHunting = false;
     boolean calledForHunt = false;
     boolean isSleeping = false;
     Location sleepingLocation = null;
@@ -29,7 +31,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     public Wolf(World world) {
         super(20, world);
         this.world = world;
-    }
+        }
 
     public void act(World world) {
         this.world = world;
@@ -37,14 +39,26 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
 
         // Daytime activities
         if (world.isDay()) {
+            if (this.pack == null) {
+                this.pack = new WolfPack(this) {};
+            }
+
             // Fighting actions
             if (this.currentlyFighting) {
                 if (currentlyWinning()) {
                     fight();
-                    hasMoved = true;
                 } else {
                     flee();
                     hasMoved = true;
+                }
+            }
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Animal && !isSleeping) {
+                    if (!(object == this) && world.getLocation(object).getX() + 1 >= world.getCurrentLocation().getX() && world.getLocation(object).getY() + 1 >= world.getCurrentLocation().getY() && world.getLocation(object).getX() - 1 <= world.getCurrentLocation().getX() && world.getLocation(object).getY() - 1 <= world.getCurrentLocation().getY()) {
+                        fight((Animal) object);
+                    }
+                } else if (object instanceof Meat && !isSleeping) {
+                    eatMeat();
                 }
             }
             // Wakes up
@@ -52,16 +66,31 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
             if (sleepingLocation != null) { //Adds wolf back to world after sleeping
                 world.setTile(sleepingLocation, this);
                 sleepingLocation = null;
-            } else if (energyLevel == 0) {
+            } else if (energyLevel == 0 || health <= 0 ) {
                 die();
-            } else if (iscurrentlyHunting || calledForHunt || this.energyLevel + 9 < maxEnergy) { //Hunting actions
+            } else if (isCurrentlyHunting || calledForHunt) { //Hunting actions
                 hunt();
+            } else if (this.energyLevel + 9 < maxEnergy) {
+                getEatableMeatLocation();
+
             } else if (!hasMoved) { // Moving actions
-                move();
+                // Move toward other pack members
+                if (this.pack != null && pack.getWolves().size() > 1) {
+                    int packDistanceX = 0;
+                    int packDistanceY = 0;
+                    for (Wolf wolf : pack.getWolves()) {
+                        packDistanceX += world.getLocation(wolf).getX();
+                        packDistanceY += world.getLocation(wolf).getY();
+                    }
+                    moveTo(new Location(packDistanceX, packDistanceY));
+
+                } else {
+                    move();
+                }
                 hasMoved = true;
             } else if (this.energyLevel > 12) { // Healing actions
                 recoverHealth();
-            } else if (this.energyLevel + 9 > maxEnergy) {
+            } else if (this.energyLevel * 2 > maxEnergy) {
                 recoverHealth();
             }
         }
@@ -88,14 +117,26 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     }
 
 
-    void hunt(Prey prey) {
+    void fight(Animal animal) {
+        currentlyFighting = true;
+        int attackPower = new Random().nextInt(strength);
+        animal.takeDamage(attackPower);
+        if (animal.health <= 0) {
+            animal.die();
+            eatMeat();
+            currentlyFighting = false;
+        }
+        hasMoved = true;
+    }
+
+    void hunt(Animal animal) {
         // walk toward prey if far - run if close
         for (Object object : world.getSurroundingTiles(world.getLocation(this), 5).toArray()) {
-            if (object == prey) {
-                moveTo(world.getLocation(prey));
+            if (object == animal) {
+                moveTo(world.getLocation(animal));
             }
         }
-        moveTo(world.getLocation(prey));
+        moveTo(world.getLocation(animal));
         pack.callPack();
         this.hasMoved = true;
     }
@@ -114,9 +155,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     protected void sleep() {}
 
     protected void flee() {}
-
-
-    void fight() {}
 
     // Get winning chances
     public boolean currentlyWinning() {
@@ -183,9 +221,29 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     }
 
     public void eatMeat() {
-        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
-            energyLevel = meat.energyLevel;
-            world.delete(meat);
+        System.out.println("Searching for meat");
+        for (Location location : world.getSurroundingTiles()) {
+            if (world.getTile(location) instanceof Meat) {
+                Meat meat = (Meat) world.getTile(location);
+                System.out.println("Found meat");
+                int extraEnergy = maxEnergy - energyLevel;
+                int extraHealth = maxHealth - health;
+                if (extraEnergy >= meat.energyLevel) {
+                    energyLevel += meat.energyLevel;
+                    world.delete(meat);
+                } else { // meat energy is higher
+                    energyLevel = maxEnergy;
+                    meat.energyLevel -= extraEnergy;
+                    if (extraHealth >= meat.energyLevel) {
+                        energyLevel += meat.energyLevel;
+                        world.delete(meat);
+                    } else { // meat energy is higher
+                        health = maxHealth;
+                        meat.energyLevel -= extraHealth;
+                    }
+                    System.out.println("Energy left in meat: " + meat.energyLevel);
+                }
+            }
         }
     }
 
