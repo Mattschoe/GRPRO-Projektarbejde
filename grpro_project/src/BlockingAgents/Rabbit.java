@@ -17,16 +17,20 @@ import java.util.Set;
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
     Den burrow;
     World world;
-    boolean hasFoundGrass = false;
-    Location grassLocation = null;
-    Location sleepingLocation = null;
-    boolean isSleeping = false;
+    boolean hasFoundGrass;
+    Location grassLocation;
+    Location sleepingLocation;
+    boolean isSleeping;
     int fleeRadius;
 
     public Rabbit(World world) {
         super(world,1,40, 1);
         this.world = world;
         fleeRadius = 2;
+        hasFoundGrass = false;
+        grassLocation = null;
+        sleepingLocation = null;
+        isSleeping = false;
     }
 
     @Override
@@ -76,7 +80,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 }
             }
         }
-        System.out.println("EnergyLevel: " + energyLevel + " maxEnergy: " + maxEnergy);
     }
 
     protected void sleep() {
@@ -95,6 +98,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     protected void flee() {
         if (burrow != null) { //Runs towards a burrow if it has one
             sprintTo(world.getLocation(burrow));
+            hide();
         } else { //Runs the opposite direction of the predator
             moveAwayFrom(world.getLocation(predator));
         }
@@ -184,9 +188,16 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     protected void reproduce() {}
 
+    /**
+     * Hides from predators and continues to hide in its burrow until it doesnt detect predators
+     */
     protected void hide() {
-        if (isHiding) {
-
+        if (isOnBurrow()) {
+            world.remove(this);
+            while (detectPredator(fleeRadius)) {
+                isHiding = true;
+            }
+            isHiding = false;
         }
     }
 }

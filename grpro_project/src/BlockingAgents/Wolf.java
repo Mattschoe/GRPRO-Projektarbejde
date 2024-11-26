@@ -80,7 +80,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
-                    System.out.println(sleepingLocation);
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
