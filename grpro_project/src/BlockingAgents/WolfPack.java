@@ -1,6 +1,6 @@
 package BlockingAgents;
 
-import NonblockingAgents.WolfDen;
+import NonblockingAgents.Den;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ public abstract class WolfPack {
 
     Wolf wolf;
     Set<Wolf> pack;
-    WolfDen den;
+    Den den;
 
     WolfPack(Wolf wolf) {
         pack = new HashSet<Wolf>();
