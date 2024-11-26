@@ -29,7 +29,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     Location meatLocation = null;
 
     public Wolf(World world) {
-        super(20, world);
+        super(20, world, 30, 20);
         this.world = world;
         }
 
@@ -52,10 +52,17 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     hasMoved = true;
                 }
             }
+            // Fight non-pack neighbours - eat Meat
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Animal && !isSleeping) {
                     if (!(object == this) && world.getLocation(object).getX() + 1 >= world.getCurrentLocation().getX() && world.getLocation(object).getY() + 1 >= world.getCurrentLocation().getY() && world.getLocation(object).getX() - 1 <= world.getCurrentLocation().getX() && world.getLocation(object).getY() - 1 <= world.getCurrentLocation().getY()) {
-                        fight((Animal) object);
+                        if (object instanceof Wolf) {
+                            if (!(this.pack == (WolfPack) object)) { // Check if same pack
+                                fight((Animal) object);
+                            }
+                        } else {
+                            fight((Animal) object);
+                        }
                     }
                 } else if (object instanceof Meat && !isSleeping) {
                     eatMeat();
@@ -221,11 +228,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     }
 
     public void eatMeat() {
-        System.out.println("Searching for meat");
         for (Location location : world.getSurroundingTiles()) {
             if (world.getTile(location) instanceof Meat) {
                 Meat meat = (Meat) world.getTile(location);
-                System.out.println("Found meat");
                 int extraEnergy = maxEnergy - energyLevel;
                 int extraHealth = maxHealth - health;
                 if (extraEnergy >= meat.energyLevel) {

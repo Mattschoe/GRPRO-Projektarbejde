@@ -20,7 +20,7 @@ public abstract class WolfPack {
 
     }
 
-    public void addWolf(Wolf wolf) {
+    public void addWolf(Wolf wolf) { // overflødig? Kan teknisk set bruge getWolves().add(Wolf wolf);
         pack.add(wolf);
         wolf.den = this.den;
     }
@@ -33,7 +33,6 @@ public abstract class WolfPack {
         for (Wolf wolf : pack) {
             wolf.calledForHunt = true;
         }
-
     }
 
 }

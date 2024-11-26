@@ -12,8 +12,8 @@ public abstract class Predator extends Animal{
     World world;
 
 
-    Predator(int strength , World world){
-        super(world,0,10, 10);
+    Predator(int strength , World world, int maxEnergy, int maxHealth){
+        super(world,0,maxEnergy, maxHealth);
         this.strength = strength;
         this.world = world;
 

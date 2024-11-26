@@ -26,7 +26,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
 
     public Bear(World world ){
-        super(20, world);
+        super(20, world, 50, 50);
         this.world = world;
         territory = new ArrayList<>();
         wantsToBreed = false;
