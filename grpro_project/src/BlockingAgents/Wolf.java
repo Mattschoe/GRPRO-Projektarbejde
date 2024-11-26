@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 
-public class Wolf extends Predator implements DenAnimal{
+public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     WolfDen den;
     World world;
+    WolfPack pack;
 
     boolean currentlyFighting = false;
     boolean iscurrentlyHunting = false;
@@ -37,7 +38,6 @@ public class Wolf extends Predator implements DenAnimal{
 
         // Daytime activities
         if (world.isDay()) {
-
             // Fighting actions
             if (this.currentlyFighting) {
                 if (currentlyWinning()) {
@@ -49,26 +49,18 @@ public class Wolf extends Predator implements DenAnimal{
                 }
             }
             // Wakes up
+            isSleeping = false;
             if (sleepingLocation != null) { //Adds wolf back to world after sleeping
-                System.out.println("Woke up at: " + sleepingLocation);
                 world.setTile(sleepingLocation, this);
-                System.out.println("Current location: " + world.getLocation(this));
                 sleepingLocation = null;
-                isSleeping = false;
             } else if (energyLevel == 0) {
                 die();
-            }
-            // Hunting actions
-            if (iscurrentlyHunting || calledForHunt || this.energyLevel + 9 < maxEnergy) {
+            } else if (iscurrentlyHunting || calledForHunt || this.energyLevel + 9 < maxEnergy) { //Hunting actions
                 hunt();
-            }
-            // Moving actions
-            if (!hasMoved) {
+            } else if (!hasMoved) { // Moving actions
                 move();
                 hasMoved = true;
-            }
-            // Healing actions
-            if (this.energyLevel > 12) {
+            } else if (this.energyLevel > 12) { // Healing actions
                 recoverHealth();
             } else if (this.energyLevel + 9 > maxEnergy) {
                 recoverHealth();
@@ -83,22 +75,18 @@ public class Wolf extends Predator implements DenAnimal{
                 updateMaxEnergy();
             }
             //Moves towards den until its the middle of the night
-            if (!this.currentlyFighting) {
-                if (world.getCurrentTime() < 15) {
-                    //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                    if (!isSleeping && isOnDen()) {
-                        sleepingLocation = world.getLocation(den);
-                        world.remove(this);
-                        isSleeping = true;
-                        System.out.println(sleepingLocation);
-                    } else if (!isSleeping) {
-                        moveTo(world.getLocation(den));
-                    }
+            if (world.getCurrentTime() < 15 && !currentlyFighting) {
+                //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
+                if (!isSleeping && isOnDen()) {
+                    world.remove(this);
+                    sleepingLocation = world.getLocation(den);
+                    isSleeping = true;
+                    System.out.println(sleepingLocation);
+                } else if (!isSleeping) {
+                    moveTo(world.getLocation(den));
                 }
             }
         }
-
-
     }
 
 
@@ -110,11 +98,9 @@ public class Wolf extends Predator implements DenAnimal{
             }
         }
         moveTo(world.getLocation(prey));
-        callPack();
+        pack.callPack();
         this.hasMoved = true;
     }
-
-    private void callPack() {}
 
     private void calledForHunt() {
         if (this.health > 5) {
@@ -138,11 +124,6 @@ public class Wolf extends Predator implements DenAnimal{
     public boolean currentlyWinning() {
 
         return true; // XXX temp
-    }
-
-    public List<Animal> getPack() {
-
-        return null;
     }
 
     public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
@@ -180,6 +161,15 @@ public class Wolf extends Predator implements DenAnimal{
 
     private void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    public void eatMeat() {}
+
+    public void findEatableMeat() {}
+
+    public Location getEatableMeatLocation() {
+
+        return null;
     }
 
 
