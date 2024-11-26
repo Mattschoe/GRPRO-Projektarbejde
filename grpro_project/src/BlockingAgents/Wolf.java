@@ -1,108 +1,143 @@
 package BlockingAgents;
 
+import NonblockingAgents.RabbitBurrow;
+import NonblockingAgents.WolfDen;
 import itumulator.executable.DisplayInformation;
+import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Set;
 
 
-public class Wolf extends Predator{
+public class Wolf extends Predator implements DenAnimal{
 
-    boolean currentlyFighting;
-    boolean iscurrentlyHunting;
-    boolean calledForHunt;
+    WolfDen den;
+    World world;
+
+    boolean currentlyFighting = false;
+    boolean iscurrentlyHunting = false;
+    boolean calledForHunt = false;
+    boolean isSleeping = false;
+    Location sleepingLocation = null;
+    boolean hasMoved = false;
 
     public Wolf(World world) {
         super(20, world);
         this.world = world;
 
-        this.currentlyFighting = false;
-        this.iscurrentlyHunting = false;
-        this.calledForHunt = false;
     }
 
-    public void act() {
+    public void act(World world) {
+        this.world = world;
+        hasMoved = false;
 
 
-        if (this.currentlyFighting) {
-            if (currentlyWinning()) {
-                fight();
-            } else {
-                flee();
+
+        // Daytime activities
+        if (world.isDay()) {
+
+            // Fighting actions
+            if (this.currentlyFighting) {
+                if (currentlyWinning()) {
+                    fight();
+                    hasMoved = true;
+                } else {
+                    flee();
+                    hasMoved = true;
+                }
             }
-        } else if (haslowHealth() && energyLevel > 5) {
-            // Recover health
-            recoverHealth();
-
-        }
-
-        if (this.iscurrentlyHunting) {
-
-            // call pack
-
-            hunt();
-
-        } else if (this.calledForHunt) {
-            // call pack
-
-            hunt();
-
-        }
-
-        if (this.energyLevel + 9 < maxEnergy) {
-            // call pack
-
-            hunt();
-
-        }
-
-        if (this.energyLevel > 12) {
-            recoverHealth();
-        } else if (this.energyLevel + 9 > maxEnergy) {
-            recoverHealth();
-        }
-
-    }
-
-    private void calledForHunt() {
-
-        if (this.calledForHunt) {
-            if (haslowHealth()) {
-                this.calledForHunt = false;
-            } else {
-
+            // Wakes up
+            if (sleepingLocation != null) { //Adds wolf back to world after sleeping
+                System.out.println("Woke up at: " + sleepingLocation);
+                world.setTile(sleepingLocation, this);
+                System.out.println("Current location: " + world.getLocation(this));
+                sleepingLocation = null;
+                isSleeping = false;
+            } else if (energyLevel == 0) {
+                die();
+            }
+            // Hunting actions
+            if (iscurrentlyHunting || calledForHunt || this.energyLevel + 9 < maxEnergy) {
                 hunt();
             }
-
+            // Moving actions
+            if (!hasMoved) {
+                move();
+                hasMoved = true;
+            }
+            // Healing actions
+            if (this.energyLevel > 12) {
+                recoverHealth();
+            } else if (this.energyLevel + 9 > maxEnergy) {
+                recoverHealth();
+            }
         }
+
+        // Nighttime activities
+        if (world.isNight()) {
+            if (world.getCurrentTime() == 10) {
+                findDen();
+                //Loses energy at night
+                updateMaxEnergy();
+            }
+            //Moves towards den until its the middle of the night
+            if (!this.currentlyFighting) {
+                if (world.getCurrentTime() < 15) {
+                    //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
+                    if (!isSleeping && isOnDen()) {
+                        sleepingLocation = world.getLocation(den);
+                        world.remove(this);
+                        isSleeping = true;
+                        System.out.println(sleepingLocation);
+                    } else if (!isSleeping) {
+                        moveTo(world.getLocation(den));
+                    }
+                }
+            }
+        }
+
+
     }
 
-    private boolean isHunting() {
 
-        return false; // XXX temp
+    void hunt(Prey prey) {
+        // walk toward prey if far - run if close
+        for (Object object : world.getSurroundingTiles(world.getLocation(this), 5).toArray()) {
+            if (object == prey) {
+                moveTo(world.getLocation(prey));
+            }
+        }
+        moveTo(world.getLocation(prey));
+        callPack();
+        this.hasMoved = true;
+    }
+
+    private void callPack() {}
+
+    private void calledForHunt() {
+        if (this.health > 5) {
+            this.calledForHunt = false;
+        } else {
+            hunt();
+        }
     }
 
     protected void reproduce() {}
 
     @Override
-    protected void sleep() {
+    protected void sleep() {}
 
-    }
-
-    protected void flee() {
-
-    }
-
-    protected void createDen() {
+    protected void flee() {}
 
 
-    }
+    void fight() {}
 
-    void fight() {
+    // Get winning chances
+    public boolean currentlyWinning() {
 
-
-
-
+        return true; // XXX temp
     }
 
     public List<Animal> getPack() {
@@ -116,21 +151,45 @@ public class Wolf extends Predator{
     }
 
 
-    // Get winning chances
-    public boolean currentlyWinning() {
-
-        return true; // XXX temp
+    public Location findDen() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof WolfDen den){
+                if (world.isTileEmpty(world.getLocation(den))){
+                    this.den = den;
+                    return world.getLocation(den);
+                }
+            }
+        }
+        return digDen(); //Makes a new Den if the wolf cant find any
     }
 
-    public boolean haslowHealth() {
+    public Location digDen() {
+        den = new WolfDen(world,this);
+        den.spawnDen();
+        return world.getLocation(den);
+    }
 
-        return maxHealth / this.health < 4;
+    private boolean isOnDen() {
+        if (den != null) {
+            if (world.getLocation(this).getX() == world.getLocation(den).getX() && world.getLocation(this).getY() == world.getLocation(den).getY()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void updateMaxEnergy() {
+        maxEnergy = maxEnergy - age;
     }
 
 
 
     @Override
     public DisplayInformation getInformation() {
-        return null;
+        if (isSleeping){
+            return new DisplayInformation(Color.BLUE, "wolf-sleeping");
+        } else {
+            return new DisplayInformation(Color.GRAY, "wolf");
+        }
     }
 }

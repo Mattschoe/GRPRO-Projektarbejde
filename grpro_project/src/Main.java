@@ -6,10 +6,7 @@ import java.util.Random;
 import BlockingAgents.Bear;
 import BlockingAgents.Rabbit;
 import BlockingAgents.Wolf;
-import NonblockingAgents.Bush;
-import NonblockingAgents.Grass;
-import NonblockingAgents.RabbitBurrow;
-import NonblockingAgents.Territory;
+import NonblockingAgents.*;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
@@ -47,8 +44,8 @@ public class Main {
     //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
-        int size = 20;
-        int delay = 1000;
+        int size = 15;
+        int delay = 500;
         int displaySize = 400;
 
         //Sets up world
@@ -57,18 +54,20 @@ public class Main {
 
         //Display Information
         program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.white, "rabbit-small"));
-        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole"));
+        program.setDisplayInformation(RabbitBurrow.class, new DisplayInformation(Color.black, "hole-small"));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
-        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.red, "bush-berries" ));
+        program.setDisplayInformation(WolfDen.class, new DisplayInformation(Color.black, "hole"));
+        program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries" ));
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
         //Shows world
         program.show();
     }

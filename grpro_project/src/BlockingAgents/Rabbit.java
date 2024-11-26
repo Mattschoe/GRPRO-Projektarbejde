@@ -60,8 +60,8 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore {
             if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                 if (!isSleeping && isOnBurrow()) {
-                    world.remove(this);
                     sleepingLocation = world.getLocation(burrow);
+                    world.remove(this);
                     isSleeping = true;
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(burrow));
