@@ -1,8 +1,6 @@
 package BlockingAgents;
 
 import NonblockingAgents.Meat;
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -20,11 +18,12 @@ public abstract class Animal implements Actor {
     protected int health;
     protected int maxHealth;
 
-    Animal(World world, int age, int maxEnergy, int health) {
+    Animal(World world, int age, int maxEnergy, int maxHealth) {
         this.world = world;
         this.age = age;
         this.energyLevel = maxEnergy;
         this.maxEnergy = maxEnergy;
+        this.maxHealth = maxHealth;
         this.health = maxHealth;
     }
 
@@ -33,13 +32,14 @@ public abstract class Animal implements Actor {
         this.world = world;
     }
 
+    public void takeDamage(int damage) {
+        this.health -= damage;
+    }
+
     protected void die() {
         Location tempLocation = world.getLocation(this);
         world.delete(this);
-        System.out.println(tempLocation);
         world.setTile(tempLocation, new Meat(world,this));
-
-
     }
 
     protected abstract void sleep();
@@ -132,17 +132,25 @@ public abstract class Animal implements Actor {
 
     protected void recoverHealth() {}
 
+    /**
+     * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
+     */
     protected void move() {
         energyLevel--;
 
-        Random random = new Random();
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
-        List<Location> neighbourList = new ArrayList<>(neighbours);
 
-        if (!neighbourList.isEmpty()){
-            Location location = neighbourList.get(random.nextInt(neighbourList.size()));
-            world.move(this, location);
-            world.setCurrentLocation(location);
+        if (world.isOnTile(this)) {
+            //Gets all empty locations
+            Set<Location> neighbours = world.getEmptySurroundingTiles();
+            List<Location> neighbourList = new ArrayList<>(neighbours);
+
+            //Moves to a random neighbour tile, as long as there is one available
+            Random random = new Random();
+            if (!neighbourList.isEmpty()){
+                Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+                world.move(this, location);
+                world.setCurrentLocation(location);
+            }
         }
     }
 

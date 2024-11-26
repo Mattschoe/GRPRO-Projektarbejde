@@ -5,13 +5,8 @@ import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
-import itumulator.simulator.Actor;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
@@ -20,8 +15,8 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     boolean hasFoundGrass;
     Location grassLocation;
     Location sleepingLocation;
+    Location hidingLocation;
     boolean isSleeping;
-    int fleeRadius;
 
     public Rabbit(World world) {
         super(world,1,40, 1);
@@ -46,17 +41,19 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
                     flee();
+                    hide();
                 } else if (energyLevel + 10 < maxEnergy) { //If hungry
                     eatPlant();
                     try {
                         moveTo(getEatablePlantLocation());
-                    } catch (NullPointerException e) { //No more grass. Rabbit just moves instead
+                    } catch (Exception e) { //No more grass. Rabbit just moves instead
                         move();
                     }
                 } else { //Else moves randomly
                     move();
                 }
             }
+
             //Nighttime activities:
             if (world.isNight()) {
                 if (world.getCurrentTime() == 10) {
@@ -68,17 +65,51 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 //Moves towards burrow until its the middle of the night
                 if (world.getCurrentTime() < 15) {
                     //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                    if (!isSleeping && isOnBurrow()) {
+                    if (!isSleeping && burrow.isOwnerOnDen()) {
                         world.remove(this);
                         sleepingLocation = world.getLocation(burrow);
                         isSleeping = true;
                     } else if (!isSleeping) {
                         moveTo(world.getLocation(burrow));
                     }
-                } else if (world.getCurrentTime() == 15 && !isSleeping && !isOnBurrow()) { //Didnt reach the burrow
+                } else if (world.getCurrentTime() == 15 && !isSleeping && !burrow.isOwnerOnDen()) { //Didnt reach the burrow
                     isSleeping = true;
                 }
             }
+        }
+
+        if (isHiding) {
+            if (itIsSafeToComeBack(hidingLocation)) {
+                isHiding = false;
+                world.setTile(hidingLocation, this);
+            }
+        }
+    }
+
+    /**
+     * Hides from predators and continues to hide in its burrow until it doesnt detect predators
+     */
+    protected void flee() {
+        //Moves towards its burrow if it's close by, otherwise it runs closer to the burrow
+        if (burrow != null) {
+            if (world.getSurroundingTiles(world.getLocation(this)).contains(burrow)) {
+                moveTo(world.getLocation(burrow));
+            } else {
+                sprintTo(world.getLocation(burrow));
+            }
+        } else { //Runs the opposite direction of the predator if it doesn't have a burrow
+            moveAwayFrom(world.getLocation(predator));
+        }
+    }
+
+    /**
+     * Hides in burrow if its on it
+     */
+    private void hide() {
+        if (burrow != null && burrow.isOwnerOnDen()) {
+            hidingLocation  = world.getLocation(burrow);
+            isHiding = true;
+            world.remove(this);
         }
     }
 
@@ -95,14 +126,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         }
     }
 
-    protected void flee() {
-        if (burrow != null) { //Runs towards a burrow if it has one
-            sprintTo(world.getLocation(burrow));
-            hide();
-        } else { //Runs the opposite direction of the predator
-            moveAwayFrom(world.getLocation(predator));
-        }
-    }
+
 
     /**
      * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
@@ -126,18 +150,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         burrow = new Den(world, this, false);
         burrow.spawnDen();
         return world.getLocation(burrow);
-    }
-
-    /**
-     * Checks if rabbit is standing on burrow
-     */
-    private boolean isOnBurrow() {
-        if (burrow != null) {
-            if (world.getLocation(this).getX() == world.getLocation(burrow).getX() && world.getLocation(this).getY() == world.getLocation(burrow).getY()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -188,16 +200,5 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     protected void reproduce() {}
 
-    /**
-     * Hides from predators and continues to hide in its burrow until it doesnt detect predators
-     */
-    protected void hide() {
-        if (isOnBurrow()) {
-            world.remove(this);
-            while (detectPredator(fleeRadius)) {
-                isHiding = true;
-            }
-            isHiding = false;
-        }
-    }
+
 }
