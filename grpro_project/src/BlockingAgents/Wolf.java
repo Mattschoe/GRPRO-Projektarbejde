@@ -15,6 +15,7 @@ public class Wolf extends Predator implements DenAnimal{
 
     WolfDen den;
     World world;
+    wolfPack pack;
 
     boolean currentlyFighting = false;
     boolean iscurrentlyHunting = false;
@@ -97,11 +98,9 @@ public class Wolf extends Predator implements DenAnimal{
             }
         }
         moveTo(world.getLocation(prey));
-        callPack();
+        pack.callPack();
         this.hasMoved = true;
     }
-
-    private void callPack() {}
 
     private void calledForHunt() {
         if (this.health > 5) {
@@ -125,11 +124,6 @@ public class Wolf extends Predator implements DenAnimal{
     public boolean currentlyWinning() {
 
         return true; // XXX temp
-    }
-
-    public List<Animal> getPack() {
-
-        return null;
     }
 
     public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
