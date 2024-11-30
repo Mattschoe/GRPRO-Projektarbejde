@@ -17,6 +17,10 @@ public abstract class Animal implements Actor {
     protected int maxEnergy;
     protected int health;
     protected int maxHealth;
+    boolean isSleeping = false;
+    Location sleepingLocation = null;
+    public boolean wantsToBreed = true;
+    int breedingDelay = 0;
 
     Animal(World world, int age, int maxEnergy, int maxHealth) {
         this.world = world;
@@ -38,6 +42,9 @@ public abstract class Animal implements Actor {
 
     protected void die() {
         Location tempLocation = world.getLocation(this);
+        if (this instanceof Wolf && ((Wolf) this).pack != null) {
+            ((Wolf) this).pack.removeWolf((Wolf) this);
+        }
         world.delete(this);
         world.setTile(tempLocation, new Meat(world,this));
     }
@@ -109,6 +116,8 @@ public abstract class Animal implements Actor {
             x = world.getLocation(this).getX() - 1;
         } else if (world.getLocation(this).getX() > moveAwayFromLocation.getX()) {
             x = world.getLocation(this).getX() + 1;
+        } else {
+            x = world.getLocation(this).getX();
         }
 
         //Calculates y
@@ -116,6 +125,8 @@ public abstract class Animal implements Actor {
             y = world.getLocation(this).getY() - 1;
         } else if (world.getLocation(this).getY() > moveAwayFromLocation.getY()) {
             y = world.getLocation(this).getY() + 1;
+        } else {
+            y = world.getLocation(this).getY();
         }
 
         //Tries to move unless there is a object in the way

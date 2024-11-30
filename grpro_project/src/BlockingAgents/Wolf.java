@@ -8,22 +8,21 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     Den den;
     World world;
-    WolfPack pack;
-
+    public WolfPack pack;
 
     boolean currentlyFighting = false;
     boolean isCurrentlyHunting = false;
     boolean calledForHunt = false;
-    boolean isSleeping = false;
-    Location sleepingLocation = null;
     boolean hasMoved = false;
     boolean hasFoundMeat = false;
     Location meatLocation = null;
@@ -54,24 +53,34 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
             }
             // Fight non-pack neighbours - eat Meat
             for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Animal && !isSleeping) {
-                    if (!(object == this) && world.getLocation(object).getX() + 1 >= world.getCurrentLocation().getX() && world.getLocation(object).getY() + 1 >= world.getCurrentLocation().getY() && world.getLocation(object).getX() - 1 <= world.getCurrentLocation().getX() && world.getLocation(object).getY() - 1 <= world.getCurrentLocation().getY()) {
-                        if (object instanceof Wolf) {
-                            if (!(this.pack == (WolfPack) object)) { // Check if same pack
+                try {
+                    if (object instanceof Animal && !isSleeping) {
+                        if ( !(object == this) && ((world.getLocation(object).getX() + 2) > world.getLocation(this).getX()) && ((world.getLocation(object).getY() + 2) > world.getLocation(this).getY()) && ((world.getLocation(object).getX() - 1) <= world.getCurrentLocation().getX()) && ((world.getLocation(object).getY() - 1) <= world.getCurrentLocation().getY())) {
+                            if (object instanceof Wolf) {
+                                if (!(this.pack == ((Wolf) object).pack)) { // Check if same pack
+                                    fight((Animal) object);
+                                }
+                            } else {
                                 fight((Animal) object);
                             }
-                        } else {
-                            fight((Animal) object);
                         }
+                    } else if (object instanceof Meat && !isSleeping) {
+
                     }
-                } else if (object instanceof Meat && !isSleeping) {
-                    eatMeat();
+                } catch (IllegalArgumentException e) { //object has no location. Let's delete it
+                    if (object instanceof Animal && ((Animal) object).isSleeping) {
+                        // A sleeping animal may not have a location, but that's okay - We don't always feel like we have a place in the world
+                    } else {
+                        System.out.println("Something doesn't have a location - been deleted by the big bad wolf");
+                        world.delete(object);
+                    }
                 }
             }
             // Wakes up
             isSleeping = false;
             if (sleepingLocation != null) { //Adds wolf back to world after sleeping
                 world.setTile(sleepingLocation, this);
+                world.setCurrentLocation(sleepingLocation);
                 sleepingLocation = null;
             } else if (energyLevel == 0 || health <= 0 ) {
                 die();
@@ -86,8 +95,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     int packDistanceX = 0;
                     int packDistanceY = 0;
                     for (Wolf wolf : pack.getWolves()) {
-                        packDistanceX += world.getLocation(wolf).getX();
-                        packDistanceY += world.getLocation(wolf).getY();
+                        try {
+                            packDistanceX += world.getLocation(wolf).getX();
+                            packDistanceY += world.getLocation(wolf).getY();
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Other wolf has no location");
+                        }
                     }
                     moveTo(new Location(packDistanceX, packDistanceY));
 
@@ -108,6 +121,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                 findDen();
                 //Loses energy at night
                 updateMaxEnergy();
+                updateBreeding();
+
             }
             //Moves towards den until its the middle of the night
             if (world.getCurrentTime() < 15 && !currentlyFighting) {
@@ -116,6 +131,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
+                    reproduce();
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
@@ -156,7 +172,38 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
         }
     }
 
-    protected void reproduce() {}
+    protected void reproduce() {
+        // Checks if other pack member is sleeping in same den
+        for (Wolf wolf : this.pack.getWolves()) {
+            if (wolf.isSleeping && (wolf.findDen() == this.findDen()) && wolf.pack != null) {
+                System.out.println("Two wolves chilling in a wolf den - two feet apart, cuz they're not gay");
+                System.out.println(pack.getWolves().size());
+                // Makes new (sleeping) wolf if there's room around the den and both are willing
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.findDen());
+                List<Location> neighbourList = new ArrayList<>(neighbours);
+
+                if (!neighbourList.isEmpty() && wantsToBreed && wolf.wantsToBreed && this.pack == wolf.pack && pack.getWolves().size() > 1) {
+                    Wolf pup = new Wolf(world);
+                    pup.isSleeping = true;
+                    pup.sleepingLocation = neighbourList.get(new Random().nextInt(neighbourList.size()));
+                    pup.world.setCurrentLocation(pup.sleepingLocation);
+                    this.pack.addWolf(pup);
+                    System.out.println("Okay, they made a child...maybe a little gay?");
+                    System.out.println(pack.getWolves().size());
+                    // Makes it so they don't breed for a while
+                    wantsToBreed = false;
+                    breedingDelay = 3;
+                    wolf.wantsToBreed = false;
+                    wolf.breedingDelay = 3;
+                    pup.wantsToBreed = false;
+                    pup.breedingDelay = 3;
+                    world.setTile(pup.sleepingLocation, pup);
+                    world.remove(pup);
+
+                }
+            }
+        }
+    }
 
     @Override
     protected void sleep() {}
@@ -194,7 +241,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     }
 
     private boolean isOnDen() {
-        if (den != null) {
+        if (den != null && world.getLocation(den) != null) {
             if (world.getLocation(this).getX() == world.getLocation(den).getX() && world.getLocation(this).getY() == world.getLocation(den).getY()) {
                 return true;
             }
@@ -204,6 +251,15 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     private void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    private void updateBreeding() {
+        if (!this.wantsToBreed) {
+            this.breedingDelay--;
+            if (breedingDelay == 0) {
+                this.wantsToBreed = true;
+            }
+        }
     }
 
     public void findEatableMeat() {

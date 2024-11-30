@@ -219,9 +219,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
             if (entity instanceof Bear){
                 if (territory.contains(world.getLocation(entity))){
-                    if (!wantsToBreed){
-                    System.out.println("AAAAAAAheurheef");
-                    fight();}
+                    if (!wantsToBreed){ fight(); }
                     else if (((Bear) entity).wantsToBreed){
                         if (world.getSurroundingTiles().contains(world.getLocation(entity))){
                             reproduce();

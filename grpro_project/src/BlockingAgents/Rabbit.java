@@ -36,12 +36,13 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 isSleeping = false;
                 if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
                     world.setTile(sleepingLocation, this);
+                    world.setCurrentLocation(sleepingLocation);
                     sleepingLocation = null;
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
-                    flee();
-                    hide();
+                        flee();
+                        hide();
                 } else if (energyLevel + 10 < maxEnergy) { //If hungry
                     eatPlant();
                     try {

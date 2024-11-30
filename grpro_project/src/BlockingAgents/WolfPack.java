@@ -20,9 +20,14 @@ public abstract class WolfPack {
 
     }
 
-    public void addWolf(Wolf wolf) { // overflødig? Kan teknisk set bruge getWolves().add(Wolf wolf);
+    public void addWolf(Wolf wolf) {
         pack.add(wolf);
+        wolf.pack = this;
         wolf.den = this.den;
+    }
+
+    public void removeWolf(Wolf wolf) {
+        pack.remove(wolf);
     }
 
     public Set<Wolf> getWolves() {
