@@ -195,10 +195,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         return false;
     }
 
-    private void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
-    }
-
     public void findEatableMeat() {
         //Finds a spot of grass if the rabbit hasn't found it
         if (!hasFoundMeat) {

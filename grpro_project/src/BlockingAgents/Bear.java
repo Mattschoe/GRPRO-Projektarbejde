@@ -183,7 +183,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     public void eatMeat() {
         if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
-            energyLevel = meat.energyLevel;
+            energyLevel = meat.getEnergyLevel();
             world.delete(meat);
         }
     }

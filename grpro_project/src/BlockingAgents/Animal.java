@@ -179,4 +179,11 @@ public abstract class Animal implements Actor {
     }
 
     protected Location getFoodLocation() { return foodLocation; }
+
+    /**
+     * Updates the amount of max energy the animal daily has. The method is called each night.
+     */
+    protected void updateMaxEnergy() {
+        maxEnergy = maxEnergy - age;
+    }
 }

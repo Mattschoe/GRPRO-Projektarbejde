@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class Meat implements Actor {
     World world;
-    public int energyLevel;
+    int energyLevel;
     Animal animal;
 
     public Meat(World world, Animal animal) {
@@ -37,6 +37,14 @@ public class Meat implements Actor {
         } else {
             return new DisplayInformation(Color.BLUE, "carcass-small");
         }
+    }
+
+    /**
+     * returns the energyLevel which is dependent on which type of animal was killed.
+     * @return
+     */
+    public int getEnergyLevel() {
+        return this.energyLevel;
     }
 
 }

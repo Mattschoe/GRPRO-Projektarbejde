@@ -16,7 +16,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     public Rabbit(World world) {
         super(world,1,40, 1);
-        this.world = world;
         fleeRadius = 2;
         hasFoundGrass = false;
     }
@@ -51,7 +50,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
             if (world.isNight()) {
                 if (world.getCurrentTime() == 10) {
                     findDen();
-                    //Loses energy at night
                     updateMaxEnergy();
                 }
 
@@ -119,8 +117,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         }
     }
 
-
-
     /**
      * If there are any RabbitBurrows in the world, this will find them, otherwise the rabbit will dig a new one.
      */
@@ -147,7 +143,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     /**
      * Returns location of a grass spot
-     * @return
      */
     public void findEatablePlant() {
         //Finds a spot of grass if the rabbit hasn't found it
@@ -184,12 +179,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         return foodLocation;
     }
 
-    /**
-     * Updates the daily energy cost
-     */
-    private void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
-    }
 
     protected void reproduce() {}
 
