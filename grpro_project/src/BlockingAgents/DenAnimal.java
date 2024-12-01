@@ -1,5 +1,6 @@
 package BlockingAgents;
 
+import NonblockingAgents.Den;
 import itumulator.world.Location;
 
 public interface DenAnimal {

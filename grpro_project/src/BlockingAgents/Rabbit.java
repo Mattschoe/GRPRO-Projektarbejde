@@ -11,21 +11,14 @@ import java.awt.*;
 
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
     Den burrow;
-    World world;
     boolean hasFoundGrass;
-    Location grassLocation;
-    Location sleepingLocation;
     Location hidingLocation;
-    boolean isSleeping;
 
     public Rabbit(World world) {
         super(world,1,40, 1);
         this.world = world;
         fleeRadius = 2;
         hasFoundGrass = false;
-        grassLocation = null;
-        sleepingLocation = null;
-        isSleeping = false;
     }
 
     @Override
@@ -161,7 +154,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         if (!hasFoundGrass) {
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Grass grass) {
-                    grassLocation = world.getLocation(grass);
+                    foodLocation = world.getLocation(grass);
                     hasFoundGrass = true;
                     break;
                 }
@@ -184,11 +177,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * @return
      */
     public Location getEatablePlantLocation() {
-        if (grassLocation == null) {
+        if (foodLocation == null) {
             findEatablePlant();
-            return grassLocation;
+            return foodLocation;
         }
-        return grassLocation;
+        return foodLocation;
     }
 
     /**
@@ -202,9 +195,5 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     public boolean getHasFoundGrass() {
         return hasFoundGrass;
-    }
-
-    public Location getGrassLocation() {
-        return grassLocation;
     }
 }

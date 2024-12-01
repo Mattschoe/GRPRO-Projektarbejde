@@ -12,21 +12,15 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Wolf extends Predator implements DenAnimal, Carnivore{
-
+public class Wolf extends Predator implements DenAnimal, Carnivore {
     Den den;
-    World world;
     WolfPack pack;
-
 
     boolean currentlyFighting = false;
     boolean isCurrentlyHunting = false;
     boolean calledForHunt = false;
-    boolean isSleeping = false;
-    Location sleepingLocation = null;
     boolean hasMoved = false;
     boolean hasFoundMeat = false;
-    Location meatLocation = null;
 
     public Wolf(World world) {
         super(20, world, 30, 20);
@@ -56,15 +50,15 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Animal && !isSleeping) {
                     if (!(object == this) && world.getLocation(object).getX() + 1 >= world.getCurrentLocation().getX() && world.getLocation(object).getY() + 1 >= world.getCurrentLocation().getY() && world.getLocation(object).getX() - 1 <= world.getCurrentLocation().getX() && world.getLocation(object).getY() - 1 <= world.getCurrentLocation().getY()) {
-                        if (object instanceof Wolf) {
-                            if (!(this.pack == (WolfPack) object)) { // Check if same pack
                                 fight((Animal) object);
                             }
                         } else {
                             fight((Animal) object);
-                        }
+                            if (object instanceof Wolf) {
+                                if (!(this.pack == (WolfPack) object)) { // Check if same pack
+                                }
                     }
-                } else if (object instanceof Meat && !isSleeping) {
+                } if (object instanceof Meat && !isSleeping) {
                     eatMeat();
                 }
             }
@@ -122,7 +116,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
             }
         }
     }
-
 
     void fight(Animal animal) {
         currentlyFighting = true;
@@ -211,7 +204,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
         if (!hasFoundMeat) {
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Meat meat) {
-                    meatLocation = world.getLocation(meat);
+                    foodLocation = world.getLocation(meat);
                     hasFoundMeat = true;
                     break;
                 }
@@ -220,11 +213,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     }
 
     public Location getEatableMeatLocation() {
-        if (meatLocation == null) {
+        if (foodLocation == null) {
             findEatableMeat();
-            return meatLocation;
+            return foodLocation;
         }
-        return meatLocation;
+        return foodLocation;
     }
 
     public void eatMeat() {
@@ -246,13 +239,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                         health = maxHealth;
                         meat.energyLevel -= extraHealth;
                     }
-                    System.out.println("Energy left in meat: " + meat.energyLevel);
                 }
             }
         }
     }
-
-
 
     @Override
     public DisplayInformation getInformation() {

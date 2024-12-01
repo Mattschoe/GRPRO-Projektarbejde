@@ -17,6 +17,11 @@ public abstract class Animal implements Actor {
     protected int maxEnergy;
     protected int health;
     protected int maxHealth;
+    Location sleepingLocation;
+    boolean isSleeping;
+    Location foodLocation;
+
+
 
     Animal(World world, int age, int maxEnergy, int maxHealth) {
         this.world = world;
@@ -25,6 +30,9 @@ public abstract class Animal implements Actor {
         this.maxEnergy = maxEnergy;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
+        sleepingLocation = null;
+        isSleeping = false;
+        foodLocation = null;
     }
 
     @Override
@@ -169,4 +177,6 @@ public abstract class Animal implements Actor {
     public int getMaxEnergy() {
         return maxEnergy;
     }
+
+    protected Location getFoodLocation() { return foodLocation; }
 }
