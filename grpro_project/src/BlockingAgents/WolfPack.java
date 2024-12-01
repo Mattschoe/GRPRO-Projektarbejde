@@ -26,6 +26,15 @@ public abstract class WolfPack {
         wolf.den = this.den;
     }
 
+    public boolean wolfIsInPack(Wolf wolf) {
+        for (Wolf packmember : getWolves() ) {
+            if (wolf == packmember) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeWolf(Wolf wolf) {
         pack.remove(wolf);
     }

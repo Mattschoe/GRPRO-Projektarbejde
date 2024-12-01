@@ -26,9 +26,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     boolean hasMoved = false;
     boolean hasFoundMeat = false;
     Location meatLocation = null;
+    public Animal enemy;
 
     public Wolf(World world) {
-        super(20, world, 30, 20);
+        super(10, world, 30, 20);
         this.world = world;
         }
 
@@ -44,10 +45,25 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
 
             // Fighting actions
             if (this.currentlyFighting) {
-                if (currentlyWinning()) {
-                    fight();
+                if (currentlyWinning(enemy) && this.enemy != null) {
+                    try {
+                        fight(enemy);
+                    } catch (IllegalArgumentException e) { // Someone stole my kill
+                        this.enemy = null;
+                    }
                 } else {
-                    flee();
+                    if (enemy instanceof Wolf) {
+                        System.out.println("I have changed pack");
+                        this.pack.removeWolf(this);
+                        ((Wolf) enemy).pack.addWolf(this);
+                        System.out.println("My new pack has " + this.pack.getWolves().size() + " wolves");
+                        ((Wolf) enemy).enemy = null;
+                        ((Wolf) enemy).currentlyFighting = false;
+                        this.enemy = null;
+                        this.currentlyFighting = false;
+                    } else {
+                        flee();
+                    }
                     hasMoved = true;
                 }
             }
@@ -71,7 +87,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     if (object instanceof Animal && ((Animal) object).isSleeping) {
                         // A sleeping animal may not have a location, but that's okay - We don't always feel like we have a place in the world
                     } else {
-                        System.out.println("Something doesn't have a location - been deleted by the big bad wolf");
+                        System.out.println("Something doesn't have a location - Deleted a " + object.getClass().getName());
+                        if (object instanceof Wolf) {
+                            ((Wolf) object).pack.removeWolf((Wolf) object);
+                        }
                         world.delete(object);
                     }
                 }
@@ -131,10 +150,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
-                    reproduce();
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
+            }
+            if (world.getCurrentTime() > 10 && isSleeping) {
+                reproduce();
             }
         }
     }
@@ -142,14 +163,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
 
     void fight(Animal animal) {
         currentlyFighting = true;
+        this.enemy = animal;
         int attackPower = new Random().nextInt(strength);
-        animal.takeDamage(attackPower);
-        if (animal.health <= 0) {
-            animal.die();
-            eatMeat();
-            currentlyFighting = false;
+        if (!(enemy instanceof Wolf && pack.wolfIsInPack((Wolf) enemy))) {
+            animal.takeDamage(attackPower);
+            if (animal.health <= 0) {
+                animal.die();
+                eatMeat();
+                currentlyFighting = false;
+            }
+            hasMoved = true;
         }
-        hasMoved = true;
+
     }
 
     void hunt(Animal animal) {
@@ -175,14 +200,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     protected void reproduce() {
         // Checks if other pack member is sleeping in same den
         for (Wolf wolf : this.pack.getWolves()) {
-            if (wolf.isSleeping && (wolf.findDen() == this.findDen()) && wolf.pack != null) {
-                System.out.println("Two wolves chilling in a wolf den - two feet apart, cuz they're not gay");
+            if (wolf.isSleeping && (wolf.pack == pack && wolf.pack != null && pack.getWolves().size() > 1)) {
+                System.out.println("Two wolves chilling in a wolf den - five feet apart, cuz they're not gay");
                 System.out.println(pack.getWolves().size());
                 // Makes new (sleeping) wolf if there's room around the den and both are willing
                 Set<Location> neighbours = world.getEmptySurroundingTiles(this.findDen());
                 List<Location> neighbourList = new ArrayList<>(neighbours);
 
-                if (!neighbourList.isEmpty() && wantsToBreed && wolf.wantsToBreed && this.pack == wolf.pack && pack.getWolves().size() > 1) {
+                if (!neighbourList.isEmpty() && wantsToBreed && wolf.wantsToBreed) {
                     Wolf pup = new Wolf(world);
                     pup.isSleeping = true;
                     pup.sleepingLocation = neighbourList.get(new Random().nextInt(neighbourList.size()));
@@ -198,8 +223,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
                     pup.wantsToBreed = false;
                     pup.breedingDelay = 3;
                     world.setTile(pup.sleepingLocation, pup);
+                    pup.world.setCurrentLocation(pup.sleepingLocation);
                     world.remove(pup);
-
                 }
             }
         }
@@ -211,9 +236,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore{
     protected void flee() {}
 
     // Get winning chances
-    public boolean currentlyWinning() {
-
-        return true; // XXX temp
+    public boolean currentlyWinning(Animal enemy) {
+        try {
+            if (this.health > enemy.health) {
+                return true;
+            } else if (this.health < this.maxHealth / 2) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (NullPointerException e) { // Other wolf just gave up. Fight is over, you won
+            return true;
+        }
     }
 
     public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
