@@ -135,6 +135,8 @@ public abstract class Animal implements Actor {
             x = world.getLocation(this).getX() - 1;
         } else if (world.getLocation(this).getX() > moveAwayFromLocation.getX()) {
             x = world.getLocation(this).getX() + 1;
+        } else {
+            x = world.getLocation(this).getX();
         }
 
         //Calculates y
@@ -142,6 +144,8 @@ public abstract class Animal implements Actor {
             y = world.getLocation(this).getY() - 1;
         } else if (world.getLocation(this).getY() > moveAwayFromLocation.getY()) {
             y = world.getLocation(this).getY() + 1;
+        } else {
+            y = world.getLocation(this).getY();
         }
 
         //Tries to move unless there is a object in the way
