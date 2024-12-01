@@ -14,7 +14,7 @@ public abstract class Predator extends Animal{
     World world;
     boolean currentlyFighting;
     boolean currentlyHunting;
-    Prey prey;
+    Animal opponentAnimal;
 
 
     Predator(int strength , World world, int maxEnergy, int maxHealth){
@@ -22,7 +22,7 @@ public abstract class Predator extends Animal{
         this.strength = strength;
         this.world = world;
         currentlyFighting = false;
-        prey = null;
+        opponentAnimal = null;
     }
     @Override
     public void act(World world){}
@@ -31,13 +31,30 @@ public abstract class Predator extends Animal{
     /**
      * Hunts after prey
      */
-    void hunt (){
+    protected void hunt (Animal opponentAnimal){
+        this.opponentAnimal = opponentAnimal;
     }
 
     /**
      * Kills prey if its nearby
      */
-    void kill() {
+    protected void kill() {
+
+    }
+
+
+    protected void fight () {
+        try {
+            currentlyFighting = true;
+            opponentAnimal.takeDamage(strength);
+            if (opponentAnimal.health <= 0) {
+                opponentAnimal.die();
+                currentlyFighting = false;
+            }
+        } catch ( IllegalArgumentException e) {
+            System.out.println("Fighting Animal is null! Error: " + e.getMessage());
+        }
+
 
     }
 
@@ -52,8 +69,4 @@ public abstract class Predator extends Animal{
         }
         return false;
     }
-
-    void fight () {}
-
-
 }

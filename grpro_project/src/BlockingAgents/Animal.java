@@ -41,7 +41,7 @@ public abstract class Animal implements Actor {
     }
 
     public void takeDamage(int damage) {
-        this.health -= damage;
+        health = health - damage;
     }
 
     protected void die() {
@@ -52,11 +52,29 @@ public abstract class Animal implements Actor {
 
     protected abstract void sleep();
 
-    protected void remove() {
-        world.remove(this);
-    }
-
     protected abstract void reproduce();
+
+    /**
+     * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
+     */
+    protected void move() {
+        energyLevel--;
+
+
+        if (world.isOnTile(this)) {
+            //Gets all empty locations
+            Set<Location> neighbours = world.getEmptySurroundingTiles();
+            List<Location> neighbourList = new ArrayList<>(neighbours);
+
+            //Moves to a random neighbour tile, as long as there is one available
+            Random random = new Random();
+            if (!neighbourList.isEmpty()){
+                Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+                world.move(this, location);
+                world.setCurrentLocation(location);
+            }
+        }
+    }
 
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
@@ -140,32 +158,11 @@ public abstract class Animal implements Actor {
 
     protected void recoverHealth() {}
 
-    /**
-     * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
-     */
-    protected void move() {
-        energyLevel--;
-
-
-        if (world.isOnTile(this)) {
-            //Gets all empty locations
-            Set<Location> neighbours = world.getEmptySurroundingTiles();
-            List<Location> neighbourList = new ArrayList<>(neighbours);
-
-            //Moves to a random neighbour tile, as long as there is one available
-            Random random = new Random();
-            if (!neighbourList.isEmpty()){
-                Location location = neighbourList.get(random.nextInt(neighbourList.size()));
-                world.move(this, location);
-                world.setCurrentLocation(location);
-            }
-        }
-    }
-
     void birthday() {
         age += 1;
 
     }
+
     public int getAge(){
         return age;
     }

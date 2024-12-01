@@ -69,10 +69,7 @@ public class NewWolf extends Predator implements DenAnimal, Carnivore {
         }
     }
 
-    @Override
-    public DisplayInformation getInformation() {
-        return null;
-    }
+
 
     /**
      * Returns whether the wolf is hungry or not
@@ -80,6 +77,12 @@ public class NewWolf extends Predator implements DenAnimal, Carnivore {
      */
     private boolean isHungry() {
         return energyLevel + 10 < maxEnergy;
+    }
+
+
+    @Override
+    public DisplayInformation getInformation() {
+        return null;
     }
 
     @Override
