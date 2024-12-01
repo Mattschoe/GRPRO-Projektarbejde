@@ -29,10 +29,4 @@ public abstract class WolfPack {
         return pack;
     }
 
-    public void callPack() {
-        for (Wolf wolf : pack) {
-            wolf.calledForHunt = true;
-        }
-    }
-
 }

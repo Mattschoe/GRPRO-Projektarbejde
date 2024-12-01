@@ -7,14 +7,16 @@ import itumulator.world.World;
 import java.util.List;
 import java.util.Set;
 
-//Flyt metoder herop
-//Implementer getmetoder til at finde ud af om maden er et dyr eller en plante.
 public abstract class Predator extends Animal{
-    int strength;
     World world;
+
+    int strength;
+    Animal preyAnimal;
+
     boolean currentlyFighting;
     boolean currentlyHunting;
-    Animal opponentAnimal;
+    boolean hasFoundPrey;
+
 
 
     Predator(int strength , World world, int maxEnergy, int maxHealth){
@@ -22,46 +24,49 @@ public abstract class Predator extends Animal{
         this.strength = strength;
         this.world = world;
         currentlyFighting = false;
-        opponentAnimal = null;
+        preyAnimal = null;
+        hasFoundPrey = false;
     }
-    @Override
-    public void act(World world){}
-
 
     /**
-     * Hunts after prey
+     * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
      */
     protected void hunt (Animal opponentAnimal){
-        this.opponentAnimal = opponentAnimal;
+        this.preyAnimal = opponentAnimal;
+        if (isPreyInHuntRadius(1)) { //Kills prey if its in one of the sorrounding tiles
+            System.out.println("Im close enough to kill my prey!");
+            kill(opponentAnimal);
+        } else { //Otherwise it just chases it
+            System.out.println("Im chasing a animal!");
+            moveTo(world.getLocation(opponentAnimal));
+        }
     }
 
     /**
      * Kills prey if its nearby
      */
-    protected void kill() {
-
+    protected void kill(Animal animalToKill) {
+        world.delete(animalToKill);
+        System.out.println("MUMS");
     }
-
 
     protected void fight () {
         try {
             currentlyFighting = true;
-            opponentAnimal.takeDamage(strength);
-            if (opponentAnimal.health <= 0) {
-                opponentAnimal.die();
+            preyAnimal.takeDamage(strength);
+            if (preyAnimal.health <= 0) {
+                preyAnimal.die();
                 currentlyFighting = false;
             }
-        } catch ( IllegalArgumentException e) {
+        } catch ( Exception e) {
             System.out.println("Fighting Animal is null! Error: " + e.getMessage());
         }
-
-
     }
 
     /**
      * Detects prey in a "huntRadius" radius.
      */
-    protected boolean detectPrey(int huntRadius) {
+    protected boolean isPreyInHuntRadius(int huntRadius) {
         for (Location location : world.getSurroundingTiles(huntRadius)) {
             if (world.getTile(location) instanceof Prey) {
                 return true;
@@ -69,4 +74,25 @@ public abstract class Predator extends Animal{
         }
         return false;
     }
+
+    /**
+     * Finds prey nearby and returns it. Also saves it so that the class knows it already found a prey
+     */
+    protected Animal findPrey() {
+        if (hasFoundPrey) {
+            System.out.println("Already found a prey!");
+            return preyAnimal;
+        } else {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Prey prey) {
+                    hasFoundPrey = true;
+                    System.out.println("Found prey!");
+                    return prey;
+                }
+            }
+        }
+        System.out.println("No prey found and none already found!");
+        return null;
+    }
+
 }

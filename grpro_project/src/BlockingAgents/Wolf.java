@@ -1,173 +1,144 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import NonblockingAgents.Grass;
 import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
+import BlockingAgents.WolfPack;
 import itumulator.world.World;
 
 import java.awt.*;
-import java.util.List;
-import java.util.Random;
-
 
 public class Wolf extends Predator implements DenAnimal, Carnivore {
     Den den;
-    WolfPack pack;
-
-    boolean currentlyFighting = false;
-    boolean isCurrentlyHunting = false;
-    boolean calledForHunt = false;
-    boolean hasMoved = false;
+    WolfPack wolfpack;
+    int huntRadius;
     boolean hasFoundMeat = false;
 
     public Wolf(World world) {
         super(20, world, 30, 20);
-        this.world = world;
-        }
+        huntRadius = 2;
+    }
+
+
+    //MANGLER: At få en wolfpack
 
     public void act(World world) {
-        this.world = world;
-        hasMoved = false;
-
-        // Daytime activities
+        System.out.println("Wolf energy: " + energyLevel + ", is hungry: " + isHungry());
+        //Daytime activities:
         if (world.isDay()) {
-            if (this.pack == null) {
-                this.pack = new WolfPack(this) {};
-            }
-
-            // Fighting actions
-            if (this.currentlyFighting) {
-                if (currentlyWinning()) {
+            isSleeping = false;
+            if (sleepingLocation != null) {
+                world.setTile(sleepingLocation, this);
+                sleepingLocation = null;
+            } else if (energyLevel <= 0) {
+                die();
+            } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
+                if (health > 5) {
                     fight();
                 } else {
                     flee();
-                    hasMoved = true;
                 }
-            }
-            // Fight non-pack neighbours - eat Meat
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Animal && !isSleeping) {
-                    if (!(object == this) && world.getLocation(object).getX() + 1 >= world.getCurrentLocation().getX() && world.getLocation(object).getY() + 1 >= world.getCurrentLocation().getY() && world.getLocation(object).getX() - 1 <= world.getCurrentLocation().getX() && world.getLocation(object).getY() - 1 <= world.getCurrentLocation().getY()) {
-                                fight((Animal) object);
-                            }
-                        } else {
-                            fight((Animal) object);
-                            if (object instanceof Wolf) {
-                                if (!(this.pack == (WolfPack) object)) { // Check if same pack
-                                }
-                    }
-                } if (object instanceof Meat && !isSleeping) {
-                    eatMeat();
-                }
-            }
-            // Wakes up
-            isSleeping = false;
-            if (sleepingLocation != null) { //Adds wolf back to world after sleeping
-                world.setTile(sleepingLocation, this);
-                sleepingLocation = null;
-            } else if (energyLevel == 0 || health <= 0 ) {
-                die();
-            } else if (isCurrentlyHunting || calledForHunt) { //Hunting actions
-                hunt();
-            } else if (this.energyLevel + 9 < maxEnergy) {
-                getEatableMeatLocation();
-
-            } else if (!hasMoved) { // Moving actions
-                // Move toward other pack members
-                if (this.pack != null && pack.getWolves().size() > 1) {
-                    int packDistanceX = 0;
-                    int packDistanceY = 0;
-                    for (Wolf wolf : pack.getWolves()) {
-                        packDistanceX += world.getLocation(wolf).getX();
-                        packDistanceY += world.getLocation(wolf).getY();
-                    }
-                    moveTo(new Location(packDistanceX, packDistanceY));
-
-                } else {
-                    move();
-                }
-                hasMoved = true;
-            } else if (this.energyLevel > 12) { // Healing actions
-                recoverHealth();
-            } else if (this.energyLevel * 2 > maxEnergy) {
-                recoverHealth();
+            } else if (isPreyInHuntRadius(huntRadius) && isHungry()) { //MANGLER at implementere
+                hunt(findPrey());
+            } else {
+                move();
             }
         }
 
-        // Nighttime activities
+        //Nighttime activites
         if (world.isNight()) {
             if (world.getCurrentTime() == 10) {
                 findDen();
-                //Loses energy at night
                 updateMaxEnergy();
             }
-            //Moves towards den until its the middle of the night
-            if (world.getCurrentTime() < 15 && !currentlyFighting) {
+
+            //Moves towards den until its the middle of the night'
+            if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                if (!isSleeping && isOnDen()) {
+                if (!isSleeping && den.isOwnerOnDen()) {
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
+            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow
+                isSleeping = true;
             }
         }
     }
 
-    void fight(Animal animal) {
-        currentlyFighting = true;
-        int attackPower = new Random().nextInt(strength);
-        animal.takeDamage(attackPower);
-        if (animal.health <= 0) {
-            animal.die();
-            eatMeat();
-            currentlyFighting = false;
-        }
-        hasMoved = true;
+
+
+    /**
+     * Returns whether the wolf is hungry or not
+     * @return
+     */
+    private boolean isHungry() {
+        return energyLevel + 10 < maxEnergy;
     }
 
-    void hunt(Animal animal) {
-        // walk toward prey if far - run if close
-        for (Object object : world.getSurroundingTiles(world.getLocation(this), 5).toArray()) {
-            if (object == animal) {
-                moveTo(world.getLocation(animal));
-            }
-        }
-        moveTo(world.getLocation(animal));
-        pack.callPack();
-        this.hasMoved = true;
-    }
-
-    private void calledForHunt() {
-        if (this.health > 5) {
-            this.calledForHunt = false;
-        } else {
-            hunt();
-        }
-    }
-
-    protected void reproduce() {}
 
     @Override
-    protected void sleep() {}
-
-    protected void flee() {}
-
-    // Get winning chances
-    public boolean currentlyWinning() {
-
-        return true; // XXX temp
-    }
-
-    public List<Animal> getEnemies() { // to tell pack members whom you're fighting/hunting
-
+    public DisplayInformation getInformation() {
         return null;
     }
 
+    @Override
+    protected void sleep() {
+        world.remove(this);
+    }
 
+    @Override
+    protected void reproduce() {} //MANGLER
+
+    /**
+     * Eats meat if standing on it
+     */
+    @Override
+    public void eatMeat() {
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
+            energyLevel = energyLevel + meat.getEnergyLevel();
+            world.delete(meat);
+        }
+    }
+
+    /**
+     * Finds location of a meat spot
+     */
+    @Override
+    public void findEatableMeat() {
+        //Finds a spot of meat if the wolf hasn't found it
+        if (!hasFoundMeat) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Grass grass) {
+                    foodLocation = world.getLocation(grass);
+                    hasFoundMeat = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the location of the plant chosen to be eaten by the wolf. If it hasnt chosen a location the method first finds a location
+     * @return
+     */
+    @Override
+    public Location getEatableMeatLocation() {
+        if (foodLocation == null) {
+            findEatableMeat();
+            return foodLocation;
+        }
+        return foodLocation;
+    }
+
+    /**
+     * If there are any Den's in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.
+     */
+    @Override
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den && den.getOwner() == this){
@@ -177,75 +148,16 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 }
             }
         }
-        return digDen(); //Makes a new Den if the wolf cant find any
+        return digDen(); //Makes a new Den if the rabbit cant find any
     }
 
+    /**
+     * instantiates a new RabbitDens on the current location.
+     */
+    @Override
     public Location digDen() {
-        den = new Den(world,this, true);
+        den = new Den(world, this, false);
         den.spawnDen();
         return world.getLocation(den);
-    }
-
-    private boolean isOnDen() {
-        if (den != null) {
-            if (world.getLocation(this).getX() == world.getLocation(den).getX() && world.getLocation(this).getY() == world.getLocation(den).getY()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void findEatableMeat() {
-        //Finds a spot of grass if the rabbit hasn't found it
-        if (!hasFoundMeat) {
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Meat meat) {
-                    foodLocation = world.getLocation(meat);
-                    hasFoundMeat = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    public Location getEatableMeatLocation() {
-        if (foodLocation == null) {
-            findEatableMeat();
-            return foodLocation;
-        }
-        return foodLocation;
-    }
-
-    public void eatMeat() {
-        for (Location location : world.getSurroundingTiles()) {
-            if (world.getTile(location) instanceof Meat) {
-                Meat meat = (Meat) world.getTile(location);
-                int extraEnergy = maxEnergy - energyLevel;
-                int extraHealth = maxHealth - health;
-                if (extraEnergy >= meat.energyLevel) {
-                    energyLevel += meat.energyLevel;
-                    world.delete(meat);
-                } else { // meat energy is higher
-                    energyLevel = maxEnergy;
-                    meat.energyLevel -= extraEnergy;
-                    if (extraHealth >= meat.energyLevel) {
-                        energyLevel += meat.energyLevel;
-                        world.delete(meat);
-                    } else { // meat energy is higher
-                        health = maxHealth;
-                        meat.energyLevel -= extraHealth;
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public DisplayInformation getInformation() {
-        if (isSleeping){
-            return new DisplayInformation(Color.BLUE, "wolf-sleeping");
-        } else {
-            return new DisplayInformation(Color.GRAY, "wolf");
-        }
     }
 }

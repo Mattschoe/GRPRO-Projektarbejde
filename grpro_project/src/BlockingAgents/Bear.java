@@ -62,7 +62,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
         }
 
-        if (energyLevel < maxEnergy) { //If hungry
+        /* if (energyLevel < maxEnergy) { //If hungry
             //moveTo(getEatablePlantLocation());
             // findEatableMeat();
             findEatablePlant();
@@ -73,9 +73,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 }
 
             }
-
-
-        }
+        } */
     }
 
     @Override

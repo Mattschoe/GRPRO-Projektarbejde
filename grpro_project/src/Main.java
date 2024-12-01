@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import BlockingAgents.Bear;
-import BlockingAgents.Rabbit;
 import BlockingAgents.Wolf;
+import BlockingAgents.Rabbit;
 import NonblockingAgents.*;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
@@ -15,7 +15,7 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        ShowDropTestHereTests();
+        Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -43,7 +43,7 @@ public class Main {
     public static void Week2Test() {
         //Program descriptions
         int size = 15;
-        int delay = 500;
+        int delay = 5;
         int displaySize = 1000;
 
         //Sets up world
@@ -67,6 +67,30 @@ public class Main {
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        //Shows world
+        program.show();
+    }
+
+    static void MattTempTest() {
+        //Program descriptions
+        int size = 5;
+        int delay = 800;
+        int displaySize = 1000;
+
+        //Sets up world
+        Program program = new Program(size, displaySize, delay);
+        World world = program.getWorld();
+
+        //Display Information
+        program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
+        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit" ));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.red, "carcass" ));
+
+        //Adds agents
+        Random random = new Random();
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+
         //Shows world
         program.show();
     }
