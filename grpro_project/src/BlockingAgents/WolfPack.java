@@ -22,7 +22,6 @@ public abstract class WolfPack {
 
     public void addWolf(Wolf wolf) {
         pack.add(wolf);
-        wolf.pack = this;
         wolf.den = this.den;
     }
 
