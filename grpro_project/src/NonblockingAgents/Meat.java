@@ -12,6 +12,7 @@ public class Meat implements Actor {
     World world;
     int energyLevel;
     Animal animal;
+    public boolean infected = false;
 
     public Meat(World world, Animal animal) {
         this.world = world;
@@ -28,6 +29,10 @@ public class Meat implements Actor {
     @Override
     public void act(World world) {
         this.world = world;
+        this.energyLevel--;
+        if (this.infected) {
+            this.energyLevel--;
+        }
     }
 
     @Override
