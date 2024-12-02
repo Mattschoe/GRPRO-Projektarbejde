@@ -35,70 +35,107 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //world.setTile(location, this );
 
     }
+    //MANGLER: At hunte efter kaniner
     @Override
     public void act(World world){
-        this.world = world;
         if (territory.isEmpty()){
             setTerritory();
         }
 
-        if (world.isDay()){
-            if (territory.contains(world.getLocation(this))){
+        //Daytime activities
+        if (world.isDay()) {
+            isSleeping = false;
+            if (sleepingLocation != null) { //Spawns back into the world after night
+                world.setTile(sleepingLocation, this);
+                sleepingLocation = null;
+            } else if (energyLevel <= 0) { //Dies when out of energy
+                die();
+            } else if (currentlyFighting) { //Fighting. Bear fights to death.
+                fight();
+            } else if (isInTerritory()) { //Moves around in territory and protects it
                 move();
                 protectTerritory();
-            } else {
+            } else { //If its not in its territory it moves towards it
                 moveTo(territory.get(0));
             }
-            sleeping = false;
-        }
-        else {
-            sleeping = world.isNight();
-        }
-        if (world.getCurrentTime() == 10) {
-            energyLevel--;
-            birthday();
-            breedingDelay--;
-            if (age > 1 && breedingDelay == 0) wantsToBreed = true;
-
         }
 
-        /* if (energyLevel < maxEnergy) { //If hungry
-            //moveTo(getEatablePlantLocation());
-            // findEatableMeat();
-            findEatablePlant();
-            for (Location location: territory){
-                if (world.getTile(location) instanceof Rabbit){
-                    hunt();
-                    //moveTo(location);
-                }
-
-            }
-        } */
+        //Nighttime activities
+        if (world.isNight()) {
+            updateMaxEnergy();
+            sleep();
+        }
     }
 
     @Override
     protected void sleep() {
-
+        isSleeping = true;
     }
 
     @Override
     public DisplayInformation getInformation() {
-        if (sleeping && age > 1){
-            return new DisplayInformation(Color.BLUE, "bear-sleeping");
-        } else if (age > 1){
-            return new DisplayInformation(Color.GRAY, "bear");
+        if (isSleeping) {
+            return new DisplayInformation(Color.red, "bear-sleeping");
+        } else {
+            return new DisplayInformation(Color.blue, "bear");
         }
 
-        if (sleeping && age <= 1){
-            return new DisplayInformation(Color.GREEN, "bear-small-sleeping");
-        } else {
-            return new DisplayInformation(Color.RED, "bear-small");
+    }
+
+    void setTerritory(){
+
+        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), 4);
+
+        territory.add(world.getLocation(this));
+
+        for (int i = 0; i < surroundingTiles.toArray().length; i++) {
+            territory.add((Location) surroundingTiles.toArray()[i]);
+            //world.setTile(territory.get(i), new Territory(territory.get(i), world, this));
         }
+
+
+        //world.setTile(world.getLocation(this), new Grass(world));//world.getLocation(this), new Territory(world.getLocation(this), world,this));
+
+        /*Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
+        for (int i = 0; i < surroundingTiles.toArray().length; i++) {
+            territory.add(new Territory(world.getLocation(surroundingTiles.toArray()[i]), world ,this));
+            world.setTile(world.getLocation(surroundingTiles.toArray()), territory.get(i));
+        }*/
 
 
     }
-    @Override
 
+    /**
+     * Returns whether the bear is in its territory or not
+     * @return
+     */
+    private boolean isInTerritory() {
+        if (territory.contains(world.getLocation(this))) {
+            return true;
+        }
+        return false;
+    }
+
+    void protectTerritory(){
+        for (Object entity : world.getEntities().keySet()){
+
+            if (entity instanceof Bear){
+                if (territory.contains(world.getLocation(entity))){
+                    if (!wantsToBreed){ fight(); }
+                    else if (((Bear) entity).wantsToBreed){
+                        if (world.getSurroundingTiles().contains(world.getLocation(entity))){
+                            reproduce();
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+    @Override
     public void eatPlant(){
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
         for (Location location : surroundingTiles) {
@@ -186,49 +223,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
 
-    void setTerritory(){
-
-        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), 4);
-
-        territory.add(world.getLocation(this));
-
-        for (int i = 0; i < surroundingTiles.toArray().length; i++) {
-            territory.add((Location) surroundingTiles.toArray()[i]);
-            //world.setTile(territory.get(i), new Territory(territory.get(i), world, this));
-        }
-
-
-        //world.setTile(world.getLocation(this), new Grass(world));//world.getLocation(this), new Territory(world.getLocation(this), world,this));
-
-        /*Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
-        for (int i = 0; i < surroundingTiles.toArray().length; i++) {
-            territory.add(new Territory(world.getLocation(surroundingTiles.toArray()[i]), world ,this));
-            world.setTile(world.getLocation(surroundingTiles.toArray()), territory.get(i));
-        }*/
-
-
-    }
-
-    public ArrayList<Location> getTerritory(){
-        return territory;
-    }
-    void protectTerritory(){
-        for (Object entity : world.getEntities().keySet()){
-
-            if (entity instanceof Bear){
-                if (territory.contains(world.getLocation(entity))){
-                    if (!wantsToBreed){ fight(); }
-                    else if (((Bear) entity).wantsToBreed){
-                        if (world.getSurroundingTiles().contains(world.getLocation(entity))){
-                            reproduce();
-                        }
-                    }
-                }
-
-            }
-        }
-    }
-
     protected void reproduce() {
             Bear cup = new Bear(world);
             //neighbourList = getNeighbours(world);
@@ -241,6 +235,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             wantsToBreed = false;
             breedingDelay = 5;
 
+    }
+
+    public ArrayList<Location> getTerritory(){
+        return territory;
     }
 
     public Boolean getWantsToBreed() {
