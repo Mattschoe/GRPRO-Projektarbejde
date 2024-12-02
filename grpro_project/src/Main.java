@@ -84,7 +84,7 @@ public class Main {
     }
 
     static void MattTempTest() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             simulation();
         }
     }
@@ -92,7 +92,7 @@ public class Main {
     static void simulation() {
         //Program descriptions
         int size = 5;
-        int delay = 10;
+        int delay = 5;
         int displaySize = 1000;
 
         //Sets up world

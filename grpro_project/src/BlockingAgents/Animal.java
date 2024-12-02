@@ -66,7 +66,6 @@ public abstract class Animal implements Actor {
     protected void move() {
         energyLevel--;
 
-
         if (world.isOnTile(this)) {
             //Gets all empty locations
             Set<Location> neighbours = world.getEmptySurroundingTiles();
@@ -76,6 +75,12 @@ public abstract class Animal implements Actor {
             Random random = new Random();
             if (!neighbourList.isEmpty()){
                 Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+
+                //If the location is takem it finds a new one
+                while (!world.isTileEmpty(location)) {
+                    location = neighbourList.get(random.nextInt(neighbourList.size()));
+                }
+
                 world.move(this, location);
                 world.setCurrentLocation(location);
             }
@@ -204,33 +209,23 @@ public abstract class Animal implements Actor {
      * Eats food if standing or close to it (Depending on the food), otherwise it moves towards it.
      */
     protected void eatFood() {
-        System.out.println("hasFoundFood?: " + hasFoundFood);
-        System.out.println("Animal location before food: " + world.getLocation(this));
         if (hasFoundFood) { //If the animal has already found food
-            System.out.println(food + " " + world.getLocation(food));
             if (world.getSurroundingTiles().contains(world.getLocation(food))) {
-                System.out.println(this + " er her!");
                 if (food instanceof Bush bush) { //If its a bush it just eats the berries
-                    System.out.println(this + " spiser: " + food);
                     bush.getEaten();
                     hasFoundFood = false;
                 } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
                     Location tempLocation = world.getLocation(food);
-                    System.out.println("Før deleting: " + world.getLocation(this));
                     world.delete(food);
-                    System.out.println("Efter deleting: " + world.getLocation(this));
                     moveTo(tempLocation);
                     hasFoundFood = false;
                 }
             } else { //Moves towards the food
-                System.out.println("Goes towards: " + foodLocation);
                 moveTo(foodLocation);
-                System.out.println("Efter: " + foodLocation);
             }
         } else { //If it haven't yet found any food
             findFood();
         }
-        System.out.println("Når jeg herned? også sammen med " + world.getLocation(this));
     }
 
     /**
@@ -261,6 +256,7 @@ public abstract class Animal implements Actor {
                     return;
                 }
             }
+            food = null;
         }
     }
 

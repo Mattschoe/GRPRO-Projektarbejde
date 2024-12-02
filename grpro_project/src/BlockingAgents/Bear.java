@@ -59,9 +59,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
 
             if (isHungry()) { //Eats food if it's hungry
-                System.out.println("Food before: " + world.getLocation(this));
                 eatFood();
-                System.out.println("Food after " + world.getLocation(this));
             }
             move();
         }
@@ -116,7 +114,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      * @return boolean
      */
     private boolean isInTerritory() {
-        System.out.println("method + " + world.getLocation(this));
         return territory.contains(world.getLocation(this));
     }
 
