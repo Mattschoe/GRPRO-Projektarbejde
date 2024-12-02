@@ -204,12 +204,17 @@ public abstract class Animal implements Actor {
     protected void eatFood() {
         if (hasFoundFood) { //If the animal has already found food
             if (world.getSurroundingTiles().contains(foodLocation)) {
-                System.out.println("FOOD FOUND");
-                world.delete(world.getTile(foodLocation));
-                hasFoundFood = false;
+                if (world.getTile(foodLocation) instanceof Bush bush ) { //If its a bush it just eats the berries
+                    bush.getEaten();
+                    hasFoundFood = false;
+                } else {
+                    world.delete(world.getTile(foodLocation));
+                    hasFoundFood = false;
+                }
+            } else {
+                System.out.println("Moving to food");
+                moveTo(getFoodLocation());
             }
-            System.out.println("Moving to food");
-            moveTo(getFoodLocation());
         } else { //If it haven't yet found any food
             System.out.println("Finding food");
             findFood();
@@ -227,7 +232,7 @@ public abstract class Animal implements Actor {
                     System.out.println("Found some grass at: " + world.getLocation(grass));
                     hasFoundFood = true;
                     break;
-                } else if (object instanceof Bush bush) {
+                } else if (object instanceof Bush bush && bush.getHasBerries()) {
                     foodLocation = world.getLocation(bush);
                     hasFoundFood = true;
                     break;

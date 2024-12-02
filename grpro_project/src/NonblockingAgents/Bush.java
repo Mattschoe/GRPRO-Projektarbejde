@@ -15,7 +15,7 @@ public class Bush implements Actor, DynamicDisplayInformationProvider {
     public Bush(World world) {
 
         this.world = world;
-        hasBerries = false;
+        hasBerries = true;
         reGrowDays = 2;
     }
 
