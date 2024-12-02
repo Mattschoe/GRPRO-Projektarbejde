@@ -32,4 +32,28 @@ class BushTest {
         assertEquals(0, bush.getReGrowDays());
         assertTrue(bush.getHasBerries());
     }
+    @Test
+    void TestGetEaten(){
+        Bush bush = new Bush(w);
+        w.setTile(new Location(1,1),bush);
+        assertFalse(bush.getHasBerries());
+        assertEquals(2, bush.getReGrowDays());
+        for (int i = 0; i < 40; i++) {
+            bush.act(w);
+            w.step();
+        }
+        assertTrue(bush.getHasBerries());
+
+        bush.getEaten();
+        assertFalse(bush.getHasBerries());
+
+        for (int i = 0; i < 40; i++) {
+            bush.act(w);
+            w.step();
+        }
+        assertTrue(bush.getHasBerries());
+
+
+
+    }
 }

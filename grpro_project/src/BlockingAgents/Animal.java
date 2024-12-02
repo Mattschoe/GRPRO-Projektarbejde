@@ -187,4 +187,8 @@ public abstract class Animal implements Actor {
     protected void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
     }
+
+    public boolean getIsSleeping() {
+        return isSleeping;
+    }
 }

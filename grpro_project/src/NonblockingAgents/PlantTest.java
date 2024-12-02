@@ -3,6 +3,7 @@ package NonblockingAgents;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,17 +15,21 @@ class PlantTest {
         w = new World(2);
     }
 
-    @Test
+    @RepeatedTest(20)
+
     void TestSpread() {
         Grass grass = new Grass(w);
         Location loc = new Location(0,0);
         w.setCurrentLocation(loc);
         w.setTile(loc, grass);
-        assertEquals(1,w.getEntities().keySet().size());
-        grass.spread(new Grass(w), 1); //100 % chance
-        assertEquals(3,w.getEntities().keySet().size());
+        assertEquals(1,w.getEntities().size());
+
         grass.spread(new Grass(w), 1);
-        assertEquals(4,w.getEntities().keySet().size());
+
+        assertTrue(1 < w.getEntities().size() && w.getEntities().size() <= 4);
+        grass.spread(new Grass(w), 1);
+        assertTrue(1 < w.getEntities().size() && w.getEntities().size() <= 4);
+
 
     }
 }

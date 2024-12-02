@@ -27,7 +27,7 @@ public abstract class Plant implements Actor {
         Random random = new Random();
 
         for (int i = 0; i < world.getEmptySurroundingTiles().size(); i++) {
-            //Spawns grass in a empty surrounding tile with a (25%) chance of doing so
+            //Spawns grass in an empty surrounding tile with a chance of doing so
             if (random.nextInt(chance) == 0) {
                 Set<Location> emptySurrounding = world.getSurroundingTiles();
                 List<Location> list = new ArrayList<>(emptySurrounding);
