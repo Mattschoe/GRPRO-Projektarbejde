@@ -6,6 +6,7 @@ import java.util.Random;
 import BlockingAgents.Bear;
 import BlockingAgents.Wolf;
 import BlockingAgents.Rabbit;
+import BlockingAgents.WolfPack;
 import NonblockingAgents.*;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
@@ -15,7 +16,7 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        Week2Test();
+        MattTempTest();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -85,7 +86,7 @@ public class Main {
     static void MattTempTest() {
         //Program descriptions
         int size = 5;
-        int delay = 800;
+        int delay = 8;
         int displaySize = 1000;
 
         //Sets up world
@@ -94,13 +95,17 @@ public class Main {
 
         //Display Information
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
-        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit" ));
-        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.red, "carcass" ));
+
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        WolfPack wolfPack = new WolfPack();
+        Wolf wolf = new Wolf(world, wolfPack);
+        wolfPack.setAlphaWolf(wolf);
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
+        wolf = new Wolf(world);
+        wolfPack.addWolfToPack(wolf);
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
 
         //Shows world
         program.show();

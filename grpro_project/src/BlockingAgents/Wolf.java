@@ -16,9 +16,23 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     int huntRadius;
     boolean hasFoundMeat = false;
 
+    /**
+     * Wolf without being a Alpha in a wolfpack
+     * @param world
+     */
     public Wolf(World world) {
         super(20, world, 30, 20);
         huntRadius = 2;
+    }
+
+    /**
+     * Wolf with a Wolfpack where its the alpha
+     * @param world
+     * @param wolfpack
+     */
+    public Wolf(World world, WolfPack wolfpack) {
+        super(29, world, 30, 20);
+        this.wolfpack = wolfpack;
     }
 
 
@@ -70,8 +84,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         }
     }
 
-
-
     /**
      * Returns whether the wolf is hungry or not
      * @return
@@ -79,7 +91,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     private boolean isHungry() {
         return energyLevel + 10 < maxEnergy;
     }
-
 
     @Override
     public DisplayInformation getInformation() {
@@ -159,5 +170,31 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         den = new Den(world, this, false);
         den.spawnDen();
         return world.getLocation(den);
+    }
+
+    /**
+     * Sets the Den for the wolf. Used for WolfPack so the pack has the same Den to sleep in
+     */
+    public void setDen(Den den) {
+        this.den = den;
+    }
+
+    /**
+     * Returns the wolfs den
+     * @return
+     */
+    public Den getDen() {
+        return den;
+    }
+
+    /**
+     * Returns the wolfs pack
+     * @return
+     */
+    public WolfPack getWolfpack() {
+        if (wolfpack != null) {
+            return wolfpack;
+        }
+        throw new IllegalStateException("Wolfpack is null!");
     }
 }
