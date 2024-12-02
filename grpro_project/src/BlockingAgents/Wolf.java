@@ -39,7 +39,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     //MANGLER: At få en wolfpack
 
     public void act(World world) {
-        System.out.println("Wolf energy: " + energyLevel + ", is hungry: " + isHungry());
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -54,8 +53,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 } else {
                     flee();
                 }
-            } else if (isPreyInHuntRadius(huntRadius) && isHungry()) {
-                hunt(findPrey());
+            } else if (isHungry()) { //First checks if there is any easy meat close, otherwise it starts hunting. If neither it just moves.
+                if (isThereFreshMeat()) {
+                    eatFood();
+                } else if (isPreyInHuntRadius(huntRadius)) {
+                    hunt(findPrey());
+                }
             } else {
                 move();
             }
@@ -97,47 +100,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     @Override
     protected void reproduce() {} //MANGLER
 
-    /**
-     * Eats meat if standing on it
-     */
-    @Override
-    public void eatMeat() {
-        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
-            energyLevel = energyLevel + meat.getEnergyLevel();
-            world.delete(meat);
-        }
-    }
-
-    /**
-     * Finds location of a meat spot
-     */
-    @Override
-    public void findEatableMeat() {
-        /*
-        //Finds a spot of meat if the wolf hasn't found it
-        if (!hasFoundMeat) {
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Grass grass) {
-                    foodLocation = world.getLocation(grass);
-                    hasFoundMeat = true;
-                    break;
-                }
-            }
-        } */
-    }
-
-    /**
-     * Returns the location of the plant chosen to be eaten by the wolf. If it hasnt chosen a location the method first finds a location
-     * @return
-     */
-    @Override
-    public Location getEatableMeatLocation() {
-         /* if (foodLocation == null) {
-            findEatableMeat();
-            return foodLocation;
-        } */
-        return null;
-    }
 
     /**
      * If there are any Den's in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.

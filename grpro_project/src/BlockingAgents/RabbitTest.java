@@ -80,12 +80,13 @@ class RabbitTest {
         w.setTile(location, rabbit);
 
         assertNotNull(w.getNonBlocking(location));
-        rabbit.eatPlant();
+        rabbit.eatFood();
         assertNull(w.getNonBlocking(location));
 
 
     }
 
+    /* Metode eksisterer ikke rigtig længere
     @Test
     void getEatablePlantLocation() {
         Grass grass = new Grass(w);
@@ -95,8 +96,8 @@ class RabbitTest {
         w.setTile(grassLocation, grass);
         w.setTile(location, rabbit);
 
-        assertEquals(grassLocation, rabbit.getEatablePlantLocation());
-    }
+        assertEquals(grassLocation, rabbit.findFood());
+    } */
 
     @Test
     void reproduce() {

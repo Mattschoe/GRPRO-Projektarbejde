@@ -249,4 +249,17 @@ public abstract class Animal implements Actor {
             }
         }
     }
+
+    /**
+     * Returns whether there is any fresh meat in the world that a animal can go after
+     * @return boolean
+     */
+    public boolean isThereFreshMeat() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Meat meat && meat.getAge() == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
