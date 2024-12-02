@@ -32,14 +32,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
-
-                } else if (energyLevel + 10 < maxEnergy) { //If hungry
-                    eatPlant();
-                    try {
-                        moveTo(getEatablePlantLocation());
-                    } catch (Exception e) { //No more grass. Rabbit just moves instead
-                        move();
-                    }
+                    System.out.println("FLEEING!");
+                    flee();
+                    hide();
+                } else if (energyLevel + 5 < maxEnergy) { //If hungry
+                    eatFood();
                 } else { //Else moves randomly
                     move();
                 }
@@ -140,52 +137,9 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         return world.getLocation(burrow);
     }
 
-    /**
-     * Returns location of a grass spot
-     */
-    public void findEatablePlant() {
-        //Finds a spot of grass if the rabbit hasn't found it
-        if (!hasFoundGrass) {
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Grass grass) {
-                    foodLocation = world.getLocation(grass);
-                    hasFoundGrass = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if we are on a grass tile and eats it if so
-     */
-    public void eatPlant() {
-        if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
-            world.delete(grass);
-            energyLevel = energyLevel + 5;
-        }
-    }
-
-    /**
-     * gives the location of the plant chosen to be eaten by the rabbit. If it hasnt chosen a location the method first finds a location
-     * @return
-     */
-    public Location getEatablePlantLocation() {
-        if (foodLocation == null) {
-            findEatablePlant();
-            return foodLocation;
-        }
-        return foodLocation;
-    }
-
-
     protected void reproduce() {}
 
     public boolean getHasFoundGrass() {
         return hasFoundGrass;
-    }
-
-    public Location getGrassLocation() {
-        return foodLocation;
     }
 }

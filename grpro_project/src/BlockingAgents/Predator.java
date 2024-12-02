@@ -46,12 +46,14 @@ public abstract class Predator extends Animal{
      * Kills prey if its nearby
      */
     protected void kill(Animal animalToKill) {
-        world.delete(animalToKill);
-        System.out.println("MUMS");
+        /*world.delete(animalToKill);
+        System.out.println("MUMS"); */
     }
 
+    //SKAL ÆNDRES!!
+
     protected void fight () {
-        try {
+        /*try {
             currentlyFighting = true;
             preyAnimal.takeDamage(strength);
             if (preyAnimal.health <= 0) {
@@ -60,7 +62,7 @@ public abstract class Predator extends Animal{
             }
         } catch ( Exception e) {
             System.out.println("Fighting Animal is null! Error: " + e.getMessage());
-        }
+        } */
     }
 
     /**

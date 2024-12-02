@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore {
+public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
     World world;
     ArrayList<Location> territory;
     boolean sleeping;
@@ -34,155 +34,55 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //world.setTile(location, this );
 
     }
+    //MANGLER: At hunte efter kaniner
     @Override
     public void act(World world){
-        this.world = world;
         if (territory.isEmpty()){
             setTerritory();
         }
 
-        if (world.isDay()){
-            if (territory.contains(world.getLocation(this))){
-                move();
-                protectTerritory();
-            } else {
-                moveTo(territory.get(0));
+        //Daytime activities
+        if (world.isDay()) {
+            isSleeping = false;
+            if (energyLevel <= 0) { //Dies when out of energy
+                System.out.println("BAIII");
+                die();
+                return;
+            } else if (currentlyFighting) { //Fighting. Bear fights to death.
+                fight();
+            } else if (isInTerritory()) { //Moves around in territory and protects it
+                //protectTerritory();
+            } else if (!isInTerritory()) { //If it's not in its territory it moves towards it
+                moveTo(territory.getFirst());
             }
-            sleeping = false;
-        }
-        else {
-            sleeping = world.isNight();
-        }
-        if (world.getCurrentTime() == 10) {
-            energyLevel--;
-            birthday();
-            breedingDelay--;
-            if (age > 1 && breedingDelay == 0) wantsToBreed = true;
 
-        }
 
-        /* if (energyLevel < maxEnergy) { //If hungry
-            //moveTo(getEatablePlantLocation());
-            // findEatableMeat();
-            findEatablePlant();
-            for (Location location: territory){
-                if (world.getTile(location) instanceof Rabbit){
-                    hunt();
-                    //moveTo(location);
-                }
-
+            if (isHungry()) { //Eats food if it's hungry
+                eatFood();
             }
-        } */
+            move();
+        }
+
+        //Nighttime activities
+        if (world.isNight()) {
+            updateMaxEnergy();
+            sleep();
+        }
     }
 
     @Override
     protected void sleep() {
-
+        isSleeping = true;
     }
 
     @Override
     public DisplayInformation getInformation() {
-        if (sleeping && age > 1){
-            return new DisplayInformation(Color.BLUE, "bear-sleeping");
-        } else if (age > 1){
-            return new DisplayInformation(Color.GRAY, "bear");
-        }
-
-        if (sleeping && age <= 1){
-            return new DisplayInformation(Color.GREEN, "bear-small-sleeping");
+        if (isSleeping) {
+            return new DisplayInformation(Color.red, "bear-sleeping");
         } else {
-            return new DisplayInformation(Color.RED, "bear-small");
+            return new DisplayInformation(Color.blue, "bear");
         }
 
-
-    }
-    @Override
-
-    public void eatPlant(){
-        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
-        for (Location location : surroundingTiles) {
-            if (world.getTile(location) instanceof Bush bush) {
-                bush.getEaten();
-                energyLevel = energyLevel + 1;
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void findEatablePlant() {
-        //if (!hasFoundBush) {
-            Set<Location>  surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
-            for (Location location : surroundingTiles) {
-                if (world.getTile(location) instanceof Bush bush) {
-                    bushLocation = location;
-                    bush.getEaten();
-                    break;
-                }
-            }
-            /*Set<Location> emptysurroundingTiles = world.getEmptySurroundingTiles(bushLocation);
-            System.out.println(emptysurroundingTiles.toArray());
-            moveTo((Location )emptysurroundingTiles.toArray()[0]);
-
-            /*
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Bush bush) {
-                    Set<Location>  bushNeighbours = world.getEmptySurroundingTiles(world.getLocation(bush));
-                    bushLocation = (Location) bushNeighbours.toArray()[0];
-                    System.out.println(bushLocation.toString());
-                    hasFoundBush = true;
-                    break;
-                }
-            }
-            for (int i = 0; i < territory.size(); i++) {
-                if (world.getTile(territory.get(i)) instanceof Bush) {
-                    bushLocation = territory.get(i);
-                    hasFoundBush = true;
-                    break;
-                }
-
-            }*/
-
-        //}
-    }
-
-    @Override
-    public Location getEatablePlantLocation() {
-
-        if (bushLocation == null){
-            findEatablePlant();
-            return bushLocation;
-        }
-        return bushLocation;
-    }
-
-
-    public void findEatableMeat() {
-        //Finds a spot of grass if the rabbit hasn't found it
-        if (!hasFoundMeat) {
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Meat meat) {
-                    meatLocation = world.getLocation(meat);
-                    hasFoundMeat = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    public Location getEatableMeatLocation() {
-        if (meatLocation == null) {
-            findEatableMeat();
-            return meatLocation;
-        }
-        return meatLocation;
-    }
-
-    public void eatMeat() {
-        if (world.getNonBlocking(world.getLocation(this)) instanceof Meat meat) {
-            energyLevel = meat.getEnergyLevel();
-            world.delete(meat);
-        }
     }
 
     void setTerritory(){
@@ -208,9 +108,14 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
-    public ArrayList<Location> getTerritory(){
-        return territory;
+    /**
+     * Returns whether the bear is in its territory or not
+     * @return boolean
+     */
+    private boolean isInTerritory() {
+        return territory.contains(world.getLocation(this));
     }
+
     void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
 
@@ -234,12 +139,16 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             Set<Location> neighbours = world.getEmptySurroundingTiles();
             List<Location> neighbourList = new ArrayList<>(neighbours);
             if (!neighbourList.isEmpty()){
-                Location birthPlace =  neighbourList.get(0);
+                Location birthPlace =  neighbourList.getFirst();
                 world.setTile(birthPlace, cup);
             }
             wantsToBreed = false;
             breedingDelay = 5;
 
+    }
+
+    public ArrayList<Location> getTerritory(){
+        return territory;
     }
 
     public Boolean getWantsToBreed() {

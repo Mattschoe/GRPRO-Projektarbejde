@@ -4,6 +4,7 @@ import NonblockingAgents.Fungi;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
@@ -13,10 +14,12 @@ public class Meat implements Actor {
     int energyLevel;
     Animal animal;
     public boolean infected = false;
+    int age;
 
     public Meat(World world, Animal animal) {
         this.world = world;
         this.animal = animal;
+        age = 0;
 
         if (this.animal instanceof Carnivore) {
             this.energyLevel = 50;
@@ -41,6 +44,10 @@ public class Meat implements Actor {
             else {
                 world.delete(this);
             }
+        }
+
+        if (world.getCurrentTime() == 10) {
+            age++; //Makes the meat older.
         }
     }
 
@@ -67,6 +74,10 @@ public class Meat implements Actor {
      */
     public int getEnergyLevel() {
         return this.energyLevel;
+    }
+
+    public int getAge() {
+        return this.age;
     }
 
     public boolean isInfected() {

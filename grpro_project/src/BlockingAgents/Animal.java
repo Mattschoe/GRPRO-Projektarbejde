@@ -1,7 +1,11 @@
 package BlockingAgents;
 
+import NonblockingAgents.Bush;
+import NonblockingAgents.Grass;
+import NonblockingAgents.Meat;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.util.ArrayList;
@@ -18,6 +22,8 @@ public abstract class Animal implements Actor {
     protected int maxHealth;
     Location sleepingLocation;
     boolean isSleeping;
+    boolean hasFoundFood;
+    Object food;
     Location foodLocation;
 
 
@@ -31,12 +37,13 @@ public abstract class Animal implements Actor {
         this.health = maxHealth;
         sleepingLocation = null;
         isSleeping = false;
-        foodLocation = null;
+        hasFoundFood = false;
     }
 
     @Override
     public void act(World world){
         this.world = world;
+
     }
 
     public void takeDamage(int damage) {
@@ -59,7 +66,6 @@ public abstract class Animal implements Actor {
     protected void move() {
         energyLevel--;
 
-
         if (world.isOnTile(this)) {
             //Gets all empty locations
             Set<Location> neighbours = world.getEmptySurroundingTiles();
@@ -69,6 +75,12 @@ public abstract class Animal implements Actor {
             Random random = new Random();
             if (!neighbourList.isEmpty()){
                 Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+
+                //If the location is takem it finds a new one
+                while (!world.isTileEmpty(location)) {
+                    location = neighbourList.get(random.nextInt(neighbourList.size()));
+                }
+
                 world.move(this, location);
                 world.setCurrentLocation(location);
             }
@@ -178,13 +190,87 @@ public abstract class Animal implements Actor {
         return maxEnergy;
     }
 
-    protected Location getFoodLocation() { return foodLocation; }
+    /**
+     * Returns whether the animal is hungry or not
+     * @return boolean
+     */
+    protected boolean isHungry() {
+        return energyLevel + 5 < maxEnergy;
+    }
 
     /**
      * Updates the amount of max energy the animal daily has. The method is called each night.
      */
     protected void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    /**
+     * Eats food if standing or close to it (Depending on the food), otherwise it moves towards it.
+     */
+    protected void eatFood() {
+        if (hasFoundFood) { //If the animal has already found food
+            if (world.getSurroundingTiles().contains(world.getLocation(food))) {
+                if (food instanceof Bush bush) { //If its a bush it just eats the berries
+                    bush.getEaten();
+                    hasFoundFood = false;
+                } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
+                    Location tempLocation = world.getLocation(food);
+                    world.delete(food);
+                    moveTo(tempLocation);
+                    hasFoundFood = false;
+                }
+            } else { //Moves towards the food
+                moveTo(foodLocation);
+            }
+        } else { //If it haven't yet found any food
+            findFood();
+        }
+    }
+
+    /**
+     * Finds location of a food spot.
+     */
+    private void findFood() {
+        if (this instanceof Herbivore) { //Animal is Plant eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Bush bush && bush.getHasBerries()) {
+                    food = bush;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                } else if (object instanceof Grass grass && !(this instanceof Bear)) {
+                    food = grass;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                }
+            }
+        }
+        if (this instanceof Carnivore) { //Animal is Meat eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
+                    food = meat;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                }
+            }
+            food = null;
+        }
+    }
+
+    /**
+     * Returns whether there is any fresh meat in the world that a animal can go after
+     * @return boolean
+     */
+    public boolean isThereFreshMeat() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Meat meat && meat.getAge() == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean getIsSleeping() {

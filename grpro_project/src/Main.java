@@ -7,6 +7,7 @@ import BlockingAgents.Bear;
 import BlockingAgents.Meat;
 import BlockingAgents.Wolf;
 import BlockingAgents.Rabbit;
+import BlockingAgents.WolfPack;
 import NonblockingAgents.*;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
@@ -16,7 +17,7 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        Week2Test();
+        MattTempTest();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -86,9 +87,13 @@ public class Main {
 
 
     static void MattTempTest() {
+        simulation();
+    }
+
+    static void simulation() {
         //Program descriptions
         int size = 5;
-        int delay = 800;
+        int delay = 200;
         int displaySize = 1000;
 
         //Sets up world
@@ -96,16 +101,26 @@ public class Main {
         World world = program.getWorld();
 
         //Display Information
+        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.gray, "rabbit"));
+        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.gray, "grass"));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
-        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit" ));
-        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.red, "carcass" ));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.gray, "carcass"));
+
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
+
 
         //Shows world
         program.show();
     }
+
 }
