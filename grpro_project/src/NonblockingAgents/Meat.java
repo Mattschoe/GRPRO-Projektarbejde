@@ -4,6 +4,7 @@ import BlockingAgents.Animal;
 import BlockingAgents.Carnivore;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ public class Meat implements Actor {
     World world;
     int energyLevel;
     Animal animal;
+    public boolean infected = false;
 
     public Meat(World world, Animal animal) {
         this.world = world;
@@ -28,6 +30,16 @@ public class Meat implements Actor {
     @Override
     public void act(World world) {
         this.world = world;
+        this.energyLevel--;
+        if (this.infected) {
+            this.energyLevel--;
+        }
+        if (this.energyLevel < 1) { //can die without being eaten
+            if (this.infected) { // spawns mushroom if infected, otherwise just dies
+                Location tempLocation = world.getCurrentLocation();
+                spawnMushroom(tempLocation);
+            }
+        }
     }
 
     @Override
@@ -36,6 +48,14 @@ public class Meat implements Actor {
             return new DisplayInformation(Color.BLUE, "carcass");
         } else {
             return new DisplayInformation(Color.BLUE, "carcass-small");
+        }
+    }
+
+    void spawnMushroom(Location location) {
+        if (this.animal instanceof Carnivore) {
+            world.setTile(location, new Fungi(world,50));
+        } else {
+            world.setTile(location, new Fungi(world,20));
         }
     }
 
