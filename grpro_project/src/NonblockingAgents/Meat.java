@@ -53,9 +53,9 @@ public class Meat implements Actor {
 
     void spawnMushroom(Location location) {
         if (this.animal instanceof Carnivore) {
-            world.setTile(location, new Mushroom(world,50));
+            world.setTile(location, new Fungi(world,50));
         } else {
-            world.setTile(location, new Mushroom(world,20));
+            world.setTile(location, new Fungi(world,20));
         }
     }
 

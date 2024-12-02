@@ -7,23 +7,30 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 
-public class Mushroom implements Actor, NonBlocking {
+public class Fungi implements Actor, NonBlocking {
 
     World world;
     Location location;
     int energyLevel;
     int radius;
 
-    public Mushroom(World world, int energyLevel) { // energyLevel skal komme an på hvilket dyr det var
+    public Fungi(World world, int energyLevel) {
         this.world = world;
 
-        this.energyLevel = energyLevel;
+        if (energyLevel == 0) { // Sætter energyLevel in case den bliver spawnet uden tilknyttet dyr
+            this.energyLevel = 10;
+        } else {
+            this.energyLevel = energyLevel;
+        }
         this.radius = 2;
     }
 
     public void act(World world) {
         this.world = world;
         spread(); // Skal kunne sprede sig til Meat i nærheden
+        if (this.energyLevel < 1) {
+            die(world.getCurrentLocation());
+        }
     }
 
     void spread() {
@@ -37,6 +44,11 @@ public class Mushroom implements Actor, NonBlocking {
             }
         }
         energyLevel--;
+    }
+
+    void die(Location location) {
+        world.delete(this);
+        world.setTile(location, new Grass(world)); // Spawns grass upon death
     }
 
     @Override

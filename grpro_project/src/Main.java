@@ -59,6 +59,7 @@ public class Main {
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));
+        program.setDisplayInformation(Fungi.class, new DisplayInformation(Color.green, "fungi" ));
 
         //Adds agents
         try {
@@ -81,6 +82,7 @@ public class Main {
 
         program.show();
     }
+
 
     static void MattTempTest() {
         //Program descriptions
