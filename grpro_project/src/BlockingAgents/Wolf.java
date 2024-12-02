@@ -6,6 +6,8 @@ import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.awt.*;
+
 public class Wolf extends Predator implements DenAnimal, Carnivore {
     Den den;
     WolfPack wolfpack;
@@ -56,9 +58,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 } else if (isPreyInHuntRadius(huntRadius)) {
                     hunt(findPrey());
                 }
-            } else {
-                move();
             }
+            move();
         }
 
         //Nighttime activites
@@ -72,10 +73,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                 if (!isSleeping && den.isOwnerOnDen()) {
-                    world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
+                    world.remove(this);
                 } else if (!isSleeping) {
+                    System.out.println("Moving from: " + world.getLocation(this) + " to: " + world.getLocation(den));
                     moveTo(world.getLocation(den));
                 }
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow
@@ -86,7 +88,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
     @Override
     public DisplayInformation getInformation() {
-        return null;
+        if (isSleeping) {
+            return new DisplayInformation(Color.red, "wolf-sleeping");
+        } else {
+            return new DisplayInformation(Color.blue, "wolf");
+        }
     }
 
     @Override
