@@ -105,7 +105,7 @@ public class Main {
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
 
 
         //Shows world

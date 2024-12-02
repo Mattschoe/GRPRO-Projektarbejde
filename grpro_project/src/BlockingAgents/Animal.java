@@ -199,7 +199,7 @@ public abstract class Animal implements Actor {
     }
 
     /**
-     * Eats food if standing on it
+     * Eats food if standing or close to it (Depending on the food), otherwise it moves towards it.
      */
     protected void eatFood() {
         if (hasFoundFood) { //If the animal has already found food
@@ -207,11 +207,11 @@ public abstract class Animal implements Actor {
                 if (world.getTile(foodLocation) instanceof Bush bush ) { //If its a bush it just eats the berries
                     bush.getEaten();
                     hasFoundFood = false;
-                } else {
+                } else { //If its grass deletes it
                     world.delete(world.getTile(foodLocation));
                     hasFoundFood = false;
                 }
-            } else {
+            } else { //Moves towards the food
                 System.out.println("Moving to food");
                 moveTo(getFoodLocation());
             }
@@ -241,7 +241,7 @@ public abstract class Animal implements Actor {
         }
         if (this instanceof Carnivore) { //Animal is Meat eater
             for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Meat meat) {
+                if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
                     foodLocation = world.getLocation(meat);
                     hasFoundFood = true;
                     break;

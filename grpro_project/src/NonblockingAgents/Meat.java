@@ -12,10 +12,12 @@ public class Meat implements Actor {
     World world;
     int energyLevel;
     Animal animal;
+    int age;
 
     public Meat(World world, Animal animal) {
         this.world = world;
         this.animal = animal;
+        age = 0;
 
         if (this.animal instanceof Carnivore) {
             this.energyLevel = 50;
@@ -28,6 +30,10 @@ public class Meat implements Actor {
     @Override
     public void act(World world) {
         this.world = world;
+
+        if (world.getCurrentTime() == 10) {
+            age++; //Makes the meat older.
+        }
     }
 
     @Override
@@ -45,6 +51,10 @@ public class Meat implements Actor {
      */
     public int getEnergyLevel() {
         return this.energyLevel;
+    }
+
+    public int getAge() {
+        return this.age;
     }
 
 }
