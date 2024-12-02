@@ -113,6 +113,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public void findEatableMeat() {
+        /*
         //Finds a spot of meat if the wolf hasn't found it
         if (!hasFoundMeat) {
             for (Object object : world.getEntities().keySet()) {
@@ -122,7 +123,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                     break;
                 }
             }
-        }
+        } */
     }
 
     /**
@@ -131,11 +132,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location getEatableMeatLocation() {
-        if (foodLocation == null) {
+         /* if (foodLocation == null) {
             findEatableMeat();
             return foodLocation;
-        }
-        return foodLocation;
+        } */
+        return null;
     }
 
     /**

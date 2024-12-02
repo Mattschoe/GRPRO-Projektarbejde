@@ -4,6 +4,7 @@ import BlockingAgents.Animal;
 import BlockingAgents.Carnivore;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;

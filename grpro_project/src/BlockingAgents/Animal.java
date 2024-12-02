@@ -5,6 +5,7 @@ import NonblockingAgents.Grass;
 import NonblockingAgents.Meat;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public abstract class Animal implements Actor {
     Location sleepingLocation;
     boolean isSleeping;
     boolean hasFoundFood;
-    Location foodLocation;
+    Object food;
 
 
 
@@ -35,7 +36,6 @@ public abstract class Animal implements Actor {
         this.health = maxHealth;
         sleepingLocation = null;
         isSleeping = false;
-        foodLocation = null;
         hasFoundFood = false;
     }
 
@@ -203,20 +203,20 @@ public abstract class Animal implements Actor {
      */
     protected void eatFood() {
         if (hasFoundFood) { //If the animal has already found food
-            if (world.getSurroundingTiles().contains(foodLocation)) {
-                if (world.getTile(foodLocation) instanceof Bush bush ) { //If its a bush it just eats the berries
+            if (world.getSurroundingTiles().contains(world.getLocation(food))) {
+                if (food instanceof Bush bush ) { //If its a bush it just eats the berries
                     bush.getEaten();
                     hasFoundFood = false;
-                } else { //If its grass deletes it
-                    world.delete(world.getTile(foodLocation));
+                } else { //If its something else it deletes it and afterwards the animal moves into the food tile
+                    Location tempLocation = world.getLocation(food);
+                    world.delete(food);
+                    moveTo(tempLocation);
                     hasFoundFood = false;
                 }
             } else { //Moves towards the food
-                System.out.println("Moving to food");
-                moveTo(getFoodLocation());
+                moveTo(world.getLocation(food));
             }
         } else { //If it haven't yet found any food
-            System.out.println("Finding food");
             findFood();
         }
     }
@@ -228,33 +228,25 @@ public abstract class Animal implements Actor {
         if (this instanceof Herbivore) { //Animal is Plant eater
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Grass grass) {
-                    foodLocation = world.getLocation(grass);
+                    food = grass;
                     System.out.println("Found some grass at: " + world.getLocation(grass));
                     hasFoundFood = true;
-                    break;
+                    return;
                 } else if (object instanceof Bush bush && bush.getHasBerries()) {
-                    foodLocation = world.getLocation(bush);
+                    food = bush;
                     hasFoundFood = true;
-                    break;
+                    return;
                 }
             }
         }
         if (this instanceof Carnivore) { //Animal is Meat eater
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
-                    foodLocation = world.getLocation(meat);
+                    food = meat;
                     hasFoundFood = true;
-                    break;
+                    return;
                 }
             }
         }
-    }
-
-    /**
-     * Returns the location of the plant chosen to be eaten by the wolf. If it hasnt chosen a location the method first finds a location
-     * @return Location
-     */
-    private Location getFoodLocation() {
-        return foodLocation;
     }
 }

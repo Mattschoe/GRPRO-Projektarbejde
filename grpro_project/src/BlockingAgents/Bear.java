@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore {
+public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
     World world;
     ArrayList<Location> territory;
     boolean sleeping;
@@ -45,10 +45,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //Daytime activities
         if (world.isDay()) {
             isSleeping = false;
-            if (sleepingLocation != null) { //Spawns back into the world after night
-                world.setTile(sleepingLocation, this);
-                sleepingLocation = null;
-            } else if (energyLevel <= 0) { //Dies when out of energy
+            if (energyLevel <= 0) { //Dies when out of energy
                 die();
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();

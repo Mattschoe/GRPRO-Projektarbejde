@@ -141,7 +141,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * Returns location of a grass spot
      */
     public void findEatablePlant() {
-
+        /*
 
         //Finds a spot of grass if the rabbit hasn't found it
         if (!hasFoundGrass) {
@@ -152,18 +152,18 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     break;
                 }
             }
-        }
+        } */
     }
 
     /**
      * Checks if we are on a grass tile and eats it if so
      */
     public void eatPlant() {
-        eatFood();
+        /* eatFood();
         if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
             world.delete(grass);
             energyLevel = energyLevel + 5;
-        }
+        } */
     }
 
     /**
@@ -171,20 +171,16 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * @return
      */
     public Location getEatablePlantLocation() {
-        if (foodLocation == null) {
+        /* if (foodLocation == null) {
             findEatablePlant();
             return foodLocation;
-        }
-        return foodLocation;
+        } */
+        return null;
     }
 
     protected void reproduce() {}
 
     public boolean getHasFoundGrass() {
         return hasFoundGrass;
-    }
-
-    public Location getGrassLocation() {
-        return foodLocation;
     }
 }
