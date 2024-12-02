@@ -32,6 +32,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
+                    System.out.println("FLEEING!");
                     flee();
                     hide();
                 } else if (energyLevel + 5 < maxEnergy) { //If hungry

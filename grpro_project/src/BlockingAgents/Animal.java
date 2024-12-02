@@ -24,6 +24,7 @@ public abstract class Animal implements Actor {
     boolean isSleeping;
     boolean hasFoundFood;
     Object food;
+    Location foodLocation;
 
 
 
@@ -42,6 +43,7 @@ public abstract class Animal implements Actor {
     @Override
     public void act(World world){
         this.world = world;
+
     }
 
     public void takeDamage(int damage) {
@@ -202,23 +204,33 @@ public abstract class Animal implements Actor {
      * Eats food if standing or close to it (Depending on the food), otherwise it moves towards it.
      */
     protected void eatFood() {
+        System.out.println("hasFoundFood?: " + hasFoundFood);
+        System.out.println("Animal location before food: " + world.getLocation(this));
         if (hasFoundFood) { //If the animal has already found food
+            System.out.println(food + " " + world.getLocation(food));
             if (world.getSurroundingTiles().contains(world.getLocation(food))) {
-                if (food instanceof Bush bush ) { //If its a bush it just eats the berries
+                System.out.println(this + " er her!");
+                if (food instanceof Bush bush) { //If its a bush it just eats the berries
+                    System.out.println(this + " spiser: " + food);
                     bush.getEaten();
                     hasFoundFood = false;
-                } else { //If its something else it deletes it and afterwards the animal moves into the food tile
+                } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
                     Location tempLocation = world.getLocation(food);
+                    System.out.println("Før deleting: " + world.getLocation(this));
                     world.delete(food);
+                    System.out.println("Efter deleting: " + world.getLocation(this));
                     moveTo(tempLocation);
                     hasFoundFood = false;
                 }
             } else { //Moves towards the food
-                moveTo(world.getLocation(food));
+                System.out.println("Goes towards: " + foodLocation);
+                moveTo(foodLocation);
+                System.out.println("Efter: " + foodLocation);
             }
         } else { //If it haven't yet found any food
             findFood();
         }
+        System.out.println("Når jeg herned? også sammen med " + world.getLocation(this));
     }
 
     /**
@@ -227,13 +239,14 @@ public abstract class Animal implements Actor {
     private void findFood() {
         if (this instanceof Herbivore) { //Animal is Plant eater
             for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Grass grass) {
-                    food = grass;
-                    System.out.println("Found some grass at: " + world.getLocation(grass));
+                if (object instanceof Bush bush && bush.getHasBerries()) {
+                    food = bush;
+                    foodLocation = world.getLocation(food);
                     hasFoundFood = true;
                     return;
-                } else if (object instanceof Bush bush && bush.getHasBerries()) {
-                    food = bush;
+                } else if (object instanceof Grass grass && !(this instanceof Bear)) {
+                    food = grass;
+                    foodLocation = world.getLocation(food);
                     hasFoundFood = true;
                     return;
                 }
@@ -243,6 +256,7 @@ public abstract class Animal implements Actor {
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
                     food = meat;
+                    foodLocation = world.getLocation(food);
                     hasFoundFood = true;
                     return;
                 }

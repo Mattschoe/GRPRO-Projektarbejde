@@ -46,19 +46,24 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (world.isDay()) {
             isSleeping = false;
             if (energyLevel <= 0) { //Dies when out of energy
+                System.out.println("BAIII");
                 die();
+                return;
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
-                move();
-                protectTerritory();
+                //protectTerritory();
             } else if (!isInTerritory()) { //If it's not in its territory it moves towards it
                 moveTo(territory.getFirst());
             }
 
+
             if (isHungry()) { //Eats food if it's hungry
+                System.out.println("Food before: " + world.getLocation(this));
                 eatFood();
+                System.out.println("Food after " + world.getLocation(this));
             }
+            move();
         }
 
         //Nighttime activities
@@ -111,6 +116,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      * @return boolean
      */
     private boolean isInTerritory() {
+        System.out.println("method + " + world.getLocation(this));
         return territory.contains(world.getLocation(this));
     }
 

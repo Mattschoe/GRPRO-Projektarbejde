@@ -46,8 +46,8 @@ public abstract class Predator extends Animal{
      * Kills prey if its nearby
      */
     protected void kill(Animal animalToKill) {
-        world.delete(animalToKill);
-        System.out.println("MUMS");
+        /*world.delete(animalToKill);
+        System.out.println("MUMS"); */
     }
 
     //SKAL ÆNDRES!!

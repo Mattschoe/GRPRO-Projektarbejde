@@ -84,9 +84,15 @@ public class Main {
     }
 
     static void MattTempTest() {
+        for (int i = 0; i < 5; i++) {
+            simulation();
+        }
+    }
+
+    static void simulation() {
         //Program descriptions
         int size = 5;
-        int delay = 80;
+        int delay = 10;
         int displaySize = 1000;
 
         //Sets up world
@@ -104,15 +110,21 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));'
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
 
 
         //Shows world
         program.show();
+        for (int i = 0; i < 100; i++) {
+            program.simulate();
+        }
     }
+
 }
