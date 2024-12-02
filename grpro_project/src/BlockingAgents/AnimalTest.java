@@ -2,13 +2,11 @@ package BlockingAgents;
 
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
-import NonblockingAgents.Meat;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;

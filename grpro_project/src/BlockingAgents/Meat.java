@@ -1,7 +1,6 @@
-package NonblockingAgents;
+package BlockingAgents;
 
-import BlockingAgents.Animal;
-import BlockingAgents.Carnivore;
+import NonblockingAgents.Fungi;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
@@ -39,6 +38,9 @@ public class Meat implements Actor {
                 Location tempLocation = world.getCurrentLocation();
                 spawnMushroom(tempLocation);
             }
+            else {
+                world.delete(this);
+            }
         }
     }
 
@@ -67,4 +69,11 @@ public class Meat implements Actor {
         return this.energyLevel;
     }
 
+    public boolean isInfected() {
+        return infected;
+    }
+
+    public void setInfected(boolean infected) {
+        this.infected = infected;
+    }
 }

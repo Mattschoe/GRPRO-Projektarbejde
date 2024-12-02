@@ -1,6 +1,7 @@
 package Testning;
 
 import BlockingAgents.Bear;
+import BlockingAgents.Meat;
 import BlockingAgents.Rabbit;
 import BlockingAgents.Wolf;
 import NonblockingAgents.*;

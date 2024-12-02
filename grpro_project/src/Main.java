@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import BlockingAgents.Bear;
+import BlockingAgents.Meat;
 import BlockingAgents.Wolf;
 import BlockingAgents.Rabbit;
 import NonblockingAgents.*;

@@ -2,13 +2,9 @@ package BlockingAgents;
 
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
-import NonblockingAgents.Meat;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
-import BlockingAgents.WolfPack;
 import itumulator.world.World;
-
-import java.awt.*;
 
 public class Wolf extends Predator implements DenAnimal, Carnivore {
     Den den;
