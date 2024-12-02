@@ -86,7 +86,7 @@ public class Main {
     static void MattTempTest() {
         //Program descriptions
         int size = 5;
-        int delay = 8;
+        int delay = 800;
         int displaySize = 1000;
 
         //Sets up world
@@ -94,18 +94,18 @@ public class Main {
         World world = program.getWorld();
 
         //Display Information
+        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.gray, "rabbit"));
+        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.gray, "grass"));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.gray, "carcass"));
+
+
 
 
         //Adds agents
         Random random = new Random();
-        WolfPack wolfPack = new WolfPack();
-        Wolf wolf = new Wolf(world, wolfPack);
-        wolfPack.setAlphaWolf(wolf);
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
-        wolf = new Wolf(world);
-        wolfPack.addWolfToPack(wolf);
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
 
         //Shows world
         program.show();

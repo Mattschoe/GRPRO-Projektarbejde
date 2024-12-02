@@ -41,6 +41,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (territory.isEmpty()){
             setTerritory();
         }
+        System.out.println("currently fighting?: " + currentlyFighting);
 
         //Daytime activities
         if (world.isDay()) {
@@ -53,10 +54,13 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
-                move();
                 protectTerritory();
-            } else { //If its not in its territory it moves towards it
-                moveTo(territory.get(0));
+            } else if (!isInTerritory()) { //If its not in its territory it moves towards it
+                moveTo(territory.getFirst());
+            } else if (isHungry()) { //Eats food if its hungry
+                eatFood();
+            } else {
+                move();
             }
         }
 
@@ -107,13 +111,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     /**
      * Returns whether the bear is in its territory or not
-     * @return
+     * @return boolean
      */
     private boolean isInTerritory() {
-        if (territory.contains(world.getLocation(this))) {
-            return true;
-        }
-        return false;
+        return territory.contains(world.getLocation(this));
     }
 
     void protectTerritory(){
@@ -229,7 +230,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             Set<Location> neighbours = world.getEmptySurroundingTiles();
             List<Location> neighbourList = new ArrayList<>(neighbours);
             if (!neighbourList.isEmpty()){
-                Location birthPlace =  neighbourList.get(0);
+                Location birthPlace =  neighbourList.getFirst();
                 world.setTile(birthPlace, cup);
             }
             wantsToBreed = false;

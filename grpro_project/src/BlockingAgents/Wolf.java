@@ -54,7 +54,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 } else {
                     flee();
                 }
-            } else if (isPreyInHuntRadius(huntRadius) && isHungry()) { //MANGLER at implementere
+            } else if (isPreyInHuntRadius(huntRadius) && isHungry()) {
                 hunt(findPrey());
             } else {
                 move();
@@ -82,14 +82,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 isSleeping = true;
             }
         }
-    }
-
-    /**
-     * Returns whether the wolf is hungry or not
-     * @return
-     */
-    private boolean isHungry() {
-        return energyLevel + 10 < maxEnergy;
     }
 
     @Override

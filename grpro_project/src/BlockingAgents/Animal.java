@@ -1,5 +1,7 @@
 package BlockingAgents;
 
+import NonblockingAgents.Bush;
+import NonblockingAgents.Grass;
 import NonblockingAgents.Meat;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
@@ -19,6 +21,7 @@ public abstract class Animal implements Actor {
     protected int maxHealth;
     Location sleepingLocation;
     boolean isSleeping;
+    boolean hasFoundFood;
     Location foodLocation;
 
 
@@ -33,6 +36,7 @@ public abstract class Animal implements Actor {
         sleepingLocation = null;
         isSleeping = false;
         foodLocation = null;
+        hasFoundFood = false;
     }
 
     @Override
@@ -179,12 +183,73 @@ public abstract class Animal implements Actor {
         return maxEnergy;
     }
 
-    protected Location getFoodLocation() { return foodLocation; }
+    /**
+     * Returns whether the animal is hungry or not
+     * @return boolean
+     */
+    protected boolean isHungry() {
+        return energyLevel + 5 < maxEnergy;
+    }
 
     /**
      * Updates the amount of max energy the animal daily has. The method is called each night.
      */
     protected void updateMaxEnergy() {
         maxEnergy = maxEnergy - age;
+    }
+
+    /**
+     * Eats food if standing on it
+     */
+    protected void eatFood() {
+        if (hasFoundFood) { //If the animal has already found food
+            if (world.getSurroundingTiles().contains(foodLocation)) {
+                System.out.println("FOOD FOUND");
+                world.delete(world.getTile(foodLocation));
+                hasFoundFood = false;
+            }
+            System.out.println("Moving to food");
+            moveTo(getFoodLocation());
+        } else { //If it haven't yet found any food
+            System.out.println("Finding food");
+            findFood();
+        }
+    }
+
+    /**
+     * Finds location of a food spot.
+     */
+    private void findFood() {
+        if (this instanceof Herbivore) { //Animal is Plant eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Grass grass) {
+                    foodLocation = world.getLocation(grass);
+                    System.out.println("Found some grass at: " + world.getLocation(grass));
+                    hasFoundFood = true;
+                    break;
+                } else if (object instanceof Bush bush) {
+                    foodLocation = world.getLocation(bush);
+                    hasFoundFood = true;
+                    break;
+                }
+            }
+        }
+        if (this instanceof Carnivore) { //Animal is Meat eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Meat meat) {
+                    foodLocation = world.getLocation(meat);
+                    hasFoundFood = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the location of the plant chosen to be eaten by the wolf. If it hasnt chosen a location the method first finds a location
+     * @return Location
+     */
+    private Location getFoodLocation() {
+        return foodLocation;
     }
 }

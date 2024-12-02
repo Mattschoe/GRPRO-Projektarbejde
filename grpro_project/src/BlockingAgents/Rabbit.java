@@ -32,14 +32,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
-
-                } else if (energyLevel + 10 < maxEnergy) { //If hungry
-                    eatPlant();
-                    try {
-                        moveTo(getEatablePlantLocation());
-                    } catch (Exception e) { //No more grass. Rabbit just moves instead
-                        move();
-                    }
+                    flee();
+                    hide();
+                } else if (energyLevel + 5 < maxEnergy) { //If hungry
+                    System.out.println("is hungry!");
+                    eatFood();
                 } else { //Else moves randomly
                     move();
                 }
@@ -144,6 +141,8 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * Returns location of a grass spot
      */
     public void findEatablePlant() {
+
+
         //Finds a spot of grass if the rabbit hasn't found it
         if (!hasFoundGrass) {
             for (Object object : world.getEntities().keySet()) {
@@ -160,6 +159,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * Checks if we are on a grass tile and eats it if so
      */
     public void eatPlant() {
+        eatFood();
         if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
             world.delete(grass);
             energyLevel = energyLevel + 5;
