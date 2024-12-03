@@ -141,9 +141,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location findDen() {
-
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
+            if (object instanceof Den den ){
                 if (den == this.den) {
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
@@ -152,7 +151,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 }
             }
         }
-        return digDen(); //Makes a new Den if the rabbit cant find any
+        return digDen(); //Makes a new Den if the wolf cant find any
     }
 
     /**
@@ -161,7 +160,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     @Override
     public Location digDen() {
         den = new Den(world, "wolf");
-        den.spawnDen(this);
+        world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
     }
 
@@ -190,4 +189,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         }
         throw new IllegalStateException("Wolfpack is null!");
     }
+
+
 }

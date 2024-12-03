@@ -17,8 +17,8 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        //MattTempTest();
-        JosvaTempTest();
+        MattTempTest();
+        // JosvaTempTest();
         //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
@@ -143,29 +143,37 @@ public class Main {
 
         //Adds agents
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
 
-        //Wolfpack test
-        /* WolfPack wolfPack = new WolfPack();
-        for (int i = 0; i < 4; i++) {
+        /* Wolfpack test */
+        WolfPack wolfPack = new WolfPack();
+
+        //Setting Alpha Wolf
+        wolfPack.setAlphaWolf(new Wolf(world));
+        Location location = new Location(random.nextInt(size), random.nextInt(size));
+        world.setTile(location, new Wolf(world));
+
+
+
+
+        /*
+        //Adding Wolf's to pack
+        for (int i = 0; i < 3; i++) {
             Wolf wolf = new Wolf(world);
+            Location location = new Location(random.nextInt(size), random.nextInt(size));
+
+            while (world.getTile(location) != null) {
+                location = new Location(random.nextInt(size), random.nextInt(size));
+            }
+
             wolfPack.addWolfToPack(wolf);
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
+            world.setTile(location, wolf);
         }
 
-        //Setting AlphaWolf
-        for (Wolf wolf : wolfPack.getWolvesInPack()) {
-            wolfPack.setAlphaWolf(wolf);
-            break;
-        }
-
-        for (Wolf wolf : wolfPack.getWolvesInPack()) {
-            System.out.println(world.getLocation(wolf));
-        } */
-
+        /* Wolfpack test */
 
 
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
