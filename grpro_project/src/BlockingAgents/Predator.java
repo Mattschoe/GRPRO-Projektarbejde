@@ -44,8 +44,10 @@ public abstract class Predator extends Animal{
         preyAnimal = opponentAnimal;
         if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the sourrounding tiles
             kill(opponentAnimal);
+            System.out.println("Killed the " + opponentAnimal);
         } else { //Otherwise it just chases it
             moveTo(world.getLocation(opponentAnimal));
+            System.out.println("Moving towards " + opponentAnimal);
         }
     }
 

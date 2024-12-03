@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class WolfPack {
     Wolf AlphaWolf;
-    Set<Wolf> pack;
-    Den den;
+    HashSet<Wolf> pack;
+    Den packDen;
 
     public WolfPack() {
         pack = new HashSet<Wolf>();
@@ -20,7 +20,6 @@ public class WolfPack {
      */
     public void addWolfToPack(Wolf newWolfToPack) {
         pack.add(newWolfToPack);
-        newWolfToPack.setDen(AlphaWolf.getDen());
     }
 
     /**
@@ -61,5 +60,21 @@ public class WolfPack {
      */
     public void setAlphaWolf(Wolf newAlphaWolf) {
         AlphaWolf = newAlphaWolf;
+    }
+
+    /**
+     * Checks if any
+     * @param newPackDen
+     */
+    public void setPackDen(Den newPackDen) {
+
+    }
+
+    public Wolf getAlphaWolf() {
+        return AlphaWolf;
+    }
+
+    public Den getPackDen() {
+        return packDen;
     }
 }
