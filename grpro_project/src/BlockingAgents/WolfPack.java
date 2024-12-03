@@ -76,6 +76,10 @@ public class WolfPack {
         return alphaWolf;
     }
 
+    public void setDen(Den newDen) {
+        packDen = newDen;
+    }
+
     public Den getPackDen() {
         return packDen;
     }

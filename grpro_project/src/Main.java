@@ -149,7 +149,7 @@ public class Main {
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
 
         /* Wolfpack test */
         WolfPack wolfPack = new WolfPack();
@@ -157,16 +157,17 @@ public class Main {
         //Setting Alpha Wolf
         wolfPack.setAlphaWolf(new Wolf(world));
         Location location = new Location(random.nextInt(size), random.nextInt(size));
-        world.setTile(location, new Wolf(world));
+        world.setTile(location, wolfPack.getAlphaWolf());
+
+        world.setCurrentLocation(location);
+        wolfPack.getAlphaWolf().digDen();
+        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
 
 
-
-
-        /*
         //Adding Wolf's to pack
         for (int i = 0; i < 3; i++) {
             Wolf wolf = new Wolf(world);
-            Location location = new Location(random.nextInt(size), random.nextInt(size));
+            location = new Location(random.nextInt(size), random.nextInt(size));
 
             while (world.getTile(location) != null) {
                 location = new Location(random.nextInt(size), random.nextInt(size));

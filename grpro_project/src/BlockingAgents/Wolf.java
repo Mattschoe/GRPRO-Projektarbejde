@@ -81,7 +81,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             }
         }
 
-        //Nighttime activites
         if (world.isNight() && !isInfected) {
             if (world.getCurrentTime() == 10) {
                 findDen();
