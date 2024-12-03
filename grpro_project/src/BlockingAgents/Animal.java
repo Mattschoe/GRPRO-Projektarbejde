@@ -5,10 +5,8 @@ import NonblockingAgents.Grass;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 
 public abstract class Animal implements Actor {
     protected World world;
@@ -22,6 +20,7 @@ public abstract class Animal implements Actor {
     boolean hasFoundFood;
     Object food;
     Location foodLocation;
+    boolean isInfected;
 
 
 
@@ -32,6 +31,19 @@ public abstract class Animal implements Actor {
         this.maxEnergy = maxEnergy;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
+        sleepingLocation = null;
+        isSleeping = false;
+        hasFoundFood = false;
+    }
+
+    Animal(World world, int age, int maxEnergy, int maxHealth, boolean isInfected) {
+        this.world = world;
+        this.age = age;
+        this.energyLevel = maxEnergy;
+        this.maxEnergy = maxEnergy;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+        this.isInfected = isInfected;
         sleepingLocation = null;
         isSleeping = false;
         hasFoundFood = false;
@@ -48,9 +60,13 @@ public abstract class Animal implements Actor {
     }
 
     protected void die() {
-        Location tempLocation = world.getLocation(this);
-        world.delete(this);
-        world.setTile(tempLocation, new Meat(world,this));
+        try {
+            Location tempLocation = world.getLocation(this);
+            world.delete(this);
+            world.setTile(tempLocation, new Meat(world, this));
+        } catch (IllegalArgumentException e) {
+            System.out.println("It seems " + this + " didn't have a location upon death");
+        }
     }
 
     protected abstract void sleep();
@@ -65,13 +81,14 @@ public abstract class Animal implements Actor {
 
         //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
         if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
+
             //Gets all empty locations
             Set<Location> neighbours = world.getEmptySurroundingTiles();
             List<Location> neighbourList = new ArrayList<>(neighbours);
 
             //Moves to a random neighbour tile, as long as there is one available
             Random random = new Random();
-            if (!neighbourList.isEmpty()){
+            if (!neighbourList.isEmpty()) {
                 Location location = neighbourList.get(random.nextInt(neighbourList.size()));
 
                 //If the location is takem it finds a new one
@@ -81,9 +98,43 @@ public abstract class Animal implements Actor {
 
                 world.move(this, location);
                 world.setCurrentLocation(location);
+
+                if (isInfected) {
+                    energyLevel--;
+                    health--;
+                }
             }
         }
     }
+
+    protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
+        int closestDistance = Integer.MAX_VALUE;
+        Object closestAnimal = null;
+        // Searches through entire species to find the closest (not including this)
+        for (Object object : everyAnimalInSet.keySet()) {
+            if (Math.abs(world.getLocation(object).getX()) < closestDistance && Math.abs(world.getLocation(object).getY()) < closestDistance ) {
+                if (Math.abs(world.getLocation(object).getX()) > Math.abs(world.getLocation(object).getY())) {
+                    closestDistance = Math.abs(world.getLocation(object).getX());
+                    closestAnimal = object;
+                } else {
+                    closestDistance = Math.abs(world.getLocation(object).getY());
+                    closestAnimal = object;
+                }
+            }
+        }
+        return closestAnimal;
+    }
+
+    protected Map<Object, Location> findEveryAnimalInSpecies() {
+        Map<Object, Location> map = new HashMap<>();
+        for (Object object : world.getEntities().keySet()) {
+            if (object.getClass() == this.getClass() && object != this) {
+                map.put(object, world.getLocation(object));
+            }
+        }
+        return map;
+    }
+
 
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location

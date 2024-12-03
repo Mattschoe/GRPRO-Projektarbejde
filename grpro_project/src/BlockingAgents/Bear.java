@@ -34,6 +34,19 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //world.setTile(location, this );
 
     }
+
+    public Bear(World world, boolean isInfected){
+        super(20, world, 50, 50, isInfected);
+        this.world = world;
+        territory = new ArrayList<>();
+        wantsToBreed = false;
+        breedingDelay = 5;
+
+        //world.setTile(location, this );
+
+    }
+
+
     //MANGLER: At hunte efter kaniner
     @Override
     public void act(World world){
@@ -48,6 +61,14 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 System.out.println("BAIII");
                 die();
                 return;
+            }  else if (isInfected) {
+                // Makes sure it doesn't do bear things when infected
+                try {
+                    System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
+                    moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Seems infected animals lose their location when reaching their prey");
+                }
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
@@ -56,16 +77,16 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 moveTo(territory.getFirst());
             }
 
-            if (isHungry()) { //Eats food if it's hungry
+            if (isHungry() && !isInfected) { //Eats food if it's hungry
                 eatFood();
-            } else {
+            }
+            if (!isInfected) {
                 move();
             }
-
         }
 
         //Nighttime activities
-        if (world.isNight()) {
+        if (world.isNight() && !isInfected) {
             updateMaxEnergy();
             sleep();
         }

@@ -17,7 +17,8 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        MattTempTest();
+        //MattTempTest();
+        JosvaTempTest();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -82,6 +83,35 @@ public class Main {
 
         //Shows world
 
+        program.show();
+    }
+
+    static void JosvaTempTest() {
+        //Program descriptions
+        int size = 10;
+        int delay = 200;
+        int displaySize = 1000;
+
+        //Sets up world
+        Program program = new Program(size, displaySize, delay);
+        World world = program.getWorld();
+
+        //Display Information
+        program.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.gray, "rabbit"));
+        program.setDisplayInformation(Grass.class, new DisplayInformation(Color.gray, "grass"));
+        program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
+        program.setDisplayInformation(Meat.class, new DisplayInformation(Color.gray, "carcass"));
+
+
+        //Adds agents
+        Random random = new Random();
+        world.setTile(new Location(3,0), new Bear(world));
+        world.setTile(new Location(3,9), new Bear(world));
+
+
+
+
+        //Shows world
         program.show();
     }
 

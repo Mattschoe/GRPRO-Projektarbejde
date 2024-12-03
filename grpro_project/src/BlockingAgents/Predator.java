@@ -28,6 +28,15 @@ public abstract class Predator extends Animal{
         hasFoundPrey = false;
     }
 
+    Predator(int strength , World world, int maxEnergy, int maxHealth, boolean isInfected){
+        super(world,0,maxEnergy, maxHealth, isInfected);
+        this.strength = strength;
+        this.world = world;
+        currentlyFighting = false;
+        preyAnimal = null;
+        hasFoundPrey = false;
+    }
+
     /**
      * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
      */
