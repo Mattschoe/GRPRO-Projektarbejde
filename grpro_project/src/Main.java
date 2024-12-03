@@ -166,7 +166,7 @@ public class Main {
 
 
         //Adding Wolf's to pack
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             Wolf wolf = new Wolf(world);
             location = new Location(random.nextInt(size), random.nextInt(size));
 
