@@ -141,7 +141,6 @@ public abstract class Animal implements Actor {
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
      */
     protected void moveTo(Location moveToLocation) {
-
         energyLevel--;
 
         int x = 0;
@@ -175,7 +174,7 @@ public abstract class Animal implements Actor {
                 world.setCurrentLocation(newLocation);
             }
         } catch (IllegalArgumentException e) {
-            //move();
+            move();
         }
 
     }
@@ -219,7 +218,7 @@ public abstract class Animal implements Actor {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
         } catch (IllegalArgumentException e) {
-            //move();
+            move();
         }
     }
 

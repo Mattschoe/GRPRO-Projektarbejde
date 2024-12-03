@@ -173,7 +173,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     }
 
     /**
-     * Returns the wolfs pack
+     * Returns the wolf's
      * @return
      */
     public WolfPack getWolfpack() {

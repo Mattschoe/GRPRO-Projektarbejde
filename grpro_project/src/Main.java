@@ -144,6 +144,7 @@ public class Main {
         //Adds agents
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
         world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
 

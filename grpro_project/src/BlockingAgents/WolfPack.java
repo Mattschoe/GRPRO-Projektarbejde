@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import itumulator.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +16,13 @@ public class WolfPack {
     }
 
     /**
-     * Adds a new wolf to the Alpha Wolf's pack
+     * Adds a new wolf to the Alpha Wolf's pack, also
      * @param newWolfToPack
      */
     public void addWolfToPack(Wolf newWolfToPack) {
         pack.add(newWolfToPack);
+
+
     }
 
     /**
@@ -60,14 +63,6 @@ public class WolfPack {
      */
     public void setAlphaWolf(Wolf newAlphaWolf) {
         AlphaWolf = newAlphaWolf;
-    }
-
-    /**
-     * Checks if any
-     * @param newPackDen
-     */
-    public void setPackDen(Den newPackDen) {
-
     }
 
     public Wolf getAlphaWolf() {
