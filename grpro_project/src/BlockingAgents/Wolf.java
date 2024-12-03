@@ -129,16 +129,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location findDen() {
-        //SKAL LIGE FIKSET
-        /* for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den den && den.getOwner() == this){
-                if (world.isTileEmpty(world.getLocation(den))){
-                    this.den = den;
-                    return world.getLocation(den);
+
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
+                if (den == this.den) {
+                    if (world.isTileEmpty(world.getLocation(den))){
+                        this.den = den;
+                        return world.getLocation(den);
+                    }
                 }
             }
         }
-        return digDen(); //Makes a new Den if the rabbit cant find any */
+        return digDen(); //Makes a new Den if the rabbit cant find any
     }
 
     /**
