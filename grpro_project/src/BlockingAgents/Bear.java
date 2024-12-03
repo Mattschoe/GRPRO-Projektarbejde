@@ -51,6 +51,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     //MANGLER: At hunte efter kaniner
     @Override
     public void act(World world){
+        try {
         if (territory.isEmpty()){
             setTerritory();
         }
@@ -89,6 +90,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (world.isNight() && !isInfected) {
             updateMaxEnergy();
             sleep();
+        }} catch (IllegalArgumentException e) {
+
         }
     }
 
