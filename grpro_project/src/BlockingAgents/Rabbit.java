@@ -33,13 +33,8 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
             if (world.isDay()) {
                 isSleeping = false;
                 if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
-                    try {
-                        world.setTile(sleepingLocation, this);
-                        world.setCurrentLocation(sleepingLocation);
-                        sleepingLocation = null;
-                    } catch (IllegalArgumentException e) {
-
-                    }
+                    world.setTile(sleepingLocation, this);
+                    sleepingLocation = null;
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (isInfected) {
@@ -65,10 +60,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
             //Nighttime activities:
             if (world.isNight() && !isInfected) {
                 if (world.getCurrentTime() == 10) {
-                    if (burrow == null ) {
-                        findDen();
-                    }
-
+                    findDen();
                     updateMaxEnergy();
                 }
 
@@ -86,7 +78,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
 
                     isSleeping = true;
-
                 }
             }
         }
@@ -166,7 +157,11 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * instantiates a new burrow (Den) on the current location. Only makes a burrow if there isnt a predator nearby
      */
     public Location digDen() {
+<<<<<<< HEAD
         burrow = new Den(world, this, false);
+=======
+        burrow = new Den(world,  "rabbit");
+>>>>>>> Reroll-Back
         burrow.spawnDen(this);
 
         return world.getLocation(burrow);
