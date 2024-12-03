@@ -109,7 +109,7 @@ public class Main {
         //Adds agents
         Random random = new Random();
         world.setTile(new Location(0,0), new Bear(world, true));
-        world.setTile(new Location(9,7), new Bear(world, true));
+        //world.setTile(new Location(9,7), new Bear(world));
 
 
 

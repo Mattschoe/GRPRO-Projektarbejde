@@ -114,7 +114,7 @@ public abstract class Animal implements Actor {
         Object closestAnimal = null;
         // Searches through entire species to find the closest (not including this)
         for (Object object : everyAnimalInSet.keySet()) {
-            if (Math.abs(world.getLocation(object).getX()) < closestDistance && Math.abs(world.getLocation(object).getY()) < closestDistance ) {
+            if ( !(((Animal) object).isInfected) && Math.abs(world.getLocation(object).getX()) < closestDistance && Math.abs(world.getLocation(object).getY()) < closestDistance ) {
                 if (Math.abs(world.getLocation(object).getX()) > Math.abs(world.getLocation(object).getY())) {
                     closestDistance = Math.abs(world.getLocation(object).getX());
                     closestAnimal = object;

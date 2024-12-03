@@ -64,7 +64,11 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 return;
             }  else if (isInfected) {
                 // Makes sure it doesn't do bear things when infected
-                moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                if (findClosestInSet(findEveryAnimalInSpecies()) != null) {
+                    moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                } else {
+                    move();
+                }
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
