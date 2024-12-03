@@ -103,9 +103,17 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
+            if (isInfected) {
+            return new DisplayInformation(Color.red, "bear-fungi-sleeping");
+            } else {
             return new DisplayInformation(Color.red, "bear-sleeping");
+            }
         } else {
+            if (isInfected) {
+                return new DisplayInformation(Color.blue, "bear-fungi");
+            } else {
             return new DisplayInformation(Color.blue, "bear");
+            }
         }
 
     }

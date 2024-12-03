@@ -18,8 +18,8 @@ import itumulator.world.World;
 public class Main {
     public static void main(String[] args) {
         //MattTempTest();
-        //JosvaTempTest();
-        Week2Test();
+        JosvaTempTest();
+        //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -91,7 +91,7 @@ public class Main {
 
     static void JosvaTempTest() {
         //Program descriptions
-        int size = 10;
+        int size = 3;
         int delay = 200;
         int displaySize = 1000;
 
@@ -108,8 +108,8 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(3,0), new Bear(world));
-        world.setTile(new Location(3,9), new Bear(world));
+        world.setTile(new Location(0,0), new Bear(world, true));
+        world.setTile(new Location(2,2), new Bear(world));
 
 
 

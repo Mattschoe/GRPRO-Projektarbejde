@@ -122,9 +122,17 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping){
+            if (isInfected) {
+                return new DisplayInformation(Color.GRAY, "rabbit-fungi-small-sleeping");
+            } else {
             return new DisplayInformation(Color.BLUE, "rabbit-small-sleeping");
+            }
         } else {
+            if (isInfected) {
+                return new DisplayInformation(Color.GRAY, "rabbit-fungi-small");
+            } else {
             return new DisplayInformation(Color.GRAY, "rabbit-small");
+            }
         }
     }
 
