@@ -16,6 +16,13 @@ public abstract class Prey extends Animal {
         predator = null;
     }
 
+    Prey(World world, int age, int maxEnergy, int health, boolean isInfected) {
+        super(world, age, maxEnergy, health, isInfected);
+        this.world = world;
+        isHiding = false;
+        predator = null;
+    }
+
     /**
      * Detects predators in a "fleeRadius" radius.
      */

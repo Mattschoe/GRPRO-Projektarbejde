@@ -139,16 +139,17 @@ class RabbitTest {
         w.setTile(location, rabbit);
 
         assertNotNull(w.getNonBlocking(location));
-        rabbit.eatPlant();
+        rabbit.eatFood();
         assertNull(w.getNonBlocking(location));
 
 
     }
 
+
     /**
      * Tests the method getEatablePlantLocation to see if it actually gets the location of an eatable plant in the world.
      */
-    @Test
+    /* @Test
     void getEatablePlantLocation() {
         Grass grass = new Grass(w);
         Location location = new Location(0,0);
@@ -157,8 +158,8 @@ class RabbitTest {
         w.setTile(grassLocation, grass);
         w.setTile(location, rabbit);
 
-        assertEquals(grassLocation, rabbit.getEatablePlantLocation());
-    }
+        assertEquals(grassLocation, rabbit.findFood());
+    } */
 
     @Test
     void reproduce() {

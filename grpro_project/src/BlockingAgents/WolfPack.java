@@ -2,44 +2,64 @@ package BlockingAgents;
 
 import NonblockingAgents.Den;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public abstract class WolfPack {
-
-    Wolf wolf;
+public class WolfPack {
+    Wolf AlphaWolf;
     Set<Wolf> pack;
     Den den;
 
-    WolfPack(Wolf wolf) {
+    public WolfPack() {
         pack = new HashSet<Wolf>();
-        this.wolf = wolf;
-        pack.add(this.wolf);
-
     }
 
-    public void addWolf(Wolf wolf) {
-        pack.add(wolf);
-        wolf.den = this.den;
+    /**
+     * Adds a new wolf to the Alpha Wolf's pack
+     * @param newWolfToPack
+     */
+    public void addWolfToPack(Wolf newWolfToPack) {
+        pack.add(newWolfToPack);
+        newWolfToPack.setDen(AlphaWolf.getDen());
     }
 
+    /**
+     * Checks if a certain wolf is in pack.
+     * @param wolf
+     * @return
+     */
     public boolean wolfIsInPack(Wolf wolf) {
-        for (Wolf packmember : getWolves() ) {
-            if (wolf == packmember) {
+        for (Wolf packWolfs : getWolvesInPack() ) {
+            if (wolf == packWolfs) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removeWolf(Wolf wolf) {
-        pack.remove(wolf);
+    /**
+     * Removes wolf from pack
+     * @param wolf
+     */
+    public void removeWolfFromPack(Wolf wolf) {
+        if (wolfIsInPack(wolf)) {
+            pack.remove(wolf);
+        }
     }
 
-    public Set<Wolf> getWolves() {
+    /**
+     * Returns all wolfs in the pack
+     * @return
+     */
+    public Set<Wolf> getWolvesInPack() {
         return pack;
     }
 
+    /**
+     * Changes the Alpha wolf of the pack to "newAlphaWolf".
+     * @param newAlphaWolf
+     */
+    public void setAlphaWolf(Wolf newAlphaWolf) {
+        AlphaWolf = newAlphaWolf;
+    }
 }

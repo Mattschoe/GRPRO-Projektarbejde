@@ -15,7 +15,7 @@ public class Bush implements Actor, DynamicDisplayInformationProvider {
     public Bush(World world) {
 
         this.world = world;
-        hasBerries = false;
+        hasBerries = true;
         reGrowDays = 2;
     }
 
@@ -26,7 +26,6 @@ public class Bush implements Actor, DynamicDisplayInformationProvider {
 
         if (world.getCurrentTime() == 19 && !hasBerries) {
             reGrowDays -= 1;
-            System.out.println("regrow " + reGrowDays);
         }
         if (reGrowDays <= 0){
             grow();
