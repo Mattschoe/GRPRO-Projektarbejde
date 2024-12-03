@@ -43,12 +43,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         die();
                     } else if (isInfected) {
                         // Makes sure it doesn't do wolf things when infected
-                        try {
-                            System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
-                            moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Seems infected animals lose their location when reaching their prey");
-                        }
+                        infectedMove();
                     } else if (detectPredator(2)) { //If predator nearby
                         System.out.println("FLEEING!");
                         flee();
