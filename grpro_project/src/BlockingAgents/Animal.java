@@ -166,17 +166,12 @@ public abstract class Animal implements Actor {
 
         //Moves
         Location newLocation = new Location(x, y);
-        //Tries to move unless there is a object in the way
-        try {
-            //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
-            if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
-                world.move(this, newLocation);
-                world.setCurrentLocation(newLocation);
-            }
-        } catch (IllegalArgumentException e) {
+        if (world.getTile(newLocation) != null) {
             move();
+        } else if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
+            world.move(this, newLocation);
+            world.setCurrentLocation(newLocation);
         }
-
     }
 
     /**

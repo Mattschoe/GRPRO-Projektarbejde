@@ -35,6 +35,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
+    //Skal lige op i den gamle
     public Bear(World world, boolean isInfected){
         super(20, world, 50, 50, isInfected);
         this.world = world;
@@ -63,12 +64,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 return;
             }  else if (isInfected) {
                 // Makes sure it doesn't do bear things when infected
-                try {
-                    System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
-                    moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Seems infected animals lose their location when reaching their prey");
-                }
+                moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
@@ -78,7 +74,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
 
             if (isHungry() && !isInfected) { //Eats food if it's hungry
-                eatFood();
+                // eatFood();
             }
             if (!isInfected) {
                 move();
