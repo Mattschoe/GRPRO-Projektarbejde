@@ -17,8 +17,8 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        //ShowDropTestHereTests();
-        MattTempTest();
+        ShowDropTestHereTests();
+        //MattTempTest();
         //JosvaTempTest();
         //Week2Test();
     }
@@ -111,7 +111,7 @@ public class Main {
         Random random = new Random();
 
         world.setTile(new Location(2,0), new Bear(world, true));
-        world.setTile(new Location(0,0), new Wolf(world, true));
+        world.setTile(new Location(0,0), new Wolf(world, false));
         world.setTile(new Location(3,0), new Rabbit(world, true));
         world.setTile(new Location(2,2), new Wolf(world));
 

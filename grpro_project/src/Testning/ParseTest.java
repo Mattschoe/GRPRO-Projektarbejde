@@ -64,15 +64,18 @@ public class ParseTest {
         String object = "";
         int amount = 0;
         Location bearTerritoryCentrum;
-        int infectedCounter = 0;
-        int extraCounter = 0;
-        boolean isInfected = false;
+
 
         scanner.nextLine();
         while (scanner.hasNextLine()) {
+            int infectedCounter = 0;
+            int extraCounter = 0;
+            boolean isInfected = false;
             //Saves object and amount
             String line = scanner.nextLine();
+            System.out.println(line);
             String[] lineSplit = line.split("[-\\s(),]+");
+            System.out.println(Arrays.toString(lineSplit));
 
             if (lineSplit.length > 1 && (lineSplit[0].length() == 9)) { // 9 is cordyceps
                 extraCounter = 1;
