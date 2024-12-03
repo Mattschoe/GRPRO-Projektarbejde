@@ -4,6 +4,7 @@ import BlockingAgents.Bear;
 import BlockingAgents.Meat;
 import BlockingAgents.Rabbit;
 import BlockingAgents.Wolf;
+import BlockingAgents.WolfPack;
 import NonblockingAgents.*;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
@@ -102,6 +103,36 @@ public class ParseTest {
                 bearTerritoryCentrum = new Location(Integer.parseInt(lineSplit[2 + infectedCounter]), Integer.parseInt(lineSplit[3 + infectedCounter]));
             }
 
+            // XXX
+            if (object.equals("wolf")) {
+                WolfPack wolfPack = new WolfPack();
+                //Setting Alpha Wolf
+                wolfPack.setAlphaWolf(new Wolf(world, isInfected));
+
+                Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
+                while (world.getTile(location) != null) {
+                    location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
+                }
+                world.setTile(location, wolfPack.getAlphaWolf());
+
+                world.setCurrentLocation(location);
+                wolfPack.getAlphaWolf().digDen();
+                wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+
+                //Adding Wolf's to pack
+                for (int i = 0; i < amount; i++) {
+                    Wolf wolf = new Wolf(world, isInfected);
+
+                    while (world.getTile(location) != null) {
+                        location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
+                    }
+
+                    wolfPack.addWolfToPack(wolf);
+                    world.setTile(location, wolf);
+                }
+
+
+            }
 
             //Instantiate objects.
             random = new Random();
@@ -118,7 +149,6 @@ public class ParseTest {
                     if (object.equals("grass")) world.setTile(location, new Grass(world));
                     else if (object.equals("rabbit")) world.setTile(location, new Rabbit(world, isInfected));
                     else if (object.equals("burrow")) world.setTile(location, new Den(world, "rabbit"));
-                    else if (object.equals("wolf")) world.setTile(location, new Wolf(world, isInfected));
                     else if (object.equals("bear")) world.setTile(location, new Bear(world, isInfected));
                     else if (object.equals("berry")) world.setTile(location, new Bush(world));
                     else if (object.equals("Carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected))); // Der findes 1 test hvor carcass er med stort. Der giver ikke mening

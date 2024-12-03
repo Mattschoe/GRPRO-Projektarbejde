@@ -20,6 +20,7 @@ public class WolfPack {
      */
     public void addWolfToPack(Wolf newWolfToPack) {
         pack.add(newWolfToPack);
+        newWolfToPack.wolfpack = this;
 
         //Sets the Den of the new Wolf in the pack to the Alpha Wolf's
         if (alphaWolf.getDen() != null) {

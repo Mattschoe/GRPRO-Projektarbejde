@@ -115,9 +115,6 @@ public class Main {
         world.setTile(new Location(3,0), new Rabbit(world, true));
         world.setTile(new Location(2,2), new Wolf(world));
 
-
-
-
         //Shows world
         program.show();
     }
