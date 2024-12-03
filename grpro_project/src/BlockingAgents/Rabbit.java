@@ -20,6 +20,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         hasFoundGrass = false;
     }
 
+    public Rabbit(World world, boolean isInfected) {
+        super(world,1,40, 1, isInfected);
+        fleeRadius = 2;
+        hasFoundGrass = false;
+    }
+
     @Override
     public void act(World world) {
         if (!isHiding) {
@@ -31,19 +37,27 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     sleepingLocation = null;
                 } else if (energyLevel <= 0) {
                     die();
-                } else if (detectPredator(2)) { //If predator nearby
+                } else if (isInfected) {
+                    // Makes sure it doesn't do wolf things when infected
+                    try {
+                        System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
+                        moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Seems infected animals lose their location when reaching their prey");
+                    }
+                }else if (detectPredator(2)) { //If predator nearby
                     System.out.println("FLEEING!");
                     flee();
                     hide();
                 } else if (energyLevel + 5 < maxEnergy) { //If hungry
                     eatFood();
-                } else { //Else moves randomly
+                } else if (!isInfected) { //Else moves randomly
                     move();
                 }
             }
 
             //Nighttime activities:
-            if (world.isNight()) {
+            if (world.isNight() && !isInfected) {
                 if (world.getCurrentTime() == 10) {
                     findDen();
                     updateMaxEnergy();

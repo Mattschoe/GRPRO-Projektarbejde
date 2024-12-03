@@ -23,6 +23,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         huntRadius = 2;
     }
 
+    public Wolf(World world, boolean isInfected) {
+        super(20, world, 30, 20, isInfected);
+        huntRadius = 2;
+    }
+
     /**
      * Wolf with a Wolfpack where its the alpha
      * @param world
@@ -30,6 +35,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     public Wolf(World world, WolfPack wolfpack) {
         super(29, world, 30, 20);
+        this.wolfpack = wolfpack;
+    }
+
+    public Wolf(World world, WolfPack wolfpack, boolean isInfected) {
+        super(29, world, 30, 20, isInfected);
         this.wolfpack = wolfpack;
     }
 
@@ -46,6 +56,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 sleepingLocation = null;
             } else if (energyLevel <= 0) {
                 die();
+            } else if (isInfected) {
+                // Makes sure it doesn't do wolf things when infected
+                try {
+                    System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
+                    moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Seems infected animals lose their location when reaching their prey");
+                }
             } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
                 if (health > 5) {
                     fight();
@@ -59,11 +77,13 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                     hunt(findPrey());
                 }
             }
-            move();
+            if (!isInfected) {
+                move();
+            }
         }
 
         //Nighttime activites
-        if (world.isNight()) {
+        if (world.isNight() && !isInfected) {
             if (world.getCurrentTime() == 10) {
                 findDen();
                 updateMaxEnergy();
