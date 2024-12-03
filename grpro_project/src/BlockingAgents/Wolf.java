@@ -20,7 +20,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     public Wolf(World world) {
         super(20, world, 30, 20);
-        huntRadius = 2;
+        huntRadius = 3;
     }
 
     /**
@@ -35,9 +35,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
 
     //MANGLER: At få en wolfpack
-
     public void act(World world) {
-
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -52,14 +50,19 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 } else {
                     flee();
                 }
-            } else if (isHungry()) { //First checks if there is any easy meat close, otherwise it starts hunting. If neither it just moves.
+            } else {
+                move();
+            }
+
+            //Praise the Holy Grail of If-Statements
+            if (isHungry() && sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
+                //First checks if there is any easy meat close, otherwise it starts hunting. If neither it just moves.
                 if (isThereFreshMeat()) {
                     eatFood();
                 } else if (isPreyInHuntRadius(huntRadius)) {
                     hunt(findPrey());
                 }
             }
-            move();
         }
 
         //Nighttime activites
@@ -77,7 +80,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                     isSleeping = true;
                     world.remove(this);
                 } else if (!isSleeping) {
-                    System.out.println("Moving from: " + world.getLocation(this) + " to: " + world.getLocation(den));
                     moveTo(world.getLocation(den));
                 }
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow

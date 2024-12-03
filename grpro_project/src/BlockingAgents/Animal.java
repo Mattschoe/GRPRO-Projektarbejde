@@ -264,7 +264,7 @@ public abstract class Animal implements Actor {
      */
     public boolean isThereFreshMeat() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Meat meat && meat.getAge() == 0) {
+            if (object instanceof Meat meat && meat.getAge() < 2) {
                 return true;
             }
         }

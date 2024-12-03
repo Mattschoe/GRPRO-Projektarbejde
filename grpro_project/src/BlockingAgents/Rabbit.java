@@ -32,7 +32,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 } else if (energyLevel <= 0) {
                     die();
                 } else if (detectPredator(2)) { //If predator nearby
-                    System.out.println("FLEEING!");
                     flee();
                     hide();
                 } else if (energyLevel + 5 < maxEnergy) { //If hungry
@@ -82,7 +81,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
             if (world.getSurroundingTiles(world.getLocation(this)).contains(burrow)) {
                 moveTo(world.getLocation(burrow));
             } else {
-                sprintTo(world.getLocation(burrow));
+                moveTo(world.getLocation(burrow));
             }
         } else { //Runs the opposite direction of the predator if it doesn't have a burrow
             moveAwayFrom(world.getLocation(predator));
@@ -129,11 +128,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     }
 
     /**
-     * instantiates a new RabbitDens on the current location.
+     * instantiates a new burrow (Den) on the current location. Only makes a burrow if there isnt a predator nearby
      */
     public Location digDen() {
         burrow = new Den(world, this, false);
         burrow.spawnDen();
+
         return world.getLocation(burrow);
     }
 

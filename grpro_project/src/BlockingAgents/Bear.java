@@ -56,11 +56,12 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 moveTo(territory.getFirst());
             }
 
-
             if (isHungry()) { //Eats food if it's hungry
                 eatFood();
+            } else {
+                move();
             }
-            move();
+
         }
 
         //Nighttime activities

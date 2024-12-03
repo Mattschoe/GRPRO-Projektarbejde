@@ -32,26 +32,22 @@ public abstract class Predator extends Animal{
      * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
      */
     protected void hunt (Animal opponentAnimal){
-        this.preyAnimal = opponentAnimal;
-        if (isPreyInHuntRadius(1)) { //Kills prey if its in one of the sorrounding tiles
-            System.out.println("Im close enough to kill my prey!");
+        preyAnimal = opponentAnimal;
+        if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the sourrounding tiles
             kill(opponentAnimal);
         } else { //Otherwise it just chases it
-            System.out.println("Im chasing a animal!");
             moveTo(world.getLocation(opponentAnimal));
         }
     }
 
     /**
-     * Kills prey if its nearby
+     * Kills prey if its nearby.
      */
     protected void kill(Animal animalToKill) {
-        /*world.delete(animalToKill);
-        System.out.println("MUMS"); */
+        animalToKill.die();
     }
 
     //SKAL ÆNDRES!!
-
     protected void fight () {
         /*try {
             currentlyFighting = true;
@@ -82,18 +78,15 @@ public abstract class Predator extends Animal{
      */
     protected Animal findPrey() {
         if (hasFoundPrey) {
-            System.out.println("Already found a prey!");
             return preyAnimal;
         } else {
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Prey prey) {
                     hasFoundPrey = true;
-                    System.out.println("Found prey!");
                     return prey;
                 }
             }
         }
-        System.out.println("No prey found and none already found!");
         return null;
     }
 
