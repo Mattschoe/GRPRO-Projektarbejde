@@ -96,16 +96,17 @@ public abstract class Animal implements Actor {
                 while (!world.isTileEmpty(location)) {
                     location = neighbourList.get(random.nextInt(neighbourList.size()));
                 }
-
                 world.move(this, location);
                 world.setCurrentLocation(location);
+
 
                 if (isInfected) {
                     energyLevel--;
                     health--;
                 }
             }
-        } } catch (IllegalArgumentException e) {}
+        }
+        } catch (IllegalArgumentException e) {}
     }
 
     protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
@@ -167,15 +168,18 @@ public abstract class Animal implements Actor {
         //Moves
         Location newLocation = new Location(x, y);
         //Tries to move unless there is a object in the way
-        try {
-            //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
-            if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
-                world.move(this, newLocation);
-                world.setCurrentLocation(newLocation);
-            }
-        } catch (IllegalArgumentException e) {
-            move();
+        //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
+        if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this) && world.isTileEmpty(newLocation)) {
+            world.move(this, newLocation);
+            world.setCurrentLocation(newLocation);
         }
+        /* try {
+
+        } catch (IllegalArgumentException e) {
+            if (!isInfected) {
+                move();
+            }
+        } */
 
     }
 

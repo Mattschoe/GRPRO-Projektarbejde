@@ -20,6 +20,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         hasFoundGrass = false;
     }
 
+    public Rabbit(World world, boolean isInfected) {
+        super(world,1,40, 1, isInfected);
+        fleeRadius = 2;
+        hasFoundGrass = false;
+    }
+
     @Override
     public void act(World world) {
         try {
