@@ -140,6 +140,10 @@ class RabbitTest {
 
         assertNotNull(w.getNonBlocking(location));
         rabbit.eatFood();
+        rabbit.act(w);
+        rabbit.eatFood();
+
+
         assertNull(w.getNonBlocking(location));
 
 
@@ -163,9 +167,6 @@ class RabbitTest {
 
     @Test
     void reproduce() {
-
-
-
 
     }
 }
