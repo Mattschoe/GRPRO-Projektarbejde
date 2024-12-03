@@ -137,7 +137,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den ){
                 if (den == this.den) {
-                    this.den = den;
                     return world.getLocation(den);
                 }
             }
