@@ -91,7 +91,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             }
 
             //Moves towards den until its the middle of the night'
-            if (world.getCurrentTime() < 15) {
+            /* if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                 if (!isSleeping && den.isOwnerOnDen()) {
                     sleepingLocation = world.getLocation(den);
@@ -102,7 +102,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 }
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow
                 isSleeping = true;
-            }
+            } */
         }
     }
 
@@ -129,7 +129,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location findDen() {
-        for (Object object : world.getEntities().keySet()) {
+        //SKAL LIGE FIKSET
+        /* for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den && den.getOwner() == this){
                 if (world.isTileEmpty(world.getLocation(den))){
                     this.den = den;
@@ -137,7 +138,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 }
             }
         }
-        return digDen(); //Makes a new Den if the rabbit cant find any
+        return digDen(); //Makes a new Den if the rabbit cant find any */
     }
 
     /**
@@ -145,9 +146,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location digDen() {
-        den = new Den(world, this, false);
+        /* Den = new Den(world, this, false);
         den.spawnDen();
         return world.getLocation(den);
+        */
+        return null;
     }
 
     /**
