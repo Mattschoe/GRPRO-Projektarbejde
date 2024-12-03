@@ -17,8 +17,9 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
+        //ShowDropTestHereTests();
         MattTempTest();
-        // JosvaTempTest();
+        //JosvaTempTest();
         //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
@@ -128,7 +129,7 @@ public class Main {
 
     static void simulation() {
         //Program descriptions
-        int size = 15;
+        int size = 5;
         int delay = 200;
         int displaySize = 1000;
 

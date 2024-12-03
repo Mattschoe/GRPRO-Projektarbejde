@@ -13,12 +13,27 @@ public class Meat implements Actor {
     World world;
     int energyLevel;
     Animal animal;
-    public boolean infected = false;
+    public boolean isInfected;
     int age;
 
     public Meat(World world, Animal animal) {
         this.world = world;
         this.animal = animal;
+        this.isInfected = false;
+        age = 0;
+
+        if (this.animal instanceof Carnivore) {
+            this.energyLevel = 50;
+        } else { // Herbivore
+            this.energyLevel = 20;
+        }
+
+    }
+
+    public Meat(World world, Animal animal, boolean isInfected) {
+        this.world = world;
+        this.animal = animal;
+        this.isInfected = isInfected;
         age = 0;
 
         if (this.animal instanceof Carnivore) {
@@ -33,11 +48,11 @@ public class Meat implements Actor {
     public void act(World world) {
         this.world = world;
         this.energyLevel--;
-        if (this.infected) {
+        if (this.isInfected) {
             this.energyLevel--;
         }
         if (this.energyLevel < 1) { //can die without being eaten
-            if (this.infected) { // spawns mushroom if infected, otherwise just dies
+            if (this.isInfected) { // spawns mushroom if infected, otherwise just dies
                 Location tempLocation = world.getCurrentLocation();
                 spawnMushroom(tempLocation);
             }
@@ -81,10 +96,10 @@ public class Meat implements Actor {
     }
 
     public boolean isInfected() {
-        return infected;
+        return isInfected;
     }
 
     public void setInfected(boolean infected) {
-        this.infected = infected;
+        this.isInfected = infected;
     }
 }
