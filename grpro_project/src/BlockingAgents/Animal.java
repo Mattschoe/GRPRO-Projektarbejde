@@ -43,10 +43,10 @@ public abstract class Animal implements Actor {
         this.maxEnergy = maxEnergy;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
-        this.isInfected = isInfected;
         sleepingLocation = null;
         isSleeping = false;
         hasFoundFood = false;
+        this.isInfected = isInfected;
     }
 
     @Override
