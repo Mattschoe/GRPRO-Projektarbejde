@@ -77,6 +77,7 @@ public abstract class Animal implements Actor {
      * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
      */
     protected void move() {
+        try {
         energyLevel--;
 
         //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
@@ -104,7 +105,7 @@ public abstract class Animal implements Actor {
                     health--;
                 }
             }
-        }
+        } } catch (IllegalArgumentException e) {}
     }
 
     protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
@@ -140,6 +141,7 @@ public abstract class Animal implements Actor {
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
      */
     protected void moveTo(Location moveToLocation) {
+
         energyLevel--;
 
         int x = 0;
@@ -173,7 +175,7 @@ public abstract class Animal implements Actor {
                 world.setCurrentLocation(newLocation);
             }
         } catch (IllegalArgumentException e) {
-            move();
+            //move();
         }
 
     }
@@ -217,7 +219,7 @@ public abstract class Animal implements Actor {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
         } catch (IllegalArgumentException e) {
-            move();
+            //move();
         }
     }
 

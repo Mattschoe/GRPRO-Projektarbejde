@@ -41,6 +41,7 @@ public abstract class Predator extends Animal{
      * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
      */
     protected void hunt (Animal opponentAnimal){
+        try {
         preyAnimal = opponentAnimal;
         if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the sourrounding tiles
             kill(opponentAnimal);
@@ -48,13 +49,15 @@ public abstract class Predator extends Animal{
         } else { //Otherwise it just chases it
             moveTo(world.getLocation(opponentAnimal));
             System.out.println("Moving towards " + opponentAnimal);
-        }
+        } }
+        catch (IllegalArgumentException e){}
     }
 
     /**
      * Kills prey if its nearby.
      */
     protected void kill(Animal animalToKill) {
+        System.out.println("Killing " + animalToKill);
         animalToKill.die();
     }
 
