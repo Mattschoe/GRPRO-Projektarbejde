@@ -48,7 +48,6 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
          */
     public boolean isAnimalOnDen (Animal animal) {
             try {
-                System.out.println(world.getLocation(this));
                 if (world.getLocation(this).equals(world.getLocation(animal))) {
 
                     if (denType.equals("wolf") && animal instanceof Wolf || denType.equals("rabbit") && animal instanceof Rabbit) {

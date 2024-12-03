@@ -97,15 +97,16 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
-            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
+            } else if (!isSleeping) { //Didnt reach the burrow
                 isSleeping = true;
+                getInformation();
             }
-        }} catch (IllegalArgumentException e) {
-        }
+        }} catch (IllegalArgumentException e) {}
     }
 
     @Override
     public DisplayInformation getInformation() {
+        System.out.println(isSleeping);
         if (isSleeping) {
             if (isInfected) {
                 return new DisplayInformation(Color.red, "wolf-fungi-sleeping");
