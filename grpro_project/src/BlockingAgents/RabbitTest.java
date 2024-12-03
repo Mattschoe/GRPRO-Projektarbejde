@@ -5,6 +5,7 @@ import NonblockingAgents.Grass;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -23,7 +24,7 @@ class RabbitTest {
     @Test
     void TestFleeToBurrow() {
 
-        Den burrow = new Den(w, rabbit, false);
+        Den burrow = new Den(w, "rabbit");
         Location location = new Location(0,0);
         Location burrowLocation = new Location(1,1);
 
@@ -42,7 +43,7 @@ class RabbitTest {
     @Test
     void findDen() {
 
-        Den burrow = new Den(w,rabbit,false );
+        Den burrow = new Den(w,"rabbit" );
         Location location = new Location(0,0);
         Location burrowLocation = new Location(1,1);
 
@@ -51,9 +52,8 @@ class RabbitTest {
         w.setTile(burrowLocation, burrow);
 
        // System.out.println(rabbit.findDen());
-
         assertEquals(burrowLocation, rabbit.findDen());
-        assertNotNull(burrow.getOwner());
+
 
 
     }
@@ -75,30 +75,38 @@ class RabbitTest {
     /**
      * Tests if the rabbit is removed from the map if sleeping and there is a burrow close by.
      */
-    @Test
+    @RepeatedTest(20)
     void TestSleepingInDens(){
         Rabbit rabbit = new Rabbit(w);
-        Den burrow = new Den(w,rabbit,false);
+        Rabbit rabbit1 = new Rabbit(w);
+        Den burrow = new Den(w,"rabbit");
         Location location = new Location(0,0);
+        Location location1 = new Location(1,0);
         w.setCurrentLocation(location);
         w.setTile(location, rabbit);
+        w.setTile(location1, rabbit1);
         w.setTile(new Location(1,1), burrow);
 
         for (int i = 0; i < 40; i++) {
 
-            if(rabbit.getIsSleeping()){
+            if(rabbit.getIsSleeping() && rabbit1.getIsSleeping()){
 
 
                 assertThrows(IllegalArgumentException.class, () -> {
                     w.getLocation(rabbit);}); // the rabbit is not on the map at night if it is in the burrow;
+            assertThrows(IllegalArgumentException.class, () -> {
+                w.getLocation(rabbit1);});
+            Set<Den> dens = w.getAll(Den.class,w.getSurroundingTiles(location));
+
+            assertEquals(1, dens.size());
             }
-            else {
+            else if (!rabbit.getIsSleeping() && !rabbit1.getIsSleeping()){
                 assertNotNull(w.getLocation(rabbit));
             }
             rabbit.act(w);
             w.step();
 
-    }
+        }
     }
 
 

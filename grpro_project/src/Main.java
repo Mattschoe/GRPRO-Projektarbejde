@@ -45,7 +45,7 @@ public class Main {
     //Skal slettes senere
     public static void Week2Test() {
         //Program descriptions
-        int size = 15;
+        int size = 5;
         int delay = 500;
         int displaySize = 1000;
 
@@ -68,18 +68,20 @@ public class Main {
         try {
             Random random = new Random();
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
+            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Den(world, "rabbit"));
         } catch (IllegalArgumentException e) {
             Random random = new Random();
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+            /*world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
-        }
+        */}
 
         //Shows world
 
