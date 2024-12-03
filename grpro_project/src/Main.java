@@ -128,7 +128,7 @@ public class Main {
 
     static void simulation() {
         //Program descriptions
-        int size = 5;
+        int size = 15;
         int delay = 200;
         int displaySize = 1000;
 

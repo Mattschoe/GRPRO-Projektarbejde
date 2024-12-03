@@ -3,12 +3,13 @@ package BlockingAgents;
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
 
-public class Wolf extends Predator implements DenAnimal, Carnivore {
+public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDisplayInformationProvider {
     Den den;
     WolfPack wolfpack;
     int huntRadius;
@@ -46,7 +47,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
     //MANGLER: At få en wolfpack
     public void act(World world) {
-        try {
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -54,7 +54,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 try {
                     world.setTile(sleepingLocation, this);
                     sleepingLocation = null;
-                } catch (IllegalArgumentException e) {}
+                } catch (IllegalArgumentException e) {} //If there is already somebody above the hole it waits a step
             } else if (energyLevel <= 0) {
                 die();
             } else if (isInfected) {
@@ -88,7 +88,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             }
 
             //Moves towards den until its the middle of the night'
-            if (world.getCurrentTime() < 15) {
+            if (world.getCurrentTime() < 17) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                 if (!isSleeping && den.isAnimalOnDen(this)) {
                     sleepingLocation = world.getLocation(den);
@@ -99,14 +99,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 }
             } else if (!isSleeping) { //Didnt reach the burrow
                 isSleeping = true;
-                getInformation();
             }
-        }} catch (IllegalArgumentException e) {}
+        }
     }
 
     @Override
     public DisplayInformation getInformation() {
-        System.out.println(isSleeping);
         if (isSleeping) {
             if (isInfected) {
                 return new DisplayInformation(Color.red, "wolf-fungi-sleeping");
@@ -139,10 +137,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den ){
                 if (den == this.den) {
-                    if (world.isTileEmpty(world.getLocation(den))){
-                        this.den = den;
-                        return world.getLocation(den);
-                    }
+                    this.den = den;
+                    return world.getLocation(den);
                 }
             }
         }
