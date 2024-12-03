@@ -81,29 +81,23 @@ public abstract class Animal implements Actor {
 
         //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
         if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
+                //Gets all empty locations
+                Set<Location> neighbours = world.getEmptySurroundingTiles();
+                List<Location> neighbourList = new ArrayList<>(neighbours);
 
-            //Gets all empty locations
-            Set<Location> neighbours = world.getEmptySurroundingTiles();
-            List<Location> neighbourList = new ArrayList<>(neighbours);
+                //Moves to a random neighbour tile, as long as there is one available
+                Random random = new Random();
+                if (!neighbourList.isEmpty()) {
+                    Location location = neighbourList.get(random.nextInt(neighbourList.size()));
 
-            //Moves to a random neighbour tile, as long as there is one available
-            Random random = new Random();
-            if (!neighbourList.isEmpty()) {
-                Location location = neighbourList.get(random.nextInt(neighbourList.size()));
+                    world.move(this, location);
+                    world.setCurrentLocation(location);
 
-                //If the location is takem it finds a new one
-                while (!world.isTileEmpty(location)) {
-                    location = neighbourList.get(random.nextInt(neighbourList.size()));
+                    if (isInfected) {
+                        energyLevel--;
+                        health--;
+                    }
                 }
-
-                world.move(this, location);
-                world.setCurrentLocation(location);
-
-                if (isInfected) {
-                    energyLevel--;
-                    health--;
-                }
-            }
         }
     }
 
