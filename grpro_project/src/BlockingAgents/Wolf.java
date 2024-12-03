@@ -148,11 +148,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location digDen() {
-        /* Den = new Den(world, this, false);
-        den.spawnDen();
+        den = new Den(world, "wolf");
+        den.spawnDen(this);
         return world.getLocation(den);
-        */
-        return null;
     }
 
     /**
