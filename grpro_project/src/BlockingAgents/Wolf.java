@@ -91,18 +91,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             }
 
             //Moves towards den until its the middle of the night'
-            /* if (world.getCurrentTime() < 15) {
+            if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                if (!isSleeping && den.isOwnerOnDen()) {
+                if (!isSleeping && den.isAnimalOnDen(this)) {
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
                     world.remove(this);
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
-            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow
+            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
                 isSleeping = true;
-            } */
+            }
         }
     }
 
