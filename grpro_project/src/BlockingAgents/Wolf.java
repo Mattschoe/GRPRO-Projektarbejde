@@ -111,9 +111,17 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
-            return new DisplayInformation(Color.red, "wolf-sleeping");
+            if (isInfected) {
+                return new DisplayInformation(Color.red, "wolf-fungi-sleeping");
+            } else {
+                return new DisplayInformation(Color.red, "wolf-sleeping");
+            }
         } else {
-            return new DisplayInformation(Color.blue, "wolf");
+            if (isInfected) {
+                return new DisplayInformation(Color.red, "wolf-fungi");
+            } else {
+                return new DisplayInformation(Color.blue, "wolf");
+            }
         }
     }
 
