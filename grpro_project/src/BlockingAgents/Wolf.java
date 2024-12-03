@@ -46,6 +46,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
     //MANGLER: At få en wolfpack
     public void act(World world) {
+        try {
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -105,6 +106,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
                 isSleeping = true;
             }
+        }} catch (IllegalArgumentException e) {
         }
     }
 

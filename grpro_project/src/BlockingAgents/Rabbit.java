@@ -22,69 +22,70 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     @Override
     public void act(World world) {
-        if (!isHiding) {
-            //Daytime activities:
-            if (world.isDay()) {
-                isSleeping = false;
-                if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
-                    try {
-                        world.setTile(sleepingLocation, this);
-                        sleepingLocation = null;
+        try {
+            if (!isHiding) {
+                //Daytime activities:
+                if (world.isDay()) {
+                    isSleeping = false;
+                    if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
+                        try {
+                            world.setTile(sleepingLocation, this);
+                            sleepingLocation = null;
+                        } catch (IllegalArgumentException e) {
+                        }
+                    } else if (energyLevel <= 0) {
+                        die();
+                    } else if (isInfected) {
+                        // Makes sure it doesn't do wolf things when infected
+                        try {
+                            System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
+                            moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Seems infected animals lose their location when reaching their prey");
+                        }
+                    } else if (detectPredator(2)) { //If predator nearby
+                        System.out.println("FLEEING!");
+                        flee();
+                        hide();
+                    } else if (energyLevel + 5 < maxEnergy) { //If hungry
+                        eatFood();
+                    } else if (!isInfected) { //Else moves randomly
+                        move();
                     }
-                    catch (IllegalArgumentException e) {
-                    }
-                } else if (energyLevel <= 0) {
-                    die();
-                } else if (isInfected) {
-                    // Makes sure it doesn't do wolf things when infected
-                    try {
-                        System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
-                        moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Seems infected animals lose their location when reaching their prey");
-                    }
-                }else if (detectPredator(2)) { //If predator nearby
-                    System.out.println("FLEEING!");
-                    flee();
-                    hide();
-                } else if (energyLevel + 5 < maxEnergy) { //If hungry
-                    eatFood();
-                } else if (!isInfected) { //Else moves randomly
-                    move();
-                }
-            }
-
-            //Nighttime activities:
-            if (world.isNight() && !isInfected) {
-                if (world.getCurrentTime() == 10) {
-                    if (burrow == null) {
-                        findDen();
-                    }
-                    updateMaxEnergy();
                 }
 
-                //Moves towards burrow until it's the middle of the night
-                if (world.getCurrentTime() < 15) {
-                    //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                    if (!isSleeping && burrow.isAnimalOnDen(this)) {
-                        world.remove(this);
-                        sleepingLocation = world.getLocation(burrow);
+                //Nighttime activities:
+                if (world.isNight() && !isInfected) {
+                    if (world.getCurrentTime() == 10) {
+                        if (burrow == null) {
+                            findDen();
+                        }
+                        updateMaxEnergy();
+                    }
+
+                    //Moves towards burrow until it's the middle of the night
+                    if (world.getCurrentTime() < 15) {
+                        //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
+                        if (!isSleeping && burrow.isAnimalOnDen(this)) {
+                            world.remove(this);
+                            sleepingLocation = world.getLocation(burrow);
+                            isSleeping = true;
+                        } else if (!isSleeping) {
+                            moveTo(world.getLocation(burrow));
+                        }
+                    } else if (world.getCurrentTime() == 15 && !isSleeping && !burrow.isAnimalOnDen(this)) { //Didnt reach the burrow
                         isSleeping = true;
-                    } else if (!isSleeping) {
-                        moveTo(world.getLocation(burrow));
                     }
-                } else if (world.getCurrentTime() == 15 && !isSleeping && !burrow.isAnimalOnDen(this)) { //Didnt reach the burrow
-                    isSleeping = true;
                 }
             }
-        }
 
-        if (isHiding) {
-            if (itIsSafeToComeBack(hidingLocation)) {
-                isHiding = false;
-                world.setTile(hidingLocation, this);
+            if (isHiding) {
+                if (itIsSafeToComeBack(hidingLocation)) {
+                    isHiding = false;
+                    world.setTile(hidingLocation, this);
+                }
             }
-        }
+        } catch (IllegalArgumentException e) {}
     }
 
     /**
