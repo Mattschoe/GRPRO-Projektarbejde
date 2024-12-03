@@ -60,12 +60,23 @@ public abstract class Animal implements Actor {
     }
 
     protected void die() {
-        try {
-            Location tempLocation = world.getLocation(this);
+        if (this.isInfected) {
+            int infectionRadius = 2;
+            for (Object object : world.getEntities().keySet()) {
+                // Checks if animal is close to the dying infection
+                if ( (object instanceof Animal) && Math.abs(world.getLocation(this).getX() - world.getLocation(object).getX()) <= infectionRadius && Math.abs(world.getLocation(this).getY() - world.getLocation(object).getY()) <= infectionRadius ) {
+                    ((Animal) object).isInfected = true;
+                }
+            }
             world.delete(this);
-            world.setTile(tempLocation, new Meat(world, this));
-        } catch (IllegalArgumentException e) {
-            System.out.println("It seems " + this + " didn't have a location upon death");
+        } else {
+            try {
+                Location tempLocation = world.getLocation(this);
+                world.delete(this);
+                world.setTile(tempLocation, new Meat(world, this));
+            } catch (IllegalArgumentException e) {
+                System.out.println("It seems " + this + " didn't have a location upon death");
+            }
         }
     }
 
@@ -114,7 +125,7 @@ public abstract class Animal implements Actor {
         Object closestAnimal = null;
         // Searches through entire species to find the closest (not including this)
         for (Object object : everyAnimalInSet.keySet()) {
-            if (Math.abs(world.getLocation(object).getX()) < closestDistance && Math.abs(world.getLocation(object).getY()) < closestDistance ) {
+            if ( !(((Animal) object).isInfected) && Math.abs(world.getLocation(object).getX()) < closestDistance && Math.abs(world.getLocation(object).getY()) < closestDistance ) {
                 if (Math.abs(world.getLocation(object).getX()) > Math.abs(world.getLocation(object).getY())) {
                     closestDistance = Math.abs(world.getLocation(object).getX());
                     closestAnimal = object;
@@ -135,6 +146,14 @@ public abstract class Animal implements Actor {
             }
         }
         return map;
+    }
+
+    protected void infectedMove() {
+        if (findClosestInSet(findEveryAnimalInSpecies()) != null) {
+            moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
+        } else {
+            move();
+        }
     }
 
 
