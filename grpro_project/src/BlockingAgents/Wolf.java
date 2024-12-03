@@ -50,8 +50,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         if (world.isDay()) {
             isSleeping = false;
             if (sleepingLocation != null) {
-                world.setTile(sleepingLocation, this);
-                sleepingLocation = null;
+                try {
+                    world.setTile(sleepingLocation, this);
+                    sleepingLocation = null;
+                } catch (IllegalArgumentException e) {}
             } else if (energyLevel <= 0) {
                 die();
             } else if (isInfected) {

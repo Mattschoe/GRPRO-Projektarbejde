@@ -17,8 +17,9 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        MattTempTest();
+        //MattTempTest();
         //JosvaTempTest();
+        Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -76,12 +77,12 @@ public class Main {
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Den(world, "rabbit"));
         } catch (IllegalArgumentException e) {
             Random random = new Random();
-            /*world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
-        */}
+        }
 
         //Shows world
 
