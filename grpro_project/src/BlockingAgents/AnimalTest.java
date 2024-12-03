@@ -106,7 +106,7 @@ class AnimalTest {
     void standingOnDenTest(){
         Rabbit rabbit = new Rabbit(w);
         Location location1 = new Location(0,0);
-        Den den = new Den(w, rabbit, false);
+        Den den = new Den(w, "rabbit");
         w.setCurrentLocation(location1);
         w.setTile(location1,rabbit);
         w.setTile(location1,den);

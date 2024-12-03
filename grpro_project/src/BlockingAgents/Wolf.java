@@ -21,7 +21,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     //MANGLER: At få en wolfpack
 
     public void act(World world) {
-        System.out.println("Wolf energy: " + energyLevel + ", is hungry: " + isHungry());
+        //System.out.println("Wolf energy: " + energyLevel + ", is hungry: " + isHungry());
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -30,7 +30,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 sleepingLocation = null;
             } else if (energyLevel <= 0) {
                 die();
-            } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
+            } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
                 if (health > 5) {
                     fight();
                 } else {
@@ -53,14 +53,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             //Moves towards den until its the middle of the night'
             if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
-                if (!isSleeping && den.isOwnerOnDen()) {
+                if (!isSleeping && den.isAnimalOnDen(this)) {
                     world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
-            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isOwnerOnDen()) { //Didnt reach the burrow
+            } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
                 isSleeping = true;
             }
         }
@@ -119,7 +119,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     }
 
     /**
-     * Returns the location of the plant chosen to be eaten by the wolf. If it hasnt chosen a location the method first finds a location
+     * Returns the location of the plant chosen to be eaten by the wolf. If it hasn't chosen a location the method first finds a location
      * @return
      */
     @Override
@@ -136,11 +136,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location findDen() {
+
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den den && den.getOwner() == this){
+            if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
+                if (den == this.den) {
                 if (world.isTileEmpty(world.getLocation(den))){
                     this.den = den;
                     return world.getLocation(den);
+                }
                 }
             }
         }
@@ -152,8 +155,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location digDen() {
-        den = new Den(world, this, false);
-        den.spawnDen();
+        den = new Den(world, "wolf");
+        den.spawnDen(this);
         return world.getLocation(den);
     }
 }

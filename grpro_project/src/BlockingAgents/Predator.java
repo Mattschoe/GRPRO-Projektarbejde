@@ -37,9 +37,10 @@ public abstract class Predator extends Animal{
             System.out.println("Im close enough to kill my prey!");
             kill(opponentAnimal);
         } else { //Otherwise it just chases it
+            if (world.getLocation(opponentAnimal) != null) {
             System.out.println("Im chasing a animal!");
             moveTo(world.getLocation(opponentAnimal));
-        }
+        }}
     }
 
     /**

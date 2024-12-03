@@ -99,7 +99,7 @@ public class ParseTest {
                 if (world.isTileEmpty(location) && !world.containsNonBlocking(location)) {
                     if (object.equals("grass")) world.setTile(location, new Grass(world));
                     else if (object.equals("rabbit")) world.setTile(location, new Rabbit(world));
-                    else if (object.equals("burrow")) world.setTile(location, new Den(world, null, false));
+                    else if (object.equals("burrow")) world.setTile(location, new Den(world, "rabbit"));
                     else if (object.equals("bear")) world.setTile(location, new Bear(world));
                     else if (object.equals("wolf")) world.setTile(location, new Wolf(world));
                     else if (object.equals("berry")) world.setTile(location, new Bush(world));
