@@ -74,7 +74,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
 
             if (isHungry() && !isInfected) { //Eats food if it's hungry
-                // eatFood();
+                eatFood();
             }
             if (!isInfected) {
                 move();

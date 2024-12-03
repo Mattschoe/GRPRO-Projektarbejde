@@ -96,16 +96,17 @@ public abstract class Animal implements Actor {
                 while (!world.isTileEmpty(location)) {
                     location = neighbourList.get(random.nextInt(neighbourList.size()));
                 }
-
                 world.move(this, location);
                 world.setCurrentLocation(location);
+
 
                 if (isInfected) {
                     energyLevel--;
                     health--;
                 }
             }
-        } } catch (IllegalArgumentException e) {}
+        }
+        } catch (IllegalArgumentException e) {}
     }
 
     protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
