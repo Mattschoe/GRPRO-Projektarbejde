@@ -20,12 +20,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         hasFoundGrass = false;
     }
 
-    public Rabbit(World world, boolean isInfected) {
-        super(world,1,40, 1, isInfected);
-        fleeRadius = 2;
-        hasFoundGrass = false;
-    }
-
     @Override
     public void act(World world) {
         if (!isHiding) {
@@ -37,34 +31,25 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     sleepingLocation = null;
                 } else if (energyLevel <= 0) {
                     die();
-                } else if (isInfected) {
-                    // Makes sure it doesn't do wolf things when infected
-                    try {
-                        System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
-                        moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Seems infected animals lose their location when reaching their prey");
-                    }
-                }else if (detectPredator(2)) { //If predator nearby
-                    System.out.println("FLEEING!");
                 } else if (detectPredator(2)) { //If predator nearby
+                    System.out.println("FLEEING!");
                     flee();
                     hide();
                 } else if (energyLevel + 5 < maxEnergy) { //If hungry
                     eatFood();
-                } else if (!isInfected) { //Else moves randomly
+                } else { //Else moves randomly
                     move();
                 }
             }
 
             //Nighttime activities:
-            if (world.isNight() && !isInfected) {
+            if (world.isNight()) {
                 if (world.getCurrentTime() == 10) {
                     findDen();
                     updateMaxEnergy();
                 }
 
-                //Moves towards burrow until it's the middle of the night
+                //Moves towards burrow until its the middle of the night
                 if (world.getCurrentTime() < 15) {
                     //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                     if (!isSleeping && burrow.isAnimalOnDen(this)) {
@@ -75,8 +60,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         moveTo(world.getLocation(burrow));
                     }
                 } else if (world.getCurrentTime() == 15 && !isSleeping && !burrow.isAnimalOnDen(this)) { //Didnt reach the burrow
-
-
                     isSleeping = true;
                 }
             }
@@ -91,7 +74,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     }
 
     /**
-     * Hides from predators and continues to hide in its burrow until it doesn't detect predators
+     * Hides from predators and continues to hide in its burrow until it doesnt detect predators
      */
     protected void flee() {
         //Moves towards its burrow if it's close by, otherwise it runs closer to the burrow
@@ -99,7 +82,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
             if (world.getSurroundingTiles(world.getLocation(this)).contains(burrow)) {
                 moveTo(world.getLocation(burrow));
             } else {
-                moveTo(world.getLocation(burrow));
+                sprintTo(world.getLocation(burrow));
             }
         } else { //Runs the opposite direction of the predator if it doesn't have a burrow
             moveAwayFrom(world.getLocation(predator));
@@ -110,7 +93,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      * Hides in burrow if its on it
      */
     private void hide() {
-        if (burrow != null && burrow.isAnimalOnDen(this)) {
+        if (burrow != null && burrow.isOwnerOnDen()) {
             hidingLocation  = world.getLocation(burrow);
             isHiding = true;
             world.remove(this);
@@ -135,71 +118,24 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      */
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den burrow ){//&& this.burrow == object) {//burrow.getOwner() == this){
-                //if (burrow == this.burrow) {
-                    if (world.isTileEmpty(world.getLocation(burrow))) {
-                        this.burrow = burrow;
-                        System.out.println("Burrow found " + burrow);
-                        return world.getLocation(burrow);
-                    }
-                /*} else {
-                    System.out.println("new den " + burrow);
+            if (object instanceof Den burrow && burrow.getOwner() == this){
+                if (world.isTileEmpty(world.getLocation(burrow))){
                     this.burrow = burrow;
                     return world.getLocation(burrow);
-                }*/
-
+                }
             }
         }
         return digDen(); //Makes a new Den if the rabbit cant find any
     }
 
     /**
-     * instantiates a new burrow (Den) on the current location. Only makes a burrow if there isnt a predator nearby
+     * instantiates a new RabbitDens on the current location.
      */
     public Location digDen() {
-        burrow = new Den(world,  "rabbit");
-        burrow.spawnDen(this);
+        burrow = new Den(world, this, false);
+        burrow.spawnDen();
         return world.getLocation(burrow);
     }
-
-    /**
-     * Returns location of a grass spot
-     */
-    public void findEatablePlant() {
-        //Finds a spot of grass if the rabbit hasn't found it
-        if (!hasFoundGrass) {
-            for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Grass grass) {
-                    foodLocation = world.getLocation(grass);
-                    hasFoundGrass = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if we are on a grass tile and eats it if so
-     */
-    public void eatPlant() {
-        if (world.getNonBlocking(world.getLocation(this)) instanceof Grass grass) {
-            world.delete(grass);
-            energyLevel = energyLevel + 5;
-        }
-    }
-
-    /**
-     * gives the location of the plant chosen to be eaten by the rabbit. If it hasn't chosen a location the method first finds a location
-     * @return
-     */
-    public Location getEatablePlantLocation() {
-        if (foodLocation == null) {
-            findEatablePlant();
-            return foodLocation;
-        }
-        return foodLocation;
-    }
-
 
     protected void reproduce() {}
 
