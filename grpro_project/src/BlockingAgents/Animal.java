@@ -141,9 +141,10 @@ public abstract class Animal implements Actor {
     protected Map<Object, Location> findEveryAnimalInSpecies() {
         Map<Object, Location> map = new HashMap<>();
         for (Object object : world.getEntities().keySet()) {
+            if (world.getCurrentLocation() != null && !world.isTileEmpty(world.getLocation(object))) {
             if (object.getClass() == this.getClass() && object != this) {
                 map.put(object, world.getLocation(object));
-            }
+            }}
         }
         return map;
     }
@@ -230,7 +231,8 @@ public abstract class Animal implements Actor {
         } else {
             y = world.getLocation(this).getY();
         }
-
+        System.out.println(world.getSize() + "uhweiu" + y + "  " + x);
+        if (y <world.getSize() && x < world.getSize() && y >=0 && x >= 0) {
         //Tries to move unless there is an object in the way
         Location newLocation = new Location(x, y);
 
@@ -242,7 +244,7 @@ public abstract class Animal implements Actor {
             world.setCurrentLocation(newLocation);
             System.out.println(" not random movement");
 
-        }
+        }}
     }
 
     protected void flee() {};

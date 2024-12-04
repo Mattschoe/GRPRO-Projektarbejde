@@ -166,9 +166,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     @Override
     public Location digDen() {
+        if (world.getNonBlocking(world.getLocation(this)) == null) {
         den = new Den(world, "wolf");
+
         world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
+    }   else {
+        return findDen();
+    }
     }
 
     /**

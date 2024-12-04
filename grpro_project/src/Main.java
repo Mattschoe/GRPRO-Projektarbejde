@@ -17,15 +17,15 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        ShowDropTestHereTests();
+        //ShowDropTestHereTests();
         //MattTempTest();
         //JosvaTempTest();
-        //Week2Test();
+        Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
         //Program descriptions
-        int delay = 1000;
+        int delay = 200;
         int displaySize = 1000;
 
         //File setup, saves all files dropped in folder
