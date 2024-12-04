@@ -39,7 +39,7 @@ public class Fungi implements Actor, NonBlocking {
             if (entity instanceof Meat) { // Makes sure it infects only meat, which is close
                 for (Location nearbyLocation : world.getSurroundingTiles(this.radius)) {
                     if (entity == world.getTile(nearbyLocation)) {
-                        ((Meat) entity).infected = true;
+                        ((Meat) entity).isInfected = true;
                     }
                 }
             }

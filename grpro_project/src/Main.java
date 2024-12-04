@@ -17,9 +17,10 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
+        ShowDropTestHereTests();
         //MattTempTest();
         //JosvaTempTest();
-        Week2Test();
+        //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -47,7 +48,7 @@ public class Main {
     public static void Week2Test() {
         //Program descriptions
         int size = 5;
-        int delay = 200;
+        int delay = 500;
         int displaySize = 1000;
 
         //Sets up world
@@ -109,11 +110,11 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(0,0), new Bear(world, true));
-        world.setTile(new Location(9,7), new Bear(world, true));
 
-
-
+        world.setTile(new Location(2,0), new Bear(world, true));
+        world.setTile(new Location(0,0), new Wolf(world, false));
+        world.setTile(new Location(3,0), new Rabbit(world, true));
+        world.setTile(new Location(2,2), new Wolf(world));
 
         //Shows world
         program.show();
@@ -144,29 +145,38 @@ public class Main {
 
         //Adds agents
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
 
-        //Wolfpack test
-        /* WolfPack wolfPack = new WolfPack();
-        for (int i = 0; i < 4; i++) {
+        /* Wolfpack test */
+        WolfPack wolfPack = new WolfPack();
+
+        //Setting Alpha Wolf
+        wolfPack.setAlphaWolf(new Wolf(world));
+        Location location = new Location(random.nextInt(size), random.nextInt(size));
+        world.setTile(location, wolfPack.getAlphaWolf());
+
+        world.setCurrentLocation(location);
+        wolfPack.getAlphaWolf().digDen();
+        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+
+
+        //Adding Wolf's to pack
+        for (int i = 0; i < 2; i++) {
             Wolf wolf = new Wolf(world);
+            location = new Location(random.nextInt(size), random.nextInt(size));
+
+            while (world.getTile(location) != null) {
+                location = new Location(random.nextInt(size), random.nextInt(size));
+            }
+
             wolfPack.addWolfToPack(wolf);
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
+            world.setTile(location, wolf);
         }
 
-        //Setting AlphaWolf
-        for (Wolf wolf : wolfPack.getWolvesInPack()) {
-            wolfPack.setAlphaWolf(wolf);
-            break;
-        }
-
-        for (Wolf wolf : wolfPack.getWolvesInPack()) {
-            System.out.println(world.getLocation(wolf));
-        } */
-
+        /* Wolfpack test */
 
 
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));

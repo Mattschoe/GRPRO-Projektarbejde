@@ -3,13 +3,15 @@ package BlockingAgents;
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
+import itumulator.executable.DynamicDisplayInformationProvider;
+
 import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
 import java.util.Random;
 
-public class Wolf extends Predator implements DenAnimal, Carnivore {
+public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDisplayInformationProvider {
     Den den;
     WolfPack wolfpack;
     int huntRadius;
@@ -47,7 +49,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
     //MANGLER: At få en wolfpack
     public void act(World world) {
-        try {
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -55,6 +56,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 try {
                     world.setTile(sleepingLocation, this);
                     sleepingLocation = null;
+                 //If there is already somebody above the hole it waits a step
                 } catch (IllegalArgumentException e) {
                     System.out.println("Someone is standing on my den. - " + this);
                 }
@@ -70,12 +72,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 die();
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
-                try {
-                    System.out.println("The " + this + " at " + world.getLocation(this) + " is infected");
-                    moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Seems infected animals lose their location when reaching their prey");
-                }
+                infectedMove();
             } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
                 if (health > 5) {
                     fight();
@@ -119,7 +116,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
                 isSleeping = true;
             }
-        }} catch (IllegalArgumentException e) {
         }
     }
 
@@ -152,7 +148,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
      */
     @Override
     public Location findDen() {
-
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
                 //if (den == this.den) {
@@ -163,7 +158,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 //}
             }
         }
-        return digDen(); //Makes a new Den if the rabbit cant find any
+        return digDen(); //Makes a new Den if the wolf cant find any
     }
 
     /**
@@ -172,7 +167,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
     @Override
     public Location digDen() {
         den = new Den(world, "wolf");
-        den.spawnDen(this);
+        world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
     }
 
@@ -201,4 +196,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         }
         throw new IllegalStateException("Wolfpack is null!");
     }
+
+
 }
