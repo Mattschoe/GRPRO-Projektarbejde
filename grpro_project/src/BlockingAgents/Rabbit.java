@@ -7,6 +7,10 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
@@ -28,17 +32,30 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     @Override
     public void act(World world) {
-        try {
+
             if (!isHiding) {
                 //Daytime activities:
                 if (world.isDay()) {
                     isSleeping = false;
+
                     if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
+
                         try {
                             world.setTile(sleepingLocation, this);
                             sleepingLocation = null;
                         } catch (IllegalArgumentException e) {
+                            System.out.println("someone is standing on my Burrow. - "+ this);
                         }
+                        for (Object obj : world.getEntities().keySet()){
+                            if (obj instanceof Rabbit rabbit){
+                                if ((rabbit.getBurrow() == this.getBurrow() && rabbit != this)){
+                                    if (new Random().nextInt(10) == 0){reproduce(world.getLocation(burrow), new Rabbit(world,false));}
+                                }
+                            }
+                        }
+
+
+
                     } else if (energyLevel <= 0) {
                         die();
                     } else if (isInfected) {
@@ -91,7 +108,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     world.setTile(hidingLocation, this);
                 }
             }
-        } catch (IllegalArgumentException e) {}
+
     }
 
     /**
@@ -124,6 +141,9 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     protected void sleep() {
         world.remove(this);
     }
+
+
+
 
     @Override
     public DisplayInformation getInformation() {
@@ -167,10 +187,15 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         burrow.spawnDen(this);
         return world.getLocation(burrow);
     }
+/*
+    protected void reproduce() {
 
-    protected void reproduce() {}
-
+    }
+*/
     public boolean getHasFoundGrass() {
         return hasFoundGrass;
+    }
+    public Den getBurrow() {
+        return burrow;
     }
 }

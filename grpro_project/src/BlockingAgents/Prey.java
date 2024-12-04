@@ -28,6 +28,7 @@ public abstract class Prey extends Animal {
      */
     protected boolean detectPredator(int fleeRadius) {
         this.fleeRadius = fleeRadius;
+        world.setCurrentLocation(world.getLocation(this));
         for (Location location : world.getSurroundingTiles(fleeRadius)) {
             if (world.getTile(location) instanceof Predator predator) {
                 this.predator = predator;

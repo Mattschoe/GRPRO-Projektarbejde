@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
+import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
@@ -71,13 +72,13 @@ public abstract class Animal implements Actor {
 
     protected abstract void sleep();
 
-    protected abstract void reproduce();
+
 
     /**
      * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
      */
     protected void move() {
-        try {
+
         energyLevel--;
 
         //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
@@ -106,7 +107,7 @@ public abstract class Animal implements Actor {
                 }
             }
         }
-        } catch (IllegalArgumentException e) {}
+
     }
 
     protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
@@ -147,6 +148,7 @@ public abstract class Animal implements Actor {
         int x = 0;
         int y = 0;
 
+        if (world.getCurrentLocation() != null) {
         //Calculates x
         if (world.getLocation(this).getX() == moveToLocation.getX()) {
             x = moveToLocation.getX();
@@ -167,11 +169,14 @@ public abstract class Animal implements Actor {
 
         //Moves
         Location newLocation = new Location(x, y);
-        if (world.getTile(newLocation) != null) {
+        if (!world.isTileEmpty(newLocation)) {
             move();
+            System.out.println("random movement");
         } else if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
+            System.out.println("not random movement");
+        }
         }
     }
 
@@ -208,13 +213,17 @@ public abstract class Animal implements Actor {
             y = world.getLocation(this).getY();
         }
 
-        //Tries to move unless there is a object in the way
+        //Tries to move unless there is an object in the way
         Location newLocation = new Location(x, y);
-        try {
+
+        if (!world.isTileEmpty(newLocation)) {
+            move();
+            System.out.println("random movement");
+        } else {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
-        } catch (IllegalArgumentException e) {
-            move();
+            System.out.println(" not random movement");
+
         }
     }
 
@@ -259,18 +268,23 @@ public abstract class Animal implements Actor {
      */
     protected void eatFood() {
         if (hasFoundFood) { //If the animal has already found food
-            if (world.getSurroundingTiles().contains(world.getLocation(food))) {
-                if (food instanceof Bush bush) { //If its a bush it just eats the berries
-                    bush.getEaten();
-                    hasFoundFood = false;
-                } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
-                    Location tempLocation = world.getLocation(food);
-                    world.delete(food);
-                    moveTo(tempLocation);
-                    hasFoundFood = false;
+            try {
+                if (world.getSurroundingTiles().contains(world.getLocation(food))) {
+                    if (food instanceof Bush bush) { //If its a bush it just eats the berries
+                        bush.getEaten();
+                        hasFoundFood = false;
+                    } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
+                        Location tempLocation = world.getLocation(food);
+                        world.delete(food);
+                        moveTo(tempLocation);
+                        hasFoundFood = false;
+                    }
+                } else { //Moves towards the food
+                    moveTo(foodLocation);
                 }
-            } else { //Moves towards the food
-                moveTo(foodLocation);
+            } catch ( IllegalArgumentException e) { //Somebody already ate the food in same simulation step
+                hasFoundFood = false;
+                findFood();
             }
         } else { //If it haven't yet found any food
             findFood();
@@ -320,6 +334,15 @@ public abstract class Animal implements Actor {
             }
         }
         return false;
+    }
+    protected void reproduce(Location birthplace, Animal animal) {
+        Set<Location> neighbours = world.getEmptySurroundingTiles(birthplace);
+        List<Location> neighbourList = new ArrayList<>(neighbours);
+        if (!neighbourList.isEmpty()){
+            Location birthPlace =  neighbourList.getFirst();
+            world.setTile(birthPlace, animal);
+        }
+
     }
 
     public boolean getIsSleeping() {

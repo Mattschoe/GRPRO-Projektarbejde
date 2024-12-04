@@ -33,6 +33,7 @@ class RabbitTest {
         w.setTile(burrowLocation, burrow);
         rabbit.findDen();
         rabbit.flee();
+
         assertEquals(burrowLocation, w.getLocation(rabbit));
 
     }
@@ -167,6 +168,51 @@ class RabbitTest {
 
     @Test
     void reproduce() {
+        int iterations = 10000;
+        int reproduced = 0;
+        for (int i = 0; i < iterations; i++) {
+
+
+            World world = new World(2);
+            Rabbit rabbit = new Rabbit(world);
+            Location location = new Location(0, 0);
+
+            world.setTile(location, rabbit);
+            world.setCurrentLocation(location);
+            Rabbit rabbit1 = new Rabbit(world);
+            Location location1 = new Location(0, 1);
+
+            world.setTile(location1, rabbit1);
+            world.setCurrentLocation(location1);
+            Den burrow = new Den(world, "rabbit");
+            world.setTile(new Location(1,1), burrow);
+            for (int j = 0; j < 40; j++) {
+                world.step();
+                rabbit1.act(world);
+                rabbit.act(world);
+            }
+           // System.out.println(world.getEntities());
+            int rabbits = 0;
+            for (Object obj : world.getEntities().keySet()){
+
+                if (obj instanceof Rabbit) {
+                    rabbits++;
+                }}
+            if (rabbits > 2  ) {
+                reproduced++;
+
+            }
+
+
+        }
+
+        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.01)) && reproduced <= (iterations*0.1*2 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
+
+
+
+
+
+
 
     }
 }

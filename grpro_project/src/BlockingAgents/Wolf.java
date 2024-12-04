@@ -7,6 +7,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Wolf extends Predator implements DenAnimal, Carnivore {
     Den den;
@@ -54,8 +55,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
                 try {
                     world.setTile(sleepingLocation, this);
                     sleepingLocation = null;
-                } catch (IllegalArgumentException e) {}
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Someone is standing on my den. - " + this);
+                }
+                for (Object obj : world.getEntities().keySet()){
+                    if (obj instanceof Wolf wolf){
+                        if ((wolf.getDen() == this.getDen() && wolf != this)){
+                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), new Rabbit(world,false));}
+                        }
+                    }
+                }
             } else if (energyLevel <= 0) {
+
                 die();
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
@@ -89,7 +100,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         //Nighttime activites
         if (world.isNight() && !isInfected) {
             if (world.getCurrentTime() == 10) {
-                findDen();
+                if (den == null) {
+                    findDen();
+                }
                 updateMaxEnergy();
             }
 
@@ -132,8 +145,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
         world.remove(this);
     }
 
-    @Override
-    protected void reproduce() {} //MANGLER
 
 
     /**
@@ -144,12 +155,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore {
 
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
-                if (den == this.den) {
+                //if (den == this.den) {
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
                         return world.getLocation(den);
                     }
-                }
+                //}
             }
         }
         return digDen(); //Makes a new Den if the rabbit cant find any
