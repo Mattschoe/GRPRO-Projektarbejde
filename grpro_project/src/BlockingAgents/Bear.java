@@ -59,6 +59,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             isSleeping = false;
             protectTerritory();
             if (world.getCurrentTime() == 10) {
+                energyLevel--;
                 breedingDelay--;
                 if (breedingDelay <= 0) {
                     wantsToBreed = true;
@@ -170,7 +171,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     @Override
     protected void reproduce(Location location, Animal animal) {
         super.reproduce(location, animal);
-        
+
             wantsToBreed = false;
             breedingDelay = 5;
 

@@ -11,41 +11,74 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WolfTest {
     World w;
+    Wolf wolf;
+    Location location0;
+    Location location01;
+    Location location11;
     @BeforeEach
     void setUp() {
         w = new World(2);
+
+        wolf = new Wolf(w);
+        location0 = new Location(0,0);
+        location01 = new Location(0,1);
+        location11 = new Location(1,1);
     }
 
     @Test
-    void fight() {/*
-        Wolf wolf1 = new Wolf(w);
-        Wolf wolf2 = new Wolf(w);
-        Location location1 = new Location(0, 0);
-        Location location2 = new Location(0, 1);
-        w.setCurrentLocation(location1);
-        w.setTile(location1,wolf1);
-        w.setTile(location2,wolf2);
-        for (int i = 0; i < 10; i++) {
-            if (wolf1 != null && wolf2 != null) {
-                    wolf1.fight(wolf2);
+    void fight() {
+        WolfPack wp1 = new WolfPack();
+        WolfPack wp2 = new WolfPack();
+        Wolf wolf1 = new Wolf(w, wp1);
+        Wolf wolf2 = new Wolf(w, wp2);
+        int wolfs =  0;
+        while (wolfs > 0) {
+            wolfs = 0;
+            for (Object obj : w.getEntities().keySet()){
+
+                if (obj instanceof Rabbit) {
+                    wolfs++;
+                }}
+            assertEquals(1, wolfs);
+            wolf1.act(w);
+            wolf2.act(w);
+            w.step();
+
+
         }
-        }
-
-
-        int wolfs = 0;
-        for (int i = 0; i < w.getEntities().size(); i++) {
-            wolfs++;
-        }
-        assertEquals(1,wolfs);
-
-*/
-
-
+        assertEquals(0, wolfs);
 
     }
 
     @Test
-    void hunt() {
+    void TestHunt() {
+        Rabbit rabbit = new Rabbit(w);
+        w.setTile(location0,wolf);
+        w.setTile(location01,rabbit);
+        w.setCurrentLocation(location0);
+
+        int rabbits = 0;
+
+        while (rabbits > 0) {
+            rabbits = 0;
+            for (Object obj : w.getEntities().keySet()){
+
+                if (obj instanceof Rabbit) {
+                    rabbits++;
+                }}
+            System.out.println(w.getEntities());
+            assertEquals(1,rabbits);
+            w.step();
+            rabbit.act(w);
+            wolf.act(w);
+
+
+        }
+        assertEquals(0, rabbits);
+
+
+
+
     }
 
     @Test
@@ -126,6 +159,12 @@ class WolfTest {
     }
     @AfterEach
     void tearDown() {
+        w = null;
+        wolf = null;
+        location0 = null;
+        location01 = null;
+        location11 = null;
+
 
     }
 }
