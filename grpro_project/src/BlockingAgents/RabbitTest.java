@@ -4,6 +4,7 @@ import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.world.Location;
 import itumulator.world.World;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,26 +16,29 @@ import static org.junit.jupiter.api.Assertions.*;
 class RabbitTest {
     World w;
     Rabbit rabbit;
+    Location location0;
+    Location location01;
+    Location location11;
     @BeforeEach
     void setUp() {
         w = new World(2);
         rabbit = new Rabbit(w);
+        location0 = new Location(0,0);
+        location01 = new Location(0,1);
+        location11 = new Location(1,1);
     }
 
     @Test
     void TestFleeToBurrow() {
 
         Den burrow = new Den(w, "rabbit");
-        Location location = new Location(0,0);
-        Location burrowLocation = new Location(1,1);
-
-        w.setCurrentLocation(location);
-        w.setTile(location, rabbit);
-        w.setTile(burrowLocation, burrow);
+        w.setCurrentLocation(location0);
+        w.setTile(location0, rabbit);
+        w.setTile(location11, burrow);
         rabbit.findDen();
         rabbit.flee();
 
-        assertEquals(burrowLocation, w.getLocation(rabbit));
+        assertEquals(location11, w.getLocation(rabbit));
 
     }
 
@@ -45,15 +49,11 @@ class RabbitTest {
     void findDen() {
 
         Den burrow = new Den(w,"rabbit" );
-        Location location = new Location(0,0);
-        Location burrowLocation = new Location(1,1);
+        w.setCurrentLocation(location0);
+        w.setTile(location0, rabbit);
+        w.setTile(location11, burrow);
 
-        w.setCurrentLocation(location);
-        w.setTile(location, rabbit);
-        w.setTile(burrowLocation, burrow);
-
-       // System.out.println(rabbit.findDen());
-        assertEquals(burrowLocation, rabbit.findDen());
+        assertEquals(location11, rabbit.findDen());
 
 
 
@@ -65,12 +65,11 @@ class RabbitTest {
 
     @Test
     void digDen(){
-        Rabbit rabbit = new Rabbit(w);
-        Location location = new Location(0,0);
-        w.setCurrentLocation(location);
-        w.setTile(location, rabbit);
+
+        w.setCurrentLocation(location0);
+        w.setTile(location0, rabbit);
         rabbit.findDen();
-        assertNotNull(w.getNonBlocking(location));
+        assertNotNull(w.getNonBlocking(location0));
     }
 
     /**
@@ -78,14 +77,13 @@ class RabbitTest {
      */
     @RepeatedTest(20)
     void TestSleepingInDens(){
-        Rabbit rabbit = new Rabbit(w);
-        Rabbit rabbit1 = new Rabbit(w);
+
+        Rabbit rabbit1 = new Rabbit(w); // ekstra rabbit, that is not used in the other tests.
         Den burrow = new Den(w,"rabbit");
-        Location location = new Location(0,0);
-        Location location1 = new Location(1,0);
-        w.setCurrentLocation(location);
-        w.setTile(location, rabbit);
-        w.setTile(location1, rabbit1);
+
+        w.setCurrentLocation(location0);
+        w.setTile(location0, rabbit);
+        w.setTile(location01, rabbit1);
         w.setTile(new Location(1,1), burrow);
 
         for (int i = 0; i < 40; i++) {
@@ -97,7 +95,7 @@ class RabbitTest {
                     w.getLocation(rabbit);}); // the rabbit is not on the map at night if it is in the burrow;
             assertThrows(IllegalArgumentException.class, () -> {
                 w.getLocation(rabbit1);});
-            Set<Den> dens = w.getAll(Den.class,w.getSurroundingTiles(location));
+            Set<Den> dens = w.getAll(Den.class,w.getSurroundingTiles(location0));
 
             assertEquals(1, dens.size());
             }
@@ -134,18 +132,18 @@ class RabbitTest {
     void eatPlant() {
 
         Grass grass = new Grass(w);
-        Location location = new Location(0,0);
-        w.setCurrentLocation(location);
-        w.setTile(location, grass);
-        w.setTile(location, rabbit);
+     
+        w.setCurrentLocation(location0);
+        w.setTile(location0, grass);
+        w.setTile(location0, rabbit);
 
-        assertNotNull(w.getNonBlocking(location));
+        assertNotNull(w.getNonBlocking(location0));
         rabbit.eatFood();
         rabbit.act(w);
         rabbit.eatFood();
 
 
-        assertNull(w.getNonBlocking(location));
+        assertNull(w.getNonBlocking(location0));
 
 
     }
@@ -198,13 +196,14 @@ class RabbitTest {
                 if (obj instanceof Rabbit) {
                     rabbits++;
                 }}
-            if (rabbits > 2  ) {
+            if (rabbits > 2 ) {
                 reproduced++;
 
             }
 
 
         }
+        System.out.println(reproduced);
 
         assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.01)) && reproduced <= (iterations*0.1*2 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
 
@@ -213,6 +212,16 @@ class RabbitTest {
 
 
 
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        w = null;
+        rabbit = null;
+        location0 = null;
+        location01 = null;
+        location11 = null;
 
     }
 }
