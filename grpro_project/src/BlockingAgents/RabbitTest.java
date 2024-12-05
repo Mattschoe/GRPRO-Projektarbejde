@@ -132,7 +132,7 @@ class RabbitTest {
     void eatPlant() {
 
         Grass grass = new Grass(w);
-     
+
         w.setCurrentLocation(location0);
         w.setTile(location0, grass);
         w.setTile(location0, rabbit);

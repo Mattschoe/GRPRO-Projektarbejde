@@ -63,7 +63,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 for (Object obj : world.getEntities().keySet()){
                     if (obj instanceof Wolf wolf){
                         if ((wolf.getDen() == this.getDen() && wolf != this)){
-                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), new Rabbit(world,false));}
+                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), new Wolf(world,wolfpack,  false));}
                         }
                     }
                 }
@@ -103,13 +103,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 updateMaxEnergy();
             }
 
-            //Moves towards den until its the middle of the night'
+            //Moves towards den until it's the middle of the night'
             if (world.getCurrentTime() < 15) {
                 //If it reaches the burrow it goes to sleep otherwise it tries to move towards it
                 if (!isSleeping && den.isAnimalOnDen(this)) {
+                    world.remove(this);
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
-                    world.remove(this);
+
                 } else if (!isSleeping) {
                     moveTo(world.getLocation(den));
                 }
@@ -151,6 +152,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
                 //if (den == this.den) {
+                System.out.println("there are dens in the world");
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
                         return world.getLocation(den);
@@ -166,14 +168,13 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     @Override
     public Location digDen() {
-        if (world.getNonBlocking(world.getLocation(this)) == null) {
+        //if (world.getNonBlocking(world.getLocation(this)) == null) {
         den = new Den(world, "wolf");
-
-        world.setTile(world.getLocation(this), den);
+        den.spawnDen(this);//world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
-    }   else {
-        return findDen();
-    }
+   /* }   else {
+        return null;//findDen();
+    }*/
     }
 
     /**

@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
+import NonblockingAgents.Den;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,38 +21,35 @@ class BearTest {
     @Test
     void TestReproduction(){
 
-        Bear bear1 = new Bear(w);
-        Bear bear2 = new Bear(w);
-        Location loc1 = new Location(0, 0);
-        w.setTile(loc1, bear1);
-        w.setTile(new Location(1,1), bear2);
-        w.setCurrentLocation(loc1);
-        for (int i = 0; i < 40; i++) {
+            World world = new World(2);
+            Bear bear = new Bear(world, false );
+            Location location = new Location(0, 0);
+
+            world.setTile(location, bear);
+            world.setCurrentLocation(location);
+            Bear bear1 = new Bear(world, false );
+            Location location1 = new Location(0, 1);
+
+            world.setTile(location1, bear1);
+            world.setCurrentLocation(location1);
+            bear.wantsToBreed = true;
+            bear1.wantsToBreed = true;
+            for (int j = 0; j < 40; j++) {
+                world.step();
+                bear1.act(world);
+                bear.act(world);
+            }
+
             int bears = 0;
-            bear1.act(w);
-            bear2.act(w);
-        if (bear1.getWantsToBreed() && bear2.getWantsToBreed()){
+            for (Object obj : world.getEntities().keySet()){
 
-            for (Object object :  w.getEntities().keySet()) {
-                System.out.println(object.toString());
-                if (object instanceof Bear) bears++;
-                assertInstanceOf(Bear.class, object);
-            }
-            assertEquals(4, bears );
-        }
-        else {
-            for (Object object :  w.getEntities().keySet()) {
-                System.out.println(bears);
-                if (object instanceof Bear){
+                if (obj instanceof Bear) {
                     bears++;
-                }
+                }}
 
-            }
-            assertEquals(2, bears );
+            assertTrue(bears > 2); // if there are more than 2 bears, the bears have reproduced.
 
-        }
-        }
-        //Look at this again when fights are working.
+
 
 
 

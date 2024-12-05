@@ -104,4 +104,10 @@ public abstract class Predator extends Animal{
         return null;
     }
 
+    /*@Override
+    protected void reproduce(Location birthplace, Animal animal) {
+        super.reproduce(birthplace, animal);
+    }*/
+
+
 }

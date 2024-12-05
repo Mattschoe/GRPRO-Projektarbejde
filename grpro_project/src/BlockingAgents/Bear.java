@@ -1,6 +1,5 @@
 package BlockingAgents;
 
-import NonblockingAgents.Bush;
 import itumulator.executable.DisplayInformation;
 
 import itumulator.executable.DynamicDisplayInformationProvider;
@@ -9,7 +8,6 @@ import itumulator.world.World;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
@@ -59,11 +57,19 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //Daytime activities
         if (world.isDay()) {
             isSleeping = false;
+            protectTerritory();
+            if (world.getCurrentTime() == 10) {
+                breedingDelay--;
+                if (breedingDelay <= 0) {
+                    wantsToBreed = true;
+                }
+            }
             if (energyLevel <= 0) { //Dies when out of energy
                 System.out.println("BAIII");
                 die();
                 return;
-            }  else if (isInfected) {
+            }
+            else if (isInfected) {
                 // Makes sure it doesn't do bear things when infected
                 infectedMove();
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
@@ -153,7 +159,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                     if (!wantsToBreed){ fight(); }
                     else if (((Bear) entity).wantsToBreed){
                         if (world.getSurroundingTiles().contains(world.getLocation(entity))){
-                            reproduce();
+                            reproduce(world.getLocation(this), new Bear(world,isInfected));
                         }
                     }
                 }
@@ -161,16 +167,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
         }
     }
-
-    protected void reproduce() {
-            Bear cup = new Bear(world);
-            //neighbourList = getNeighbours(world);
-            Set<Location> neighbours = world.getEmptySurroundingTiles();
-            List<Location> neighbourList = new ArrayList<>(neighbours);
-            if (!neighbourList.isEmpty()){
-                Location birthPlace =  neighbourList.getFirst();
-                world.setTile(birthPlace, cup);
-            }
+    @Override
+    protected void reproduce(Location location, Animal animal) {
+        super.reproduce(location, animal);
+        
             wantsToBreed = false;
             breedingDelay = 5;
 
