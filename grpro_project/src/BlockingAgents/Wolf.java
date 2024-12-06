@@ -16,13 +16,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     WolfPack wolfpack;
     int huntRadius;
     boolean hasFoundMeat = false;
+    Wolf opponentWolf;
 
     /**
      * Wolf without being a Alpha in a wolfpack
      * @param world
      */
     public Wolf(World world, boolean isInfected) {
-        super(20, world, 30, 20, isInfected);
+        super(2, world, 30, 20, isInfected);
         huntRadius = 3;
     }
 
@@ -54,9 +55,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 infectedMove();
             } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
                 if (health > 5) {
+                    System.out.println("Im fighting!");
                     fight();
-                } else {
-                    flee();
+                } else { //Changes pack when its too low HP
+                    System.out.print("Im changing pack! From: " + wolfpack);
+                    changePack(opponentWolf.getWolfpack());
+                    System.out.println("To: " + wolfpack);
                 }
             } else if (wolfpack != null) { //Move towards the alpha wolf as long as its in a pack
                 moveTo(wolfpack.getPackLocation());
@@ -101,6 +105,16 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         }
     }
 
+    /**
+     * Removes wolf from old pack and puts the wolf in the new pack
+     * @param newPack WolfPack
+     */
+    private void changePack(WolfPack newPack) {
+        wolfpack.removeWolfFromPack(this);
+        newPack.addWolfToPack(this);
+        wolfpack = newPack;
+    }
+
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
@@ -123,22 +137,19 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         world.remove(this);
     }
 
-
-
     /**
      * If there are any Den's in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.
      */
     @Override
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
-                //if (den == this.den) {
-                System.out.println("there are dens in the world");
+            if (object instanceof Den den){
+                if (den.getAnimalsBelongingToDen().contains(this)) {
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
                         return world.getLocation(den);
                     }
-                //}
+                }
             }
         }
         return digDen(); //Makes a new Den if the wolf cant find any
@@ -184,5 +195,37 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         throw new IllegalStateException("Wolfpack is null!");
     }
 
+    /**
+     * Finds a Wolf opponent in the map and saves it to the as opponentWolf. Use getOpponent to see the predators opponent
+     */
+    private void findOpponent() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Wolf wolf) {
+                opponentWolf = wolf;
+            }
+        }
+    }
 
+    /**
+     * Returns the wolf that is the opponent
+     * @return Wolf
+     */
+    public Wolf getOpponentWolf() {
+        return opponentWolf;
+    }
+
+    /**
+     * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
+     */
+    protected void fight() {
+        if (opponentWolf != null) {
+            if (world.getSurroundingTiles().contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fighht
+                opponentWolf.takeDamage(strength);
+            } else { //Else it moves towards the opponent
+                moveTo(world.getLocation(opponentWolf));
+            }
+        } else {
+            findOpponent();
+        }
+    }
 }

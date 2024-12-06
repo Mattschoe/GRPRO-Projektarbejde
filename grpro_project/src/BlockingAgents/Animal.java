@@ -55,10 +55,6 @@ public abstract class Animal implements Actor {
 
     }
 
-    public void takeDamage(int damage) {
-        health = health - damage;
-    }
-
     protected void die() {
         if (this.isInfected) {
             int infectionRadius = 2;
@@ -80,15 +76,16 @@ public abstract class Animal implements Actor {
         }
     }
 
+    protected void takeDamage(int damage) {
+        health = health - damage;
+    }
+
     protected abstract void sleep();
-
-
 
     /**
      * Moves randomly around one tile at a time, moves only to empty tiles. Uses up 1 energyLevel
      */
     protected void move() {
-
         energyLevel--;
 
         //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
@@ -142,9 +139,10 @@ public abstract class Animal implements Actor {
         Map<Object, Location> map = new HashMap<>();
         for (Object object : world.getEntities().keySet()) {
             if (world.getCurrentLocation() != null && !world.isTileEmpty(world.getLocation(object))) {
-            if (object.getClass() == this.getClass() && object != this) {
-                map.put(object, world.getLocation(object));
-            }}
+                if (object.getClass() == this.getClass() && object != this) {
+                    map.put(object, world.getLocation(object));
+                }
+            }
         }
         return map;
     }
@@ -156,7 +154,6 @@ public abstract class Animal implements Actor {
             move();
         }
     }
-
 
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
@@ -239,27 +236,6 @@ public abstract class Animal implements Actor {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
         }}
-    }
-
-    protected void flee() {};
-
-    protected void recoverHealth() {}
-
-    void birthday() {
-        age += 1;
-
-    }
-
-    public int getAge(){
-        return age;
-    }
-
-    public int getEnergyLevel() {
-        return energyLevel;
-    }
-
-    public int getMaxEnergy() {
-        return maxEnergy;
     }
 
     /**
@@ -349,6 +325,7 @@ public abstract class Animal implements Actor {
         }
         return false;
     }
+
     protected void reproduce(Location birthplace, Animal animal) {
         Set<Location> neighbours = world.getEmptySurroundingTiles(birthplace);
         List<Location> neighbourList = new ArrayList<>(neighbours);
@@ -357,6 +334,14 @@ public abstract class Animal implements Actor {
             world.setTile(birthPlace, animal);
         }
 
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public int getEnergyLevel() {
+        return energyLevel;
     }
 
     public boolean getIsSleeping() {

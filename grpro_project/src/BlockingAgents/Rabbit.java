@@ -32,7 +32,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
 
     @Override
     public void act(World world) {
-
             if (!isHiding) {
                 //Daytime activities:
                 if (world.isDay()) {

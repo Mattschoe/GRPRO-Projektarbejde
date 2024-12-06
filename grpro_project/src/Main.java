@@ -127,7 +127,7 @@ public class Main {
 
     static void simulation() {
         //Program descriptions
-        int size = 15;
+        int size = 7;
         int delay = 200;
         int displaySize = 1000;
 
@@ -148,9 +148,16 @@ public class Main {
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
+        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
 
-        /* Wolfpack test */
+
+
+        /* Wolfpack test
         WolfPack wolfPack = new WolfPack(world);
 
         //Setting Alpha Wolf
@@ -175,14 +182,7 @@ public class Main {
             wolfPack.addWolfToPack(wolf);
             world.setTile(location, wolf);
         }
-        /* Wolfpack test */
-
-
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
-
+        Wolfpack test */
 
         //Shows world
         program.show();

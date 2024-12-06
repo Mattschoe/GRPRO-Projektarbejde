@@ -184,4 +184,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     public Boolean getWantsToBreed() {
         return wantsToBreed;
     }
+
+    //MANGLER
+    protected void fight() {}
 }
