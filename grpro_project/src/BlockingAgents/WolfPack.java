@@ -94,4 +94,17 @@ public class WolfPack {
         location = world.getLocation(alphaWolf);
         return location;
     }
+
+    /**
+     * Returns whether one of the wolf's in the pack are fighting. If they are then all get wolfs in the pack get activated
+     * @return boolean
+     */
+    public boolean isWolfPackFighting() {
+        for (Wolf wolf : getWolvesInPack()) {
+            if (wolf.getCurrentlyFighting()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

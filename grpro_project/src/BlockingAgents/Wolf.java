@@ -1,7 +1,6 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
-import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 
@@ -23,12 +22,17 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      * @param world
      */
     public Wolf(World world, boolean isInfected) {
-        super(2, world, 30, 20, isInfected);
+        super(2, world, 30, 10, isInfected);
         huntRadius = 3;
     }
 
     //MANGLER: At få en wolfpack
     public void act(World world) {
+        //If the wolf got damaged last act it goes into fighting mode
+        if (health < maxHealth) {
+            currentlyFighting = true;
+        }
+
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
@@ -48,19 +52,22 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                         }
                     }
                 }
-            } else if (energyLevel <= 0) {
+            } else if (energyLevel <= 0 || health <= 0) {
                 die();
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
-            } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
+            } else if (currentlyFighting || new Random().nextInt(4) == 1 || wolfpack != null && wolfpack.isWolfPackFighting()) { //Fighting, keeps on fighting or starts fighting with a 1/4% chance. Wolfs fight if their pack fights. Fight while it's not critically low on health, else runs away.
+                System.out.println(health);
                 if (health > 5) {
-                    System.out.println("Im fighting!");
                     fight();
-                } else { //Changes pack when its too low HP
+                } else if (wolfpack != null) { //Changes pack when its too low HP
                     System.out.print("Im changing pack! From: " + wolfpack);
                     changePack(opponentWolf.getWolfpack());
                     System.out.println("To: " + wolfpack);
+                } else { //If it doesn't have a pack if just moves away from the opponent
+                    System.out.println("Moving away from my opponent!");
+                    moveAwayFrom(world.getLocation(opponentWolf));
                 }
             } else if (wolfpack != null) { //Move towards the alpha wolf as long as its in a pack
                 moveTo(wolfpack.getPackLocation());
@@ -218,14 +225,38 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
      */
     protected void fight() {
-        if (opponentWolf != null) {
-            if (world.getSurroundingTiles().contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fighht
-                opponentWolf.takeDamage(strength);
-            } else { //Else it moves towards the opponent
-                moveTo(world.getLocation(opponentWolf));
+        if (opponentWolf != null) { //Makes sure it doesnt fight a wolf in the same pack
+            if (wolfpack != null && !wolfpack.getWolvesInPack().contains(opponentWolf)) {
+                //If it killed the opponent last act or the opponent died it stops fighting, else it fights
+                try {
+                    currentlyFighting = true;
+                    if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fighht
+                        opponentWolf.takeDamage(strength);
+                    } else { //Else it moves towards the opponent
+                        moveTo(world.getLocation(opponentWolf));
+                    }
+                } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
+                    currentlyFighting = false;
+                }
+            } else if (wolfpack == null) { //If the Wolf just doesnt have a pack
+                try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
+                    currentlyFighting = true;
+                    if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fighht
+                        opponentWolf.takeDamage(strength);
+                    } else { //Else it moves towards the opponent
+                        moveTo(world.getLocation(opponentWolf));
+                    }
+                } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
+                    currentlyFighting = false;
+                }
             }
         } else {
+            currentlyFighting = false;
             findOpponent();
         }
+    }
+
+    public boolean getCurrentlyFighting() {
+        return currentlyFighting;
     }
 }

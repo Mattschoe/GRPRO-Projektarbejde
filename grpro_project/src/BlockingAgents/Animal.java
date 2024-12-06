@@ -347,4 +347,8 @@ public abstract class Animal implements Actor {
     public boolean getIsSleeping() {
         return isSleeping;
     }
+
+    public int getHealth() {
+        return health;
+    }
 }
