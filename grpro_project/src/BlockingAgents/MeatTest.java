@@ -24,7 +24,7 @@ class MeatTest {
     @Test
     void decayingProcess() {
 
-        Wolf wolf = new Wolf(w);
+        Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
@@ -44,7 +44,7 @@ class MeatTest {
     void decayingProcessIfInfected() {
         Random r = new Random();
         boolean infected = r.nextBoolean();
-        Wolf wolf = new Wolf(w);
+        Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);

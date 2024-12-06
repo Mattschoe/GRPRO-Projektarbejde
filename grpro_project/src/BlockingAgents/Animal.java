@@ -190,11 +190,9 @@ public abstract class Animal implements Actor {
         Location newLocation = new Location(x, y);
         if (!world.isTileEmpty(newLocation)) {
             move();
-            System.out.println("random movement");
         } else if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
-            System.out.println("not random movement");
         }
         }
     }
@@ -231,19 +229,15 @@ public abstract class Animal implements Actor {
         } else {
             y = world.getLocation(this).getY();
         }
-        System.out.println(world.getSize() + "uhweiu" + y + "  " + x);
         if (y <world.getSize() && x < world.getSize() && y >=0 && x >= 0) {
         //Tries to move unless there is an object in the way
         Location newLocation = new Location(x, y);
 
         if (!world.isTileEmpty(newLocation)) {
             move();
-            System.out.println("random movement");
         } else {
             world.move(this, newLocation);
             world.setCurrentLocation(newLocation);
-            System.out.println(" not random movement");
-
         }}
     }
 

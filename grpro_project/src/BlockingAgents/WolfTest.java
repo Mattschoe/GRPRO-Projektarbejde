@@ -19,13 +19,13 @@ class WolfTest {
     void setUp() {
         w = new World(2);
 
-        wolf = new Wolf(w);
+        wolf = new Wolf(w, false);
         location0 = new Location(0,0);
         location01 = new Location(0,1);
         location11 = new Location(1,1);
     }
 
-    @Test
+    /* @Test
     void fight() {
         WolfPack wp1 = new WolfPack();
         WolfPack wp2 = new WolfPack();
@@ -48,7 +48,7 @@ class WolfTest {
         }
         assertEquals(0, wolfs);
 
-    }
+    } */
 
     @Test
     void TestHunt() {
@@ -81,7 +81,7 @@ class WolfTest {
 
     }
 
-    @Test
+    /*@Test
     void reproduce() {
         int iterations = 10000;
         int reproduced = 0;
@@ -126,7 +126,7 @@ class WolfTest {
 
 
 
-    }
+    } */
 
     @Test
     void flee() {

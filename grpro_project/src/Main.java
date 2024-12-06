@@ -74,7 +74,7 @@ public class Main {
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
            // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Den(world, "wolf"));
         } catch (IllegalArgumentException e) {
@@ -83,7 +83,7 @@ public class Main {
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
         }
 
         //Shows world
@@ -114,7 +114,7 @@ public class Main {
         world.setTile(new Location(2,0), new Bear(world, true));
         world.setTile(new Location(0,0), new Wolf(world, false));
         world.setTile(new Location(3,0), new Rabbit(world, true));
-        world.setTile(new Location(2,2), new Wolf(world));
+        world.setTile(new Location(2,2), new Wolf(world, false));
 
         //Shows world
         program.show();
@@ -154,7 +154,7 @@ public class Main {
         WolfPack wolfPack = new WolfPack();
 
         //Setting Alpha Wolf
-        wolfPack.setAlphaWolf(new Wolf(world));
+        wolfPack.setAlphaWolf(new Wolf(world, false));
         Location location = new Location(random.nextInt(size), random.nextInt(size));
         world.setTile(location, wolfPack.getAlphaWolf());
 
@@ -165,7 +165,7 @@ public class Main {
 
         //Adding Wolf's to pack
         for (int i = 0; i < 2; i++) {
-            Wolf wolf = new Wolf(world);
+            Wolf wolf = new Wolf(world, false);
             location = new Location(random.nextInt(size), random.nextInt(size));
 
             while (world.getTile(location) != null) {

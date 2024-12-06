@@ -21,31 +21,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      * Wolf without being a Alpha in a wolfpack
      * @param world
      */
-    public Wolf(World world) {
-        super(20, world, 30, 20);
-        huntRadius = 3;
-    }
-
     public Wolf(World world, boolean isInfected) {
         super(20, world, 30, 20, isInfected);
-        huntRadius = 2;
+        huntRadius = 3;
     }
-
-    /**
-     * Wolf with a Wolfpack where its the alpha
-     * @param world
-     * @param wolfpack
-     */
-    public Wolf(World world, WolfPack wolfpack) {
-        super(29, world, 30, 20);
-        this.wolfpack = wolfpack;
-    }
-
-    public Wolf(World world, WolfPack wolfpack, boolean isInfected) {
-        super(29, world, 30, 20, isInfected);
-        this.wolfpack = wolfpack;
-    }
-
 
     //MANGLER: At få en wolfpack
     public void act(World world) {
@@ -53,27 +32,27 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         if (world.isDay()) {
             isSleeping = false;
             if (sleepingLocation != null) {
-                try {
+                try { //Tries waking up
                     world.setTile(sleepingLocation, this);
                     sleepingLocation = null;
-                 //If there is already somebody above the hole it waits a step
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) { //If there is already somebody above the hole it waits a step
                     System.out.println("Someone is standing on my den. - " + this);
                 }
-                for (Object obj : world.getEntities().keySet()){
+                for (Object obj : world.getEntities().keySet()){ //Reproduces wolf's with a 10% chance, adds it to the world and into the parents pack
                     if (obj instanceof Wolf wolf){
                         if ((wolf.getDen() == this.getDen() && wolf != this)){
-                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), new Wolf(world,wolfpack,  false));}
+                            Wolf babyWolf = new Wolf(world, false);
+                            getWolfpack().addWolfToPack(babyWolf);
+                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), babyWolf);}
                         }
                     }
                 }
             } else if (energyLevel <= 0) {
-
                 die();
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
-            } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
+            } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
                 if (health > 5) {
                     fight();
                 } else {
