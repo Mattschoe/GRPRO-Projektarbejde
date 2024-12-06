@@ -18,9 +18,9 @@ import itumulator.world.World;
 public class Main {
     public static void main(String[] args) {
         //ShowDropTestHereTests();
-        //MattTempTest();
+        MattTempTest();
         //JosvaTempTest();
-        Week2Test();
+        // Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -127,7 +127,7 @@ public class Main {
 
     static void simulation() {
         //Program descriptions
-        int size = 5;
+        int size = 15;
         int delay = 200;
         int displaySize = 1000;
 
@@ -151,7 +151,7 @@ public class Main {
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
 
         /* Wolfpack test */
-        WolfPack wolfPack = new WolfPack();
+        WolfPack wolfPack = new WolfPack(world);
 
         //Setting Alpha Wolf
         wolfPack.setAlphaWolf(new Wolf(world, false));
@@ -164,7 +164,7 @@ public class Main {
 
 
         //Adding Wolf's to pack
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             Wolf wolf = new Wolf(world, false);
             location = new Location(random.nextInt(size), random.nextInt(size));
 
@@ -175,7 +175,6 @@ public class Main {
             wolfPack.addWolfToPack(wolf);
             world.setTile(location, wolf);
         }
-
         /* Wolfpack test */
 
 

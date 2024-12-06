@@ -105,7 +105,7 @@ public class ParseTest {
 
             // XXX
             if (object.equals("wolf")) {
-                WolfPack wolfPack = new WolfPack();
+                WolfPack wolfPack = new WolfPack(world);
                 //Setting Alpha Wolf
                 wolfPack.setAlphaWolf(new Wolf(world, isInfected));
 

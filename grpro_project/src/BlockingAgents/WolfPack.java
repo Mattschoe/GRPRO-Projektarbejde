@@ -1,6 +1,8 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import itumulator.world.Location;
+import itumulator.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,9 +11,12 @@ public class WolfPack {
     Wolf alphaWolf;
     HashSet<Wolf> pack;
     Den packDen;
+    Location location;
+    World world;
 
-    public WolfPack() {
+    public WolfPack(World world) {
         pack = new HashSet<Wolf>();
+        this.world = world;
     }
 
     /**
@@ -83,5 +88,10 @@ public class WolfPack {
 
     public Den getPackDen() {
         return packDen;
+    }
+
+    public Location getPackLocation() {
+        location = world.getLocation(alphaWolf);
+        return location;
     }
 }

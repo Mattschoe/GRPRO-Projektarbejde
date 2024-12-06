@@ -58,7 +58,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 } else {
                     flee();
                 }
-            } else if (!isInfected) {
+            } else if (wolfpack != null) { //Move towards the alpha wolf as long as its in a pack
+                moveTo(wolfpack.getPackLocation());
+            } else if (!isInfected) { //Else moves randomly
                 move();
             }
 
