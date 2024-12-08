@@ -26,7 +26,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         huntRadius = 3;
     }
 
-    //MANGLER: At få en wolfpack
     public void act(World world) {
         //If the wolf got damaged last act it goes into fighting mode. Else it makes sure that it's still not in fight mode
         if (tookDamage) {
@@ -61,11 +60,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
             } else if (currentlyFighting || new Random().nextInt(4) == 1 || wolfpack != null && wolfpack.isWolfPackFighting()) { //Fighting, keeps on fighting or starts fighting with a 1/4% chance. Wolfs fight if their pack fights. Fight while it's not critically low on health, else runs away.;
-                System.out.println(health + " |Fighting: " + currentlyFighting + " |Took damage: " + tookDamage);
                 if (health > 5) {
                     fight();
                 } else if (wolfpack != null) { //Changes pack when its too low HP
-                    System.out.println("Changing pack...");
                     currentlyFighting = false;
                     changePack(opponentWolf.getWolfpack());
                 } else { //If it doesn't have a pack if just moves away from the opponent
@@ -217,14 +214,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 opponentWolf = wolf;
             }
         }
-    }
-
-    /**
-     * Returns the wolf that is the opponent
-     * @return Wolf
-     */
-    public Wolf getOpponentWolf() {
-        return opponentWolf;
     }
 
     /**

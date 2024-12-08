@@ -13,12 +13,10 @@ import java.util.Set;
 public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
     World world;
     ArrayList<Location> territory;
-    boolean sleeping;
-    Location bushLocation = null;
-    boolean hasFoundMeat = false;
-    Location meatLocation = null;
     Boolean wantsToBreed;
     int breedingDelay;
+    Animal opponent;
+
 
 
 
@@ -44,7 +42,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //world.setTile(location, this );
 
     }
-
 
     //MANGLER: At hunte efter kaniner
     @Override
@@ -185,6 +182,36 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         return wantsToBreed;
     }
 
-    //MANGLER
-    protected void fight() {}
+    /**
+     * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
+     */
+    protected void fight() {
+        if (opponent != null) { //Makes sure it doesnt fight a wolf in the same pack
+            try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
+                currentlyFighting = true;
+                if (world.getSurroundingTiles(2).contains(world.getLocation(opponent))) { //If the opponent is close by they fighht
+                    opponent.takeDamage(strength);
+                } else { //Else it moves towards the opponent
+                    moveTo(world.getLocation(opponent));
+                }
+            } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
+                currentlyFighting = false;
+            }
+        } else {
+            currentlyFighting = false;
+            findOpponent();
+        }
+    }
+
+    /**
+     * Finds a Wolf opponent in the map and saves it to the as opponentWolf. Use getOpponent to see the predators opponent
+     */
+    private void findOpponent() {
+        for (Location location : territory) {
+            if (world.getTile(location) != null && world.getTile(location) instanceof Predator predator) {
+                opponent = predator;
+                return;
+            }
+        }
+    }
 }

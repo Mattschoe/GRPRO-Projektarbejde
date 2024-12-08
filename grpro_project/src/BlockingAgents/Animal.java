@@ -354,4 +354,8 @@ public abstract class Animal implements Actor {
     public int getHealth() {
         return health;
     }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
 }

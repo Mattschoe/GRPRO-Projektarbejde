@@ -131,9 +131,9 @@ class WolfTest {
     @Test
     void StaysInPack(){
         World world = new World(20);
-        WolfPack wp = new WolfPack();
-        Wolf wolf = new Wolf(world, wp, false );
-        Wolf wolf1 = new Wolf(world, wp, false );
+        WolfPack wp = new WolfPack(world);
+        Wolf wolf = new Wolf(world, false );
+        Wolf wolf1 = new Wolf(world, false );
         world.setTile(location0,wolf);
         world.setTile(location01,wolf1);
         world.setCurrentLocation(location0);

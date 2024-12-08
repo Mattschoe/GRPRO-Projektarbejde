@@ -144,22 +144,19 @@ class BearTest {
             while (rabbits > 0) {
                 rabbits = 0;
                 for (Object obj : w.getEntities().keySet()){
-
                     if (obj instanceof Rabbit) {
                         rabbits++;
-                    }}
+                    }
+                }
                 System.out.println(w.getEntities());
                if (bear.getEnergyLevel() >= bear.getMaxEnergy()){ // if it is not hungry
-                assertEquals(1,rabbits);
-                }
-                w.step();
-                rabbit.act(w);
-                bear.act(w);
-
-
+                    assertEquals(1,rabbits);
+               }
+               w.step();
+               rabbit.act(w);
+               bear.act(w);
             }
             assertEquals(0, rabbits);
-
     }
 
     @AfterEach

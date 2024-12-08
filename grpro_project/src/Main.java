@@ -143,7 +143,8 @@ public class Main {
 
 
         //Adds agents
-        // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
@@ -152,7 +153,7 @@ public class Main {
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
 
-        /* WOLF FIGHTING IN PACKS TEST */
+        /* WOLF FIGHTING IN PACKS TEST
         Wolf wolf = new Wolf(world, false);
         Location location = new Location(random.nextInt(size), random.nextInt(size));
         WolfPack wolfPack = new WolfPack(world);
