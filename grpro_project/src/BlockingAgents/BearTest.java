@@ -6,6 +6,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -79,56 +80,88 @@ class BearTest {
         }
         assertFalse(bush.getHasBerries());
     }
-/*
+
+    @Test
+    void TestFighting(){
+        Bear bear1 = new Bear(w, false );
+        w.setTile(location0, bear);
+
+        w.setCurrentLocation(location0);
+        w.setTile(location1, bear1);
+        while (w.getEntities().size() > 1) {
+            bear1.act(w);
+            bear.act(w);
+            System.out.println(w.getEntities());
+        }
+        int bears = 0;
+        for (Object obj : w.getEntities().keySet()){
+
+            if (obj instanceof Bear) {
+                bears++;
+            }}
+        assertEquals(1, bears );
+
+
+
+    }
+
+
+
     @Test
     void staysInTerritory(){
         World w = new World(20);
         w.setCurrentLocation(location0);
         w.setTile(location0, bear);
         Set<Location> territoryAndSurroundings = new HashSet<>();
-        for (Location loc : bear.getTerritory()){
-            territoryAndSurroundings.addAll(w.getSurroundingTiles(loc));
 
-        }
-        while (bear.getEnergyLevel() > 0){ // until the bear dies
+        for (int i = 0; i < 120; i++) {
+            
+
 
             bear.act(w);
             w.step();
+            // location0, is the center of the bears territory, the territory is 4, and we are checking if the  bear gets further away than one tile from its territory.
+            assertTrue(Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5 && Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5);
 
-            System.out.println(w.getLocation(bear));
-            System.out.println(bear.getTerritory().toArray().toString());
-
-
-
-
-            assertTrue(territoryAndSurroundings.contains(w.getLocation(bear)));
 
 
 
         }
     }
-*/
-/*
+
+
     @Test
     void TestHunting(){
-        World w = new World(10);
-        w.setTile(location0, bear);
-        w.setCurrentLocation(location1);
-        Rabbit rabbit = new Rabbit(w);
-        w.setTile(location1, rabbit);
 
-        for (int i = 0; i < 300; i++) {
-            bear.act(w);
-            rabbit.act(w);
-            w.step();
-            System.out.println(bear.getEnergyLevel());
 
-        }
-        //assertNull(rabbit);
+            Rabbit rabbit = new Rabbit(w);
+            w.setTile(location0,bear);
+            w.setTile(location1,rabbit);
+            w.setCurrentLocation(location0);
 
+            int rabbits = 0;
+
+            while (rabbits > 0) {
+                rabbits = 0;
+                for (Object obj : w.getEntities().keySet()){
+
+                    if (obj instanceof Rabbit) {
+                        rabbits++;
+                    }}
+                System.out.println(w.getEntities());
+               if (bear.getEnergyLevel() >= bear.getMaxEnergy()){ // if it is not hungry
+                assertEquals(1,rabbits);
+                }
+                w.step();
+                rabbit.act(w);
+                bear.act(w);
+
+
+            }
+            assertEquals(0, rabbits);
 
     }
-*/
+
     @AfterEach
     void TearDown() {
         w = null;

@@ -129,6 +129,27 @@ class WolfTest {
     } */
 
     @Test
+    void StaysInPack(){
+        World world = new World(20);
+        WolfPack wp = new WolfPack();
+        Wolf wolf = new Wolf(world, wp, false );
+        Wolf wolf1 = new Wolf(world, wp, false );
+        world.setTile(location0,wolf);
+        world.setTile(location01,wolf1);
+        world.setCurrentLocation(location0);
+        for (int i = 0; i < 120; i++) {
+            assertTrue( Math.abs(world.getLocation(wolf).getX() -  world.getLocation(wolf1).getX()) < 2 && Math.abs(world.getLocation(wolf).getY() -  world.getLocation(wolf1).getY()) < 2); // distance is less than two tiles.
+            
+        }
+
+
+
+
+
+
+    }
+
+    @Test
     void flee() {
     }
 
