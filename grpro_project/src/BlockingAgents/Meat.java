@@ -1,10 +1,8 @@
 package BlockingAgents;
 
-import NonblockingAgents.Fungi;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
@@ -15,11 +13,13 @@ public class Meat implements Actor {
     Animal animal;
     public boolean isInfected;
     int age;
+    int fungiLife;
 
     public Meat(World world, Animal animal) {
         this.world = world;
         this.animal = animal;
         this.isInfected = false;
+        this.fungiLife = 0;
         age = 0;
 
         if (this.animal instanceof Carnivore) {
@@ -34,6 +34,7 @@ public class Meat implements Actor {
         this.world = world;
         this.animal = animal;
         this.isInfected = isInfected;
+        this.fungiLife = 0;
         age = 0;
 
         if (this.animal instanceof Carnivore) {
@@ -49,11 +50,13 @@ public class Meat implements Actor {
         this.world = world;
         this.energyLevel--;
         if (this.isInfected) {
+            this.fungiLife++;
             this.energyLevel--;
         }
         if (this.energyLevel < 1) { //can die without being eaten
             if (this.isInfected) { // spawns mushroom if infected, otherwise just dies
                 Location tempLocation = world.getCurrentLocation();
+                world.delete(this);
                 spawnMushroom(tempLocation);
             }
             else {
@@ -77,9 +80,9 @@ public class Meat implements Actor {
 
     void spawnMushroom(Location location) {
         if (this.animal instanceof Carnivore) {
-            world.setTile(location, new Fungi(world,50));
+            world.setTile(location, new Fungi(world,this.fungiLife));
         } else {
-            world.setTile(location, new Fungi(world,20));
+            world.setTile(location, new Fungi(world,this.fungiLife));
         }
     }
 

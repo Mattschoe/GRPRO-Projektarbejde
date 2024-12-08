@@ -1,6 +1,5 @@
 package BlockingAgents;
 
-import NonblockingAgents.Fungi;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,11 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
-import BlockingAgents.Bear;
-import BlockingAgents.Meat;
-import BlockingAgents.Wolf;
-import BlockingAgents.Rabbit;
-import BlockingAgents.WolfPack;
+import BlockingAgents.*;
 import NonblockingAgents.*;
 import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
@@ -17,10 +13,10 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        //ShowDropTestHereTests();
-        MattTempTest();
+        ShowDropTestHereTests();
+        //MattTempTest();
         //JosvaTempTest();
-        // Week2Test();
+        //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -105,15 +101,17 @@ public class Main {
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.gray, "grass"));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.gray, "wolf"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.gray, "carcass"));
+        program.setDisplayInformation(Fungi.class, new DisplayInformation(Color.gray, "fungi"));
 
 
         //Adds agents
         Random random = new Random();
-
         world.setTile(new Location(2,0), new Bear(world, true));
         world.setTile(new Location(0,0), new Wolf(world, false));
         world.setTile(new Location(3,0), new Rabbit(world, true));
         world.setTile(new Location(2,2), new Wolf(world, false));
+        world.setTile(new Location(5,5), new Meat(world, new Wolf(world, false), false));
+        world.setTile(new Location(7,7), new Meat(world, new Rabbit(world, false), true));
 
         //Shows world
         program.show();

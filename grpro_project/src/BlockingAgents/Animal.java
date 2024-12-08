@@ -141,7 +141,11 @@ public abstract class Animal implements Actor {
     protected Map<Object, Location> findEveryAnimalInSpecies() {
         Map<Object, Location> map = new HashMap<>();
         for (Object object : world.getEntities().keySet()) {
-            if (world.getCurrentLocation() != null && !world.isTileEmpty(world.getLocation(object))) {
+            if (object instanceof Animal && ((Animal) object).getSleepingLocation() != null) {
+                if (object.getClass() == this.getClass() && object != this) {
+                    map.put(object, world.getLocation(object));
+                }
+            } else if (world.getCurrentLocation() != null && !world.isTileEmpty(world.getLocation(object))) {
                 if (object.getClass() == this.getClass() && object != this) {
                     map.put(object, world.getLocation(object));
                 }
@@ -358,4 +362,9 @@ public abstract class Animal implements Actor {
     public int getMaxEnergy() {
         return maxEnergy;
     }
+
+    public Location getSleepingLocation() {
+        return sleepingLocation;
+    }
+
 }

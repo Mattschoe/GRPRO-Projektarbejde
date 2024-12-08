@@ -1,11 +1,13 @@
-package NonblockingAgents;
+package BlockingAgents;
 
-import BlockingAgents.Meat;
+import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
+
+import java.awt.*;
 
 
 public class Fungi implements Actor, NonBlocking {
@@ -17,12 +19,7 @@ public class Fungi implements Actor, NonBlocking {
 
     public Fungi(World world, int energyLevel) {
         this.world = world;
-
-        if (energyLevel == 0) { // Sætter energyLevel in case den bliver spawnet uden tilknyttet dyr
-            this.energyLevel = 10;
-        } else {
-            this.energyLevel = energyLevel;
-        }
+        this.energyLevel = energyLevel;
         this.radius = 2;
     }
 
@@ -54,7 +51,7 @@ public class Fungi implements Actor, NonBlocking {
 
     @Override
     public DisplayInformation getInformation() {
-        return null;
+        return new DisplayInformation(Color.GRAY, "fungi");
     }
 
 }
