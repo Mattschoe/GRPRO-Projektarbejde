@@ -148,41 +148,32 @@ public class Main {
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Wolf(world)));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
 
-
-
-        /* Wolfpack test
-        WolfPack wolfPack = new WolfPack(world);
-
-        //Setting Alpha Wolf
-        wolfPack.setAlphaWolf(new Wolf(world, false));
+        /* WOLF FIGHTING IN PACKS TEST */
+        Wolf wolf = new Wolf(world, false);
         Location location = new Location(random.nextInt(size), random.nextInt(size));
-        world.setTile(location, wolfPack.getAlphaWolf());
-
+        WolfPack wolfPack = new WolfPack(world);
+        wolfPack.setAlphaWolf(wolf);
+        world.setTile(location, wolf);
         world.setCurrentLocation(location);
         wolfPack.getAlphaWolf().digDen();
-        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+        wolfPack.setDen((wolfPack.getAlphaWolf().getDen()));
 
 
-        //Adding Wolf's to pack
-        for (int i = 0; i < 4; i++) {
-            Wolf wolf = new Wolf(world, false);
-            location = new Location(random.nextInt(size), random.nextInt(size));
+        wolf = new Wolf(world, false);
+        location = new Location(random.nextInt(size), random.nextInt(size));
+        wolfPack = new WolfPack(world);
+        wolfPack.setAlphaWolf(wolf);
+        world.setTile(location, wolf);
+        world.setCurrentLocation(location);
+        wolfPack.getAlphaWolf().digDen();
+        wolfPack.setDen((wolfPack.getAlphaWolf().getDen()));
+        /* WOLF FIGHTING IN PACKS TEST */
 
-            while (world.getTile(location) != null) {
-                location = new Location(random.nextInt(size), random.nextInt(size));
-            }
-
-            wolfPack.addWolfToPack(wolf);
-            world.setTile(location, wolf);
-        }
-        Wolfpack test */
 
         //Shows world
         program.show();

@@ -18,9 +18,11 @@ public abstract class Animal implements Actor {
     Location sleepingLocation;
     boolean isSleeping;
     boolean hasFoundFood;
+    boolean isInfected;
+    boolean tookDamage;
     Object food;
     Location foodLocation;
-    boolean isInfected;
+
 
 
 
@@ -78,6 +80,7 @@ public abstract class Animal implements Actor {
 
     protected void takeDamage(int damage) {
         health = health - damage;
+        tookDamage = true;
     }
 
     protected abstract void sleep();

@@ -91,7 +91,10 @@ public class WolfPack {
     }
 
     public Location getPackLocation() {
-        location = world.getLocation(alphaWolf);
+        for (Location location : world.getEmptySurroundingTiles(world.getLocation(alphaWolf))) {
+            this.location = location;
+            return location;
+        }
         return location;
     }
 
