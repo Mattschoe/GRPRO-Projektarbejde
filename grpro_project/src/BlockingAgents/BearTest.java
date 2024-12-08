@@ -106,53 +106,33 @@ class BearTest {
     }
 
 
-/*
+
     @Test
     void staysInTerritory(){
         World w = new World(20);
         w.setCurrentLocation(location0);
         w.setTile(location0, bear);
         Set<Location> territoryAndSurroundings = new HashSet<>();
-        for (Location loc : bear.getTerritory()){
-            territoryAndSurroundings.addAll(w.getSurroundingTiles(loc));
 
-        }
-        while (bear.getEnergyLevel() > 0){ // until the bear dies
+        for (int i = 0; i < 120; i++) {
+            
+
 
             bear.act(w);
             w.step();
+            // location0, is the center of the bears territory, the territory is 4, and we are checking if the  bear gets further away than one tile from its territory.
+            assertTrue(Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5 && Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5);
 
-            System.out.println(w.getLocation(bear));
-            System.out.println(bear.getTerritory().toArray().toString());
-
-
-
-
-            assertTrue(territoryAndSurroundings.contains(w.getLocation(bear)));
 
 
 
         }
     }
-*/
+
 
     @Test
-    void TestHunting(){/*
-        World w = new World(10);
-        w.setTile(location0, bear);
-        w.setCurrentLocation(location1);
-        Rabbit rabbit = new Rabbit(w);
-        w.setTile(location1, rabbit);
+    void TestHunting(){
 
-        for (int i = 0; i < 300; i++) {
-            bear.act(w);
-            rabbit.act(w);
-            w.step();
-            System.out.println(bear.getEnergyLevel());
-
-        }
-        //assertNull(rabbit);
-*/
 
             Rabbit rabbit = new Rabbit(w);
             w.setTile(location0,bear);
