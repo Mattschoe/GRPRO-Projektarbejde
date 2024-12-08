@@ -69,13 +69,13 @@ public class Main {
         //Adds agents
         try {
             Random random = new Random();
+           // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Fungi(world, 20));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world));
-            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat(world, new Rabbit(world)));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
            // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Den(world, "wolf"));
         } catch (IllegalArgumentException e) {
             Random random = new Random();

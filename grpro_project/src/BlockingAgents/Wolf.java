@@ -73,7 +73,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
-            } else if (currentlyFighting) { //Fighting. Fight while its not critically low on health, else runs away.
+            } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
                 if (health > 5) {
                     fight();
                 } else {

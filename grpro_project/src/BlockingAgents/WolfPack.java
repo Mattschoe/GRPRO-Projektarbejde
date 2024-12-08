@@ -53,7 +53,7 @@ public class WolfPack {
     }
 
     /**
-     * Returns all wolfs in the pack
+     * Returns all wolf's in the pack
      * @return
      */
     public Set<Wolf> getWolvesInPack() {
@@ -67,7 +67,7 @@ public class WolfPack {
     public void setAlphaWolf(Wolf newAlphaWolf) {
         alphaWolf = newAlphaWolf;
 
-        //Adds the Alphawolf to the pack if it isnt in it
+        //Adds the Alphawolf to the pack if it isn't in it
         if (!getWolvesInPack().contains(alphaWolf)) {
             addWolfToPack(alphaWolf);
         }

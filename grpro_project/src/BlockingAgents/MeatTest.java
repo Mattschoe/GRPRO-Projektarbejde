@@ -60,4 +60,29 @@ class MeatTest {
         else assertNull(w.getNonBlocking(location));
     }
 
+    @Test
+    void meatGetsEaten (){
+        Wolf wolf = new Wolf(w);
+        Rabbit rabbit = new Rabbit(w);
+        Meat meat = new Meat(w, rabbit);
+        Location location = new Location(0, 0);
+        Location location2 = new Location(0, 1);
+        w.setCurrentLocation(location);
+        w.setTile(location,wolf);
+        w.setTile(location2,meat);
+
+        while (!w.getAll(Meat.class, w.getSurroundingTiles(2)).isEmpty()) {
+            meat.act(w);
+            wolf.act(w);
+            w.step();
+        }
+
+        assertTrue(w.getAll(Meat.class, w.getSurroundingTiles(2)).isEmpty());
+
+
+
+
+
+    }
+
 }
