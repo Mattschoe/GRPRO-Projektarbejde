@@ -35,12 +35,16 @@ public abstract class Predator extends Animal{
      */
     protected void hunt (Animal preyAnimal){
         this.preyAnimal = preyAnimal;
-        if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
-            kill(preyAnimal);
-            System.out.println("Killed the " + preyAnimal);
-        } else { //Otherwise it just chases it
-            moveTo(world.getLocation(preyAnimal));
-            System.out.println("Moving towards " + preyAnimal);
+        try {
+            if (preyAnimal.sleepingLocation == null && !preyAnimal.isSleeping && world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
+                kill(preyAnimal);
+                System.out.println("Killed the " + preyAnimal);
+            } else if (preyAnimal.sleepingLocation == null) { //Otherwise it just chases it
+                moveTo(world.getLocation(preyAnimal));
+                System.out.println("Moving towards " + preyAnimal);
+            }
+        } catch (IllegalArgumentException e) {
+            // Prey has died
         }
     }
 

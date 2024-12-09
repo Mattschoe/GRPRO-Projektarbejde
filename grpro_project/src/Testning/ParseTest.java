@@ -1,10 +1,6 @@
 package Testning;
 
-import BlockingAgents.Bear;
-import BlockingAgents.Meat;
-import BlockingAgents.Rabbit;
-import BlockingAgents.Wolf;
-import BlockingAgents.WolfPack;
+import BlockingAgents.*;
 import NonblockingAgents.*;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
@@ -59,6 +55,7 @@ public class ParseTest {
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));
+        program.setDisplayInformation(Fungi.class, new DisplayInformation(Color.green, "fungi" ));
 
         //Initializes objects in world
         String object = "";
@@ -68,8 +65,8 @@ public class ParseTest {
 
         scanner.nextLine();
         while (scanner.hasNextLine()) {
-            int infectedCounter = 0;
-            int extraCounter = 0;
+            int infectedAnimalCounter = 0;
+            int infectedObjectCounter = 0;
             boolean isInfected = false;
             //Saves object and amount
             String line = scanner.nextLine();
@@ -78,28 +75,30 @@ public class ParseTest {
             System.out.println(Arrays.toString(lineSplit));
 
             if (lineSplit.length > 1 && (lineSplit[0].length() == 9)) { // 9 is cordyceps
-                extraCounter = 1;
-                infectedCounter = 1;
+                infectedObjectCounter = 1;
+                infectedAnimalCounter = 1;
                 isInfected = true;
             } else if (lineSplit.length > 1 && (lineSplit[1].length() == 5)) { // 5 is fungi
-                extraCounter = 0;
-                infectedCounter = 1;
+                infectedObjectCounter = 0;
+                infectedAnimalCounter = 1;
                 isInfected = true;
             }
 
 
-            if (lineSplit.length == 2 + infectedCounter) {
-                object = lineSplit[0 + extraCounter];
-                amount = Integer.parseInt(lineSplit[1 + infectedCounter]);
-            } else if (lineSplit.length == 3 + infectedCounter) { //If it is a min max
-                object = lineSplit[0 + extraCounter];
-                int min = Integer.parseInt(lineSplit[1 + infectedCounter]);
-                int max = Integer.parseInt(lineSplit[2 + infectedCounter]);
+            if (lineSplit.length == 2 + infectedAnimalCounter) {
+                object = lineSplit[0 + infectedObjectCounter];
+                amount = Integer.parseInt(lineSplit[1 + infectedAnimalCounter]);
+            } else if (lineSplit.length == 3 + infectedAnimalCounter) { //If it is a min max
+                object = lineSplit[0 + infectedObjectCounter];
+                System.out.println(object);
+                System.out.println(isInfected);
+                int min = Integer.parseInt(lineSplit[1 + infectedAnimalCounter]);
+                int max = Integer.parseInt(lineSplit[2 + infectedAnimalCounter]);
                 amount = random.nextInt(max - min + 1) + min;
-            } else if (lineSplit.length == 4 + infectedCounter) { //Object with a territory
-                object = lineSplit[0 + extraCounter];
-                amount = Integer.parseInt(lineSplit[1 + infectedCounter]);
-                bearTerritoryCentrum = new Location(Integer.parseInt(lineSplit[2 + infectedCounter]), Integer.parseInt(lineSplit[3 + infectedCounter]));
+            } else if (lineSplit.length == 4 + infectedAnimalCounter) { //Object with a territory
+                object = lineSplit[0 + infectedObjectCounter];
+                amount = Integer.parseInt(lineSplit[1 + infectedAnimalCounter]);
+                bearTerritoryCentrum = new Location(Integer.parseInt(lineSplit[2 + infectedAnimalCounter]), Integer.parseInt(lineSplit[3 + infectedAnimalCounter]));
             }
 
             // XXX
@@ -150,8 +149,8 @@ public class ParseTest {
                     else if (object.equals("burrow")) world.setTile(location, new Den(world, "rabbit"));
                     else if (object.equals("bear")) world.setTile(location, new Bear(world, isInfected));
                     else if (object.equals("berry")) world.setTile(location, new Bush(world));
-                    else if (object.equals("Carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected))); // Der findes 1 test hvor carcass er med stort. Der giver ikke mening
-                    else if (object.equals("carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected)));
+                    else if (object.equals("Carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected), isInfected)); // Der findes 1 test hvor carcass er med stort. Der giver ikke mening
+                    else if (object.equals("carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected), isInfected));
                 }
                 testObject = world.getTile(location);
             }
