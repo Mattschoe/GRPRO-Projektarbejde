@@ -1,13 +1,13 @@
-package NonblockingAgents;
+package BlockingAgents;
 
-import BlockingAgents.Fungi;
-import BlockingAgents.Meat;
-import BlockingAgents.Rabbit;
+import NonblockingAgents.Grass;
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FungiTest {
     World w;
@@ -25,16 +25,36 @@ class FungiTest {
         Rabbit r = new Rabbit(w, false);
         Meat meat = new Meat(w, r, false);
         Location location =new Location(1,1);
-        w.setTile(location, fungi);
-        w.setTile(new Location(0,1), meat);
+        Location location1 = new Location(0,1);
         w.setCurrentLocation(location);
+        w.setTile(location, fungi);
+        w.setTile(location1, meat);
+
 
 
         for ( int i = 0; i < 40; i++ ) {
-            meat.act(w);
-            fungi.act(w);
             w.step();
+
+            for (Object entity : w.getEntities().keySet()){
+                if (entity instanceof Actor actor) {
+                    actor.act(w);
+                }
+            }
+
+            if (i < 10) {
+                assertInstanceOf(Fungi.class, w.getTile(location));
+            }
+            else if (i < 19){
+                assertInstanceOf(Fungi.class, w.getTile(location));
+
+            }
+            else {
+                assertInstanceOf(Grass.class, w.getTile(location));
+            }
+
+
         }
+
 
 
 
@@ -55,6 +75,8 @@ class FungiTest {
             fungi.act(w);
             w.step();
         }
+        assertInstanceOf(Grass.class, w.getTile(location));
+
 
 
 

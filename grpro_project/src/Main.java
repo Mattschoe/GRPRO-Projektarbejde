@@ -16,7 +16,7 @@ public class Main {
         ShowDropTestHereTests();
         //MattTempTest();
         //JosvaTempTest();
-        //Week2Test();
+        Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
@@ -65,8 +65,8 @@ public class Main {
         //Adds agents
         try {
             Random random = new Random();
-            // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Fungi(world, 20));
-            //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Fungi(world, 20));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat( world, new Rabbit(world)));
             // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));

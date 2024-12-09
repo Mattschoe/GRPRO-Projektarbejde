@@ -10,7 +10,7 @@ import itumulator.world.World;
 import java.awt.*;
 
 
-public class Fungi implements Actor, NonBlocking {
+public class Fungi implements Actor {
 
     World world;
     Location location;
@@ -27,7 +27,7 @@ public class Fungi implements Actor, NonBlocking {
         this.world = world;
         spread(); // Skal kunne sprede sig til Meat i nærheden
         if (this.energyLevel < 1) {
-            die(world.getCurrentLocation());
+            die(world.getLocation(this));
         }
     }
 
