@@ -64,7 +64,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         flee();
                         hide();
                     } else if (energyLevel + 5 < maxEnergy) { //If hungry
-                        eatFood();
+                        findFood();
+                        if (food == null) {
+                            move();
+                        } else {
+                            eatFood();
+                        }
                     } else if (!isInfected) { //Else moves randomly
                         move();
                     }
