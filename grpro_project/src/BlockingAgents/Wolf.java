@@ -11,10 +11,10 @@ import java.awt.*;
 import java.util.Random;
 
 public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDisplayInformationProvider {
-    Den den;
-    WolfPack wolfpack;
-    int huntRadius;
-    Wolf opponentWolf;
+    private Den den;
+    private WolfPack wolfpack;
+    private int huntRadius;
+    private Wolf opponentWolf;
 
     /**
      * Wolf without being a Alpha in a wolfpack
@@ -203,6 +203,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
             return wolfpack;
         }
         throw new IllegalStateException("Wolfpack is null!");
+    }
+
+    public void setWolfpack(WolfPack wolfpack) {
+        this.wolfpack = wolfpack;
     }
 
     /**
