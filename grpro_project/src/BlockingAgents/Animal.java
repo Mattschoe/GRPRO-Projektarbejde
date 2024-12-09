@@ -61,11 +61,11 @@ public abstract class Animal implements Actor {
         if (this.isInfected) {
             int infectionRadius = 2;
             for (Object object : world.getEntities().keySet()) {
-                // Checks if animal is close to the dying infection
-                if ( (object instanceof Animal) && Math.abs(world.getLocation(this).getX() - world.getLocation(object).getX()) <= infectionRadius && Math.abs(world.getLocation(this).getY() - world.getLocation(object).getY()) <= infectionRadius ) {
-                    ((Animal) object).isInfected = true;
+                if (object instanceof Animal animal && Math.abs(world.getLocation(this).getX() - world.getLocation(object).getX()) <= infectionRadius && Math.abs(world.getLocation(this).getY() - world.getLocation(object).getY()) <= infectionRadius ) {
+                    animal.infectAnimal();
                 }
             }
+
             world.delete(this);
         } else {
             try {
@@ -363,4 +363,7 @@ public abstract class Animal implements Actor {
         return sleepingLocation;
     }
 
+    public void infectAnimal() {
+        isInfected = true;
+    }
 }
