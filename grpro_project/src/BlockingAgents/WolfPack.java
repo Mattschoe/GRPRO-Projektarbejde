@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WolfPack {
-    Wolf alphaWolf;
-    HashSet<Wolf> pack;
-    Den packDen;
-    Location location;
-    World world;
+    private Wolf alphaWolf;
+    private HashSet<Wolf> pack;
+    private Den packDen;
+    private Location location;
+    private World world;
 
     public WolfPack(World world) {
         pack = new HashSet<Wolf>();
@@ -25,7 +25,7 @@ public class WolfPack {
      */
     public void addWolfToPack(Wolf newWolfToPack) {
         pack.add(newWolfToPack);
-        newWolfToPack.wolfpack = this;
+        newWolfToPack.setWolfpack(this);
 
         //Sets the Den of the new Wolf in the pack to the Alpha Wolf's
         if (alphaWolf.getDen() != null) {
@@ -38,7 +38,7 @@ public class WolfPack {
      * @param wolf
      * @return
      */
-    public boolean wolfIsInPack(Wolf wolf) {
+    public boolean isWolfInPack(Wolf wolf) {
         for (Wolf packWolfs : getWolvesInPack() ) {
             if (wolf == packWolfs) {
                 return true;
@@ -52,7 +52,7 @@ public class WolfPack {
      * @param wolf
      */
     public void removeWolfFromPack(Wolf wolf) {
-        if (wolfIsInPack(wolf)) {
+        if (isWolfInPack(wolf)) {
             pack.remove(wolf);
         }
     }

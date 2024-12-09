@@ -11,14 +11,10 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
-    World world;
-    ArrayList<Location> territory;
-    Boolean wantsToBreed;
-    int breedingDelay;
-    Animal opponent;
-
-
-
+    private ArrayList<Location> territory;
+    private boolean wantsToBreed;
+    private int breedingDelay;
+    private Animal opponent;
 
     public Bear(World world ){
         super(20, world, 50, 50);
@@ -213,5 +209,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 return;
             }
         }
+    }
+
+    public void setWantsToBreed(Boolean wantsToBreed) {
+        this.wantsToBreed = wantsToBreed;
     }
 }
