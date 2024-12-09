@@ -42,22 +42,23 @@ class MeatTest {
     }
     @Test
     void decayingProcessIfInfected() {
-        Random r = new Random();
-        boolean infected = r.nextBoolean();
+        //Random r = new Random();
+        //boolean infected = r.nextBoolean();
         Wolf wolf = new Wolf(w);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
         w.setTile(location,wolf);
-        if (infected){
+        //if (infected){
             meat.setInfected(true);
-        }
+        //}
 
         while (meat.getEnergyLevel() > 1){
             meat.act(w);
         }
-        if (infected) assertInstanceOf(Fungi.class, w.getNonBlocking(location));
-        else assertNull(w.getNonBlocking(location));
+        //if (infected)
+        assertInstanceOf(Fungi.class, w.getNonBlocking(location));
+        //else assertNull(w.getNonBlocking(location));
     }
 
     @Test

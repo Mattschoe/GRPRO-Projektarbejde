@@ -21,7 +21,7 @@ class FungiTest {
     }
 
     @Test
-    void FungiLifespan(){
+    void FungiLifespan(){ // spreading infection.
 
         Rabbit r = new Rabbit(w, false);
         Meat meat = new Meat(w, r, false);
@@ -31,7 +31,8 @@ class FungiTest {
         w.setCurrentLocation(location);
 
 
-        for ( int i = 0; i < 21; i++ ) {
+        for ( int i = 0; i < 40; i++ ) {
+            meat.act(w);
             fungi.act(w);
             w.step();
         }
