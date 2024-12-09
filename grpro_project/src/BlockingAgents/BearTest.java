@@ -43,7 +43,7 @@ class BearTest {
             w.setTile(location1, bear1);
             w.setCurrentLocation(location1);
             bear.setWantsToBreed(true);
-            bear1.setWantsToBreed(true);p
+            bear1.setWantsToBreed(true);
             for (int j = 0; j < 40; j++) {
                 w.step();
                 bear1.act(w);
