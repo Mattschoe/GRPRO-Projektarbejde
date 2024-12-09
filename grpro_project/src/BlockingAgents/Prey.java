@@ -4,10 +4,9 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public abstract class Prey extends Animal {
-    World world;
-    boolean isHiding;
-    Predator predator;
-    int fleeRadius;
+    protected boolean isHiding;
+    protected Predator predator;
+    protected int fleeRadius;
 
     Prey(World world, int age, int maxEnergy, int health) {
         super(world, age, maxEnergy, health);
@@ -48,9 +47,5 @@ public abstract class Prey extends Animal {
             return true;
         }
         return false;
-    }
-
-    protected Predator getPredator() {
-        return predator;
     }
 }

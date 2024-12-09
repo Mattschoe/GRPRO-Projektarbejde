@@ -4,11 +4,11 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 public abstract class Predator extends Animal{
-    int strength;
+    protected int strength;
     private Animal preyAnimal;
 
-    boolean currentlyFighting;
-    boolean hasFoundPrey;
+    protected boolean currentlyFighting;
+    protected boolean hasFoundPrey;
 
 
 
