@@ -13,9 +13,9 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        ShowDropTestHereTests();
+        //ShowDropTestHereTests();
         //MattTempTest();
-        //JosvaTempTest();
+        JosvaTempTest();
         //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
@@ -44,7 +44,7 @@ public class Main {
     public static void Week2Test() {
         //Program descriptions
         int size = 2;
-        int delay = 500;
+        int delay = 200;
         int displaySize = 1000;
 
         //Sets up world
@@ -111,12 +111,12 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(2,0), new Bear(world, true));
-        world.setTile(new Location(0,0), new Wolf(world, false));
+        world.setTile(new Location(2,0), new Rabbit(world, false));
+        /*world.setTile(new Location(0,0), new Wolf(world, false));
         world.setTile(new Location(3,0), new Rabbit(world, true));
         world.setTile(new Location(2,2), new Wolf(world, false));
         world.setTile(new Location(5,5), new Meat(world, new Wolf(world, false), false));
-        world.setTile(new Location(7,7), new Meat(world, new Rabbit(world, false), true));
+        world.setTile(new Location(7,7), new Meat(world, new Rabbit(world, false), true));*/
 
         //Shows world
         program.show();
