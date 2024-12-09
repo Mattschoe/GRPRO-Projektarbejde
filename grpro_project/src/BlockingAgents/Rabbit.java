@@ -166,7 +166,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den burrow) {//&& this.burrow == object) {//burrow.getOwner() == this){
-                //if (burrow == this.burrow) {
+                if (burrow.getDenType() == "rabbit") {
                     if (world.isTileEmpty(world.getLocation(burrow))) {
                         this.burrow = burrow;
                         System.out.println("Burrow found " + burrow);
@@ -174,7 +174,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     }
                 }
             }
-        //}
+        }
         return digDen(); //Makes a new Den if the rabbit cant find any
     }
     /**

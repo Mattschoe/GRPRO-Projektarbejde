@@ -6,6 +6,7 @@ import itumulator.world.Location;
 public abstract class Prey extends Animal {
     World world;
     boolean isHiding;
+    Location hidingLocation;
     Predator predator;
     int fleeRadius;
 
@@ -28,7 +29,11 @@ public abstract class Prey extends Animal {
      */
     protected boolean detectPredator(int fleeRadius) {
         this.fleeRadius = fleeRadius;
-        world.setCurrentLocation(world.getLocation(this));
+        if (isHiding) {
+            world.setCurrentLocation(hidingLocation);
+        } else world.setCurrentLocation(world.getLocation(this));
+
+
         for (Location location : world.getSurroundingTiles(fleeRadius)) {
             if (world.getTile(location) instanceof Predator predator) {
                 this.predator = predator;
@@ -43,6 +48,7 @@ public abstract class Prey extends Animal {
      * @return
      */
     protected boolean itIsSafeToComeBack(Location hidingLocation) {
+        this.hidingLocation = hidingLocation;
         world.setCurrentLocation(hidingLocation);
         if (!detectPredator(fleeRadius) && world.isTileEmpty(hidingLocation)) {
             return true;

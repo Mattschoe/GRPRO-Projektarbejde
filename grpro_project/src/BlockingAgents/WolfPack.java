@@ -28,9 +28,9 @@ public class WolfPack {
         newWolfToPack.wolfpack = this;
 
         //Sets the Den of the new Wolf in the pack to the Alpha Wolf's
-        if (alphaWolf.getDen() != null) {
+        /*if (alphaWolf.getDen() != null) {
             newWolfToPack.setDen(alphaWolf.getDen());
-        }
+        }*/
     }
 
     /**
@@ -66,7 +66,7 @@ public class WolfPack {
     }
 
     /**
-     * Changes the Alpha wolf of the pack to "newAlphaWolf". Also adds it to the pack if it isnt already in it
+     * Changes the Alpha wolf of the pack to "newAlphaWolf". Also adds it to the pack if it isn't already in it
      * @param newAlphaWolf
      */
     public void setAlphaWolf(Wolf newAlphaWolf) {

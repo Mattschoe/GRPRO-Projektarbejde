@@ -47,16 +47,17 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
          * @return
          */
     public boolean isAnimalOnDen (Animal animal) {
-            try {
+            //try {
+                //System.out.println("isAnimalOnDen " + world.getLocation(animal));
                 if (world.getLocation(this).equals(world.getLocation(animal))) {
 
                     if (denType.equals("wolf") && animal instanceof Wolf || denType.equals("rabbit") && animal instanceof Rabbit) {
                         return true;
                     }
                 }
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error!: " + e.getMessage() + ". Remember that i need a owner and need to exist before you call this method!");
-            }
+            //} catch (IllegalArgumentException e) {
+              //  System.out.println("Error!: " + e.getMessage() + ". Remember that i need a owner and need to exist before you call this method!");
+            //}
             return false;
 
     }
@@ -95,4 +96,9 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
 
         return null;
     }
+
+    public String getDenType(){
+        return denType;
+    }
+
 }

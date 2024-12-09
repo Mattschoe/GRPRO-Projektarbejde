@@ -18,12 +18,17 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     Wolf opponentWolf;
 
     /**
-     * Wolf without being a Alpha in a wolfpack
+     * Wolf without being an Alpha in a wolfpack
      * @param world
      */
-    public Wolf(World world, boolean isInfected) {
+    public Wolf(World world , boolean isInfected) {
         super(2, world, 30, 10, isInfected);
         huntRadius = 3;
+    }
+    public Wolf(World world ,WolfPack wolfpack, boolean isInfected) {
+        super(2, world, 30, 10, isInfected);
+        huntRadius = 3;
+        this.wolfpack = wolfpack;
     }
 
     public void act(World world) {
@@ -49,6 +54,10 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                     if (obj instanceof Wolf wolf){
                         if ((wolf.getDen() == this.getDen() && wolf != this)){
                             Wolf babyWolf = new Wolf(world, false);
+                            if (wolfpack == null){
+                                wolfpack = new WolfPack(world);
+                                wolfpack.addWolfToPack(this);
+                            }
                             getWolfpack().addWolfToPack(babyWolf);
                             if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), babyWolf);}
                         }
@@ -92,11 +101,24 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         //Nighttime activites
         if (world.isNight() && !isInfected) {
             if (world.getCurrentTime() == 10) {
-                if (den == null) {
-                    findDen();
+                if ( den == null ){
+                    if ( wolfpack == null  ||wolfpack.getPackDen() == null) {//wolfpack.getAlphaWolf() == this){
+                        System.out.println("i am now the alpha and i will find it!!");
+                        findDen();
+                    } else if (wolfpack != null){
+                    den = wolfpack.getPackDen();
+                    System.out.println("I am not the alpha, but i follow it!!");
+                    }
+
                 }
                 updateMaxEnergy();
+
             }
+            if (world.getCurrentTime() == 12) {
+                if (den == null){
+                    System.out.println("i found the pack den");
+                    den = wolfpack.getPackDen();
+                }}
 
             //Moves towards den until it's the middle of the night'
             if (world.getCurrentTime() < 15) {
@@ -154,9 +176,13 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
             if (object instanceof Den den){
-                if (den.getAnimalsBelongingToDen().contains(this)) {
+                if (den.getDenType() == "wolf")  {
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
+                        if (wolfpack != null) {
+                            wolfpack.setDen(den);
+                        }
+                        System.out.println("den found " + world.getLocation(den));
                         return world.getLocation(den);
                     }
                 }
@@ -172,6 +198,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     public Location digDen() {
         //if (world.getNonBlocking(world.getLocation(this)) == null) {
         den = new Den(world, "wolf");
+        if (wolfpack != null) {
+            wolfpack.setDen(den);
+        }
         den.spawnDen(this);//world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
    /* }   else {
