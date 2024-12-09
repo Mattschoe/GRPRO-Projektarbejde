@@ -1,5 +1,6 @@
 package NonblockingAgents;
 
+import BlockingAgents.Fungi;
 import BlockingAgents.Meat;
 import BlockingAgents.Rabbit;
 import itumulator.world.Location;
@@ -7,8 +8,6 @@ import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FungiTest {
     World w;

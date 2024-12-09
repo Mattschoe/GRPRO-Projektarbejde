@@ -1,6 +1,5 @@
 package BlockingAgents;
 
-import NonblockingAgents.Fungi;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +23,7 @@ class MeatTest {
     @Test
     void decayingProcess() {
 
-        Wolf wolf = new Wolf(w);
+        Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
@@ -44,7 +43,10 @@ class MeatTest {
     void decayingProcessIfInfected() {
         //Random r = new Random();
         //boolean infected = r.nextBoolean();
-        Wolf wolf = new Wolf(w);
+        Wolf wolf = new Wolf(w, false);
+        //Random r = new Random();
+        //boolean infected = r.nextBoolean();
+        //Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
@@ -63,7 +65,7 @@ class MeatTest {
 
     @Test
     void meatGetsEaten (){
-        Wolf wolf = new Wolf(w);
+        Wolf wolf = new Wolf(w, false);
         Rabbit rabbit = new Rabbit(w);
         Meat meat = new Meat(w, rabbit);
         Location location = new Location(0, 0);

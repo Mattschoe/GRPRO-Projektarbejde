@@ -1,7 +1,6 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
-import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 
@@ -16,70 +15,66 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     WolfPack wolfpack;
     int huntRadius;
     boolean hasFoundMeat = false;
+    Wolf opponentWolf;
 
     /**
      * Wolf without being a Alpha in a wolfpack
      * @param world
      */
-    public Wolf(World world) {
-        super(20, world, 30, 20);
+    public Wolf(World world, boolean isInfected) {
+        super(2, world, 30, 10, isInfected);
         huntRadius = 3;
     }
 
-    public Wolf(World world, boolean isInfected) {
-        super(20, world, 30, 20, isInfected);
-        huntRadius = 2;
-    }
-
-    /**
-     * Wolf with a Wolfpack where its the alpha
-     * @param world
-     * @param wolfpack
-     */
-    public Wolf(World world, WolfPack wolfpack) {
-        super(29, world, 30, 20);
-        this.wolfpack = wolfpack;
-    }
-
-    public Wolf(World world, WolfPack wolfpack, boolean isInfected) {
-        super(29, world, 30, 20, isInfected);
-        this.wolfpack = wolfpack;
-    }
-
-
-    //MANGLER: At få en wolfpack
     public void act(World world) {
+        //If the wolf got damaged last act it goes into fighting mode. Else it makes sure that it's still not in fight mode
+        if (tookDamage) {
+            currentlyFighting = true;
+            tookDamage = false;
+        } else {
+            currentlyFighting = false;
+        }
+
         //Daytime activities:
         if (world.isDay()) {
             isSleeping = false;
             if (sleepingLocation != null) {
-                try {
+                try { //Tries waking up
                     world.setTile(sleepingLocation, this);
                     sleepingLocation = null;
-                 //If there is already somebody above the hole it waits a step
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) { //If there is already somebody above the hole it waits a step
                     System.out.println("Someone is standing on my den. - " + this);
                 }
-                for (Object obj : world.getEntities().keySet()){
+                for (Object obj : world.getEntities().keySet()){ //Reproduces wolf's with a 10% chance, adds it to the world and into the parents pack
                     if (obj instanceof Wolf wolf){
                         if ((wolf.getDen() == this.getDen() && wolf != this)){
-                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), new Wolf(world,wolfpack,  false));}
+                            Wolf babyWolf = new Wolf(world, false);
+                            getWolfpack().addWolfToPack(babyWolf);
+                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), babyWolf);}
                         }
                     }
                 }
-            } else if (energyLevel <= 0) {
-
+            } else if (energyLevel <= 0 || health <= 0) {
                 die();
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
-            } else if (currentlyFighting) { //Fighting. Fight while it's not critically low on health, else runs away.
+            } else if (currentlyFighting || new Random().nextInt(4) == 1 || wolfpack != null && wolfpack.isWolfPackFighting()) { //Fighting, keeps on fighting or starts fighting with a 1/4% chance. Wolfs fight if their pack fights. Fight while it's not critically low on health, else runs away.;
                 if (health > 5) {
                     fight();
-                } else {
-                    flee();
+                } else if (wolfpack != null) { //Changes pack when its too low HP
+                    currentlyFighting = false;
+                    changePack(opponentWolf.getWolfpack());
+                } else { //If it doesn't have a pack if just moves away from the opponent
+                    moveAwayFrom(world.getLocation(opponentWolf));
                 }
-            } else if (!isInfected) {
+            } else if (wolfpack != null) { //Tries to move towards the alpha wolf as long as its in a pack else it just moves randomly
+                try {
+                    moveTo(wolfpack.getPackLocation());
+                } catch (IllegalArgumentException e) {
+                    move();
+                }
+            } else if (!isInfected) { //Else moves randomly
                 move();
             }
 
@@ -120,6 +115,16 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         }
     }
 
+    /**
+     * Removes wolf from old pack and puts the wolf in the new pack
+     * @param newPack WolfPack
+     */
+    private void changePack(WolfPack newPack) {
+        wolfpack.removeWolfFromPack(this);
+        newPack.addWolfToPack(this);
+        wolfpack = newPack;
+    }
+
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
@@ -142,22 +147,19 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         world.remove(this);
     }
 
-
-
     /**
      * If there are any Den's in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.
      */
     @Override
     public Location findDen() {
         for (Object object : world.getEntities().keySet()) {
-            if (object instanceof Den den ){ //&& den.isAnimalOnDen(this)){
-                //if (den == this.den) {
-                System.out.println("there are dens in the world");
+            if (object instanceof Den den){
+                if (den.getAnimalsBelongingToDen().contains(this)) {
                     if (world.isTileEmpty(world.getLocation(den))){
                         this.den = den;
                         return world.getLocation(den);
                     }
-                //}
+                }
             }
         }
         return digDen(); //Makes a new Den if the wolf cant find any
@@ -203,5 +205,53 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         throw new IllegalStateException("Wolfpack is null!");
     }
 
+    /**
+     * Finds a Wolf opponent in the map and saves it to the as opponentWolf. Use getOpponent to see the predators opponent
+     */
+    private void findOpponent() {
+        for (Object object : world.getEntities().keySet()) {
+            if (object instanceof Wolf wolf && wolf != this) {
+                opponentWolf = wolf;
+            }
+        }
+    }
 
+    /**
+     * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
+     */
+    protected void fight() {
+        if (opponentWolf != null) { //Makes sure it doesnt fight a wolf in the same pack
+            if (wolfpack != null && !wolfpack.getWolvesInPack().contains(opponentWolf)) {
+                //If it killed the opponent last act or the opponent died it stops fighting, else it fights
+                try {
+                    currentlyFighting = true;
+                    if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fight
+                        opponentWolf.takeDamage(strength);
+                    } else { //Else it moves towards the opponent
+                        moveTo(world.getLocation(opponentWolf));
+                    }
+                } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
+                    currentlyFighting = false;
+                }
+            } else if (wolfpack == null) { //If the Wolf just doesnt have a pack
+                try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
+                    currentlyFighting = true;
+                    if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fighht
+                        opponentWolf.takeDamage(strength);
+                    } else { //Else it moves towards the opponent
+                        moveTo(world.getLocation(opponentWolf));
+                    }
+                } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
+                    currentlyFighting = false;
+                }
+            }
+        } else {
+            currentlyFighting = false;
+            findOpponent();
+        }
+    }
+
+    public boolean getCurrentlyFighting() {
+        return currentlyFighting;
+    }
 }

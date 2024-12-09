@@ -1,6 +1,8 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import itumulator.world.Location;
+import itumulator.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,9 +11,12 @@ public class WolfPack {
     Wolf alphaWolf;
     HashSet<Wolf> pack;
     Den packDen;
+    Location location;
+    World world;
 
-    public WolfPack() {
+    public WolfPack(World world) {
         pack = new HashSet<Wolf>();
+        this.world = world;
     }
 
     /**
@@ -83,5 +88,26 @@ public class WolfPack {
 
     public Den getPackDen() {
         return packDen;
+    }
+
+    public Location getPackLocation() {
+        for (Location location : world.getEmptySurroundingTiles(world.getLocation(alphaWolf))) {
+            this.location = location;
+            return location;
+        }
+        return location;
+    }
+
+    /**
+     * Returns whether one of the wolf's in the pack are fighting. If they are then all get wolfs in the pack get activated
+     * @return boolean
+     */
+    public boolean isWolfPackFighting() {
+        for (Wolf wolf : getWolvesInPack()) {
+            if (wolf.getCurrentlyFighting()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

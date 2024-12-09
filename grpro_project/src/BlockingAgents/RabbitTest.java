@@ -189,7 +189,7 @@ class RabbitTest {
                 rabbit1.act(world);
                 rabbit.act(world);
             }
-           // System.out.println(world.getEntities());
+
             int rabbits = 0;
             for (Object obj : world.getEntities().keySet()){
 

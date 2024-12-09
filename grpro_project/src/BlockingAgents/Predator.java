@@ -40,17 +40,15 @@ public abstract class Predator extends Animal{
     /**
      * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
      */
-    protected void hunt (Animal opponentAnimal){
-        try {
-        preyAnimal = opponentAnimal;
+    protected void hunt (Animal preyAnimal){
+        this.preyAnimal = preyAnimal;
         if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the sourrounding tiles
-            kill(opponentAnimal);
-            System.out.println("Killed the " + opponentAnimal);
+            kill(preyAnimal);
+            System.out.println("Killed the " + preyAnimal);
         } else { //Otherwise it just chases it
-            moveTo(world.getLocation(opponentAnimal));
-            System.out.println("Moving towards " + opponentAnimal);
-        } }
-        catch (IllegalArgumentException e){}
+            moveTo(world.getLocation(preyAnimal));
+            System.out.println("Moving towards " + preyAnimal);
+        }
     }
 
     /**
@@ -61,19 +59,10 @@ public abstract class Predator extends Animal{
         animalToKill.die();
     }
 
-    //SKAL ÆNDRES!!
-    protected void fight () {
-        /*try {
-            currentlyFighting = true;
-            preyAnimal.takeDamage(strength);
-            if (preyAnimal.health <= 0) {
-                preyAnimal.die();
-                currentlyFighting = false;
-            }
-        } catch ( Exception e) {
-            System.out.println("Fighting Animal is null! Error: " + e.getMessage());
-        } */
-    }
+    /**
+     * Fights the Opponent close to it, if not close it moves towards it. If the predator doesnt have a opponent it finds one
+     */
+    protected abstract void fight ();
 
     /**
      * Detects prey in a "huntRadius" radius.
@@ -103,11 +92,4 @@ public abstract class Predator extends Animal{
         }
         return null;
     }
-
-    /*@Override
-    protected void reproduce(Location birthplace, Animal animal) {
-        super.reproduce(birthplace, animal);
-    }*/
-
-
 }
