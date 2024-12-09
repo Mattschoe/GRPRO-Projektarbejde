@@ -1,33 +1,27 @@
 package BlockingAgents;
+
 import NonblockingAgents.Den;
-import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
-    Den burrow;
-    boolean hasFoundGrass;
-    Location hidingLocation;
+    private Den burrow;
+    private Location hidingLocation;
 
     public Rabbit(World world) {
         super(world,1,40, 1);
         fleeRadius = 2;
-        hasFoundGrass = false;
     }
 
     public Rabbit(World world, boolean isInfected) {
         super(world,1,40, 1, isInfected);
         fleeRadius = 2;
-        hasFoundGrass = false;
     }
 
     @Override
@@ -140,9 +134,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         world.remove(this);
     }
 
-
-
-
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping){
@@ -177,6 +168,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         }
         return digDen(); //Makes a new Den if the rabbit cant find any
     }
+
     /**
      * instantiates a new burrow (Den) on the current location. Only makes a burrow if there isnt a predator nearby
      */
@@ -185,14 +177,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         burrow.spawnDen(this);
         return world.getLocation(burrow);
     }
-/*
-    protected void reproduce() {
 
-    }
-*/
-    public boolean getHasFoundGrass() {
-        return hasFoundGrass;
-    }
     public Den getBurrow() {
         return burrow;
     }

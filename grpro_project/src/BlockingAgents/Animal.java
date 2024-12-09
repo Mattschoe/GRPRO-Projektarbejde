@@ -15,13 +15,13 @@ public abstract class Animal implements Actor {
     protected int maxEnergy;
     protected int health;
     protected int maxHealth;
-    Location sleepingLocation;
-    boolean isSleeping;
-    boolean hasFoundFood;
-    boolean isInfected;
-    boolean tookDamage;
-    Object food;
-    Location foodLocation;
+    protected Location sleepingLocation;
+    protected boolean isSleeping;
+    protected boolean hasFoundFood;
+    protected boolean isInfected;
+    protected boolean tookDamage;
+    protected Object food;
+    protected Location foodLocation;
 
 
 
@@ -353,10 +353,6 @@ public abstract class Animal implements Actor {
 
     public boolean getIsSleeping() {
         return isSleeping;
-    }
-
-    public int getHealth() {
-        return health;
     }
 
     public int getMaxEnergy() {

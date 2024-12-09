@@ -8,12 +8,12 @@ import itumulator.world.World;
 import java.awt.*;
 
 public class Meat implements Actor {
-    World world;
-    int energyLevel;
-    Animal animal;
-    public boolean isInfected;
-    int age;
-    int fungiLife;
+    private World world;
+    private int energyLevel;
+    private Animal animal;
+    private boolean isInfected;
+    private int age;
+    private int fungiLife;
 
     public Meat(World world, Animal animal) {
         this.world = world;
@@ -24,7 +24,7 @@ public class Meat implements Actor {
 
         if (this.animal instanceof Carnivore) {
             this.energyLevel = 50;
-        } else { // Herbivore
+        } else { //Prey
             this.energyLevel = 20;
         }
 
@@ -80,7 +80,7 @@ public class Meat implements Actor {
         }
     }
 
-    void spawnMushroom(Location location) {
+    private void spawnMushroom(Location location) {
         if (this.animal instanceof Carnivore) {
             world.setTile(location, new Fungi(world,this.fungiLife));
         } else {
@@ -98,10 +98,6 @@ public class Meat implements Actor {
 
     public int getAge() {
         return this.age;
-    }
-
-    public boolean isInfected() {
-        return isInfected;
     }
 
     public void setInfected(boolean infected) {

@@ -1,6 +1,3 @@
 package BlockingAgents;
 
-import itumulator.world.Location;
-
-public interface Herbivore {
-}
+public interface Herbivore {}

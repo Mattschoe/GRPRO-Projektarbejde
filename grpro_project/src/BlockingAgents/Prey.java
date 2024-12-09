@@ -55,8 +55,4 @@ public abstract class Prey extends Animal {
         }
         return false;
     }
-
-    protected Predator getPredator() {
-        return predator;
-    }
 }

@@ -4,18 +4,16 @@ import NonblockingAgents.Grass;
 import itumulator.executable.DisplayInformation;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
 
 
 public class Fungi implements Actor {
-
-    World world;
-    Location location;
-    int energyLevel;
-    int radius;
+    private World world;
+    private Location location;
+    private int energyLevel;
+    private int radius;
 
     public Fungi(World world, int energyLevel) {
         this.world = world;
@@ -27,16 +25,16 @@ public class Fungi implements Actor {
         this.world = world;
         spread(); // Skal kunne sprede sig til Meat i nærheden
         if (this.energyLevel < 1) {
-            die(world.getLocation(this));
+            die();
         }
     }
 
-    void spread() {
+    private void spread() {
         for (Object entity : world.getEntities().keySet()) {
-            if (entity instanceof Meat) { // Makes sure it infects only meat, which is close
+            if (entity instanceof Meat meat) { // Makes sure it infects only meat, which is close
                 for (Location nearbyLocation : world.getSurroundingTiles(this.radius)) {
                     if (entity == world.getTile(nearbyLocation)) {
-                        ((Meat) entity).isInfected = true;
+                        meat.setInfected(true);
                     }
                 }
             }
@@ -44,7 +42,8 @@ public class Fungi implements Actor {
         energyLevel--;
     }
 
-    void die(Location location) {
+    private void die() {
+        location = world.getLocation(this);
         world.delete(this);
         world.setTile(location, new Grass(world)); // Spawns grass upon death
     }
