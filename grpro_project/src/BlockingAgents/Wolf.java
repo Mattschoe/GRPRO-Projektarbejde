@@ -14,12 +14,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     Den den;
     WolfPack wolfpack;
     int huntRadius;
-    boolean hasFoundMeat = false;
     Wolf opponentWolf;
 
     /**
      * Wolf without being a Alpha in a wolfpack
-     * @param world
+     * @param world The world the wolf exists in
+     * @param isInfected whether the wolf is infected with fungi or not
      */
     public Wolf(World world, boolean isInfected) {
         super(2, world, 30, 10, isInfected);

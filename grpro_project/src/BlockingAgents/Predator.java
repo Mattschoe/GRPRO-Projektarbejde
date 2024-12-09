@@ -1,20 +1,13 @@
 package BlockingAgents;
 
-import NonblockingAgents.Territory;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-import java.util.List;
-import java.util.Set;
-
 public abstract class Predator extends Animal{
-    World world;
-
     int strength;
     Animal preyAnimal;
 
     boolean currentlyFighting;
-    boolean currentlyHunting;
     boolean hasFoundPrey;
 
 
@@ -42,7 +35,7 @@ public abstract class Predator extends Animal{
      */
     protected void hunt (Animal preyAnimal){
         this.preyAnimal = preyAnimal;
-        if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the sourrounding tiles
+        if (world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
             kill(preyAnimal);
             System.out.println("Killed the " + preyAnimal);
         } else { //Otherwise it just chases it
@@ -52,7 +45,7 @@ public abstract class Predator extends Animal{
     }
 
     /**
-     * Kills prey if its nearby.
+     * Kills prey if it's nearby.
      */
     protected void kill(Animal animalToKill) {
         System.out.println("Killing " + animalToKill);
@@ -60,7 +53,7 @@ public abstract class Predator extends Animal{
     }
 
     /**
-     * Fights the Opponent close to it, if not close it moves towards it. If the predator doesnt have a opponent it finds one
+     * Fights the Opponent close to it, if not close it moves towards it. If the predator doesn't have an opponent it finds one
      */
     protected abstract void fight ();
 

@@ -24,7 +24,7 @@ public class Meat implements Actor {
 
         if (this.animal instanceof Carnivore) {
             this.energyLevel = 50;
-        } else { // Herbivore
+        } else { //Prey
             this.energyLevel = 20;
         }
 
