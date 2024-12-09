@@ -56,7 +56,6 @@ public class ParseTest {
         //Display Information
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.yellow, "wolf" ));
-        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));

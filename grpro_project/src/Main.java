@@ -56,7 +56,6 @@ public class Main {
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
-        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));
