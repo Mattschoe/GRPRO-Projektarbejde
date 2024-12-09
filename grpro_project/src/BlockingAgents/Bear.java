@@ -22,9 +22,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         territory = new ArrayList<>();
         wantsToBreed = false;
         breedingDelay = 5;
-
-        //world.setTile(location, this );
-
     }
 
     //Skal lige op i den gamle
@@ -34,12 +31,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         territory = new ArrayList<>();
         wantsToBreed = false;
         breedingDelay = 5;
-
-        //world.setTile(location, this );
-
     }
 
-    //MANGLER: At hunte efter kaniner
     @Override
     public void act(World world){
         try {
@@ -114,7 +107,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
-    void setTerritory(){
+    private void setTerritory(){
 
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), 4);
 
@@ -145,7 +138,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         return territory.contains(world.getLocation(this));
     }
 
-    void protectTerritory(){
+    private void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
 
             if (entity instanceof Bear){
@@ -168,14 +161,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             wantsToBreed = false;
             breedingDelay = 5;
 
-    }
-
-    public ArrayList<Location> getTerritory(){
-        return territory;
-    }
-
-    public Boolean getWantsToBreed() {
-        return wantsToBreed;
     }
 
     /**

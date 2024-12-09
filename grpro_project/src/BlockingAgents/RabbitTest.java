@@ -109,22 +109,6 @@ class RabbitTest {
     }
 
 
-
-    /* @Test
-    void findEatablePlant() {
-        Grass grass = new Grass(w);
-        Location location = new Location(0,0);
-        Location grassLocation = new Location(1,1);
-        w.setCurrentLocation(location);
-        w.setTile(grassLocation, grass);
-        w.setTile(location, rabbit);
-
-        rabbit.findEatablePlant();
-        assertEquals(grassLocation, rabbit.getGrassLocation());
-        assertTrue(rabbit.getHasFoundGrass());
-
-    } */
-
     /**
      * tests if the rabbit can eat the grass it is standing on, and if that results in the grass being deleted from the world.
      */
