@@ -282,7 +282,7 @@ public abstract class Animal implements Actor {
     /**
      * Finds location of a food spot.
      */
-    void findFood() {
+    private void findFood() {
         if (this instanceof Herbivore) { //Animal is Plant eater
             for (Object object : world.getEntities().keySet()) {
                 if (object instanceof Bush bush && bush.getHasBerries()) {
