@@ -80,7 +80,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         if (!isSleeping && burrow.isAnimalOnDen(this)) {
                             world.remove(this);
                             sleepingLocation = world.getLocation(burrow);
-                            isSleeping = true;
                         } else if (!isSleeping && burrow != null && world.contains(burrow)) {
                             moveTo(world.getLocation(burrow));
                         }

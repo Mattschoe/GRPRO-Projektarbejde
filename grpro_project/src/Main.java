@@ -1,15 +1,8 @@
-import java.awt.*;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
-import BlockingAgents.*;
-import NonblockingAgents.*;
 import Testning.ParseTest;
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +11,7 @@ public class Main {
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
         //Program descriptions
-        int delay = 5;
+        int delay = 200;
         int displaySize = 1000;
 
         //File setup, saves all files dropped in folder
