@@ -79,12 +79,11 @@ public class Meat implements Actor, DynamicDisplayInformationProvider {
         }
     }
 
+    /**
+     * Creates a new Fungi on a designated spot with health based on how long the Fungi has lived.
+     */
     private void spawnMushroom(Location location) {
-        if (this.animal instanceof Carnivore) {
-            world.setTile(location, new Fungi(world,this.fungiLife));
-        } else {
-            world.setTile(location, new Fungi(world,this.fungiLife));
-        }
+        world.setTile(location, new Fungi(world,this.fungiLife));
     }
 
     /**
@@ -95,10 +94,17 @@ public class Meat implements Actor, DynamicDisplayInformationProvider {
         return this.energyLevel;
     }
 
+    /**
+     * @return int
+     */
     public int getAge() {
         return this.age;
     }
 
+    /**
+     * Sets whether the Meat should be infected
+     * @param infected whether the meat should be infected
+     */
     public void setInfected(boolean infected) {
         this.isInfected = infected;
     }

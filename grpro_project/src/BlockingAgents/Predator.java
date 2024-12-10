@@ -21,7 +21,7 @@ public abstract class Predator extends Animal{
     }
 
     /**
-     * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
+     * Hunts prey. Calls the kill method if it's close enough, otherwise it chases it.
      */
     protected void hunt (Animal preyAnimal) {
         this.preyAnimal = preyAnimal;
@@ -49,7 +49,7 @@ public abstract class Predator extends Animal{
     /**
      * Fights the Opponent close to it, if not close it moves towards it. If the predator doesn't have an opponent it finds one
      */
-    protected abstract void fight ();
+    protected abstract void fight();
 
     /**
      * Detects prey in a "huntRadius" radius.
