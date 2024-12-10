@@ -240,7 +240,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         if (wolfpack != null) {
             return wolfpack;
         }
-        throw new IllegalStateException("Wolfpack is null!");
+        return null;
     }
 
     /**

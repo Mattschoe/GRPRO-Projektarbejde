@@ -110,14 +110,14 @@ public class ParseTest {
                     }
                     Wolf wolf = new Wolf(world, isInfected);
                     world.setTile(location, wolf);
-                    if (amount > 1) {
-                        wolfPack.addWolfToPack(wolf);
-                        if (wolfPack.getAlphaWolf() == null) {
-                            wolfPack.setAlphaWolf(wolf);
-                            wolf.digDen();
-                            wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
-                            System.out.println("Alpha: " + wolfPack.getAlphaWolf());
-                        }
+                    System.out.println(wolfPack);
+                    wolfPack.addWolfToPack(wolf);
+                    if (wolfPack.getAlphaWolf() == null) {
+                        wolfPack.setAlphaWolf(wolf);
+                        wolf.digDen();
+                        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+                        System.out.println("Alpha: " + wolfPack.getAlphaWolf());
+
                     }
                 }
 
