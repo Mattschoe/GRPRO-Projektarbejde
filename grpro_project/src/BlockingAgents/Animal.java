@@ -299,18 +299,31 @@ public abstract class Animal implements Actor {
      * Finds location of a food spot.
      */
     private void findFood() {
-        boolean canEatFood = false;
-        for (Object object : world.getEntities().keySet()) {
-            // Only Bears eat bushes. Only Rabbits eat Grass. Only Carnivores eat Meat. If one of these are the case, 'this' can eat the food.
-            if ((object instanceof Bush bush && bush.getHasBerries() && this instanceof Bear) || (object instanceof Grass && this instanceof Rabbit) || (object instanceof Meat meat && meat.getAge() < 2 && this instanceof Carnivore) ) {
-                canEatFood = true;
+        if (this instanceof Herbivore) { //Animal is Plant eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Bush bush && bush.getHasBerries() && this instanceof Bear) {
+                    food = bush;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                } else if (object instanceof Grass grass && !(this instanceof Bear)) {
+                    food = grass;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                }
             }
-            if (canEatFood) {
-                food = object;
-                foodLocation = world.getLocation(food);
-                hasFoundFood = true;
-                return;
+        }
+        if (this instanceof Carnivore) { //Animal is Meat eater
+            for (Object object : world.getEntities().keySet()) {
+                if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
+                    food = meat;
+                    foodLocation = world.getLocation(food);
+                    hasFoundFood = true;
+                    return;
+                }
             }
+            food = null;
         }
     }
 
