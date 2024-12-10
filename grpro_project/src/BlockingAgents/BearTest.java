@@ -1,12 +1,10 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
-import NonblockingAgents.Den;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -31,33 +29,48 @@ class BearTest {
     @Test
     void TestReproduction(){
 
+        int iterations = 10000;
+        int reproduced = 0;
+        for (int i = 0; i < iterations; i++) {
 
-            Bear bear = new Bear(w, false );
+
+            World world = new World(2);
+            Bear bear = new Bear(world, false);
             Location location = new Location(0, 0);
 
-            w.setTile(location, bear);
-            w.setCurrentLocation(location);
-            Bear bear1 = new Bear(w, false );
+            world.setTile(location, bear);
+            world.setCurrentLocation(location);
+            Bear bear1 = new Bear(world, false);
             Location location1 = new Location(0, 1);
 
-            w.setTile(location1, bear1);
-            w.setCurrentLocation(location1);
-            bear.setWantsToBreed(true);
-            bear1.setWantsToBreed(true);
-            for (int j = 0; j < 40; j++) {
-                w.step();
-                bear1.act(w);
-                bear.act(w);
+            world.setTile(location1, bear1);
+            world.setCurrentLocation(location1);
+
+
+            for (int j = 0; j < 2; j++) {
+                world.step();
+                bear1.act(world);
+                bear.act(world);
             }
 
             int bears = 0;
-            for (Object obj : w.getEntities().keySet()){
+            for (Object obj : world.getEntities().keySet()){
 
                 if (obj instanceof Bear) {
                     bears++;
                 }}
+            if (bears > 2 ) {
+                reproduced++;
 
-            assertTrue(bears > 2); // if there are more than 2 bears, the bears have reproduced.
+            }
+
+
+
+        }
+        System.out.println(reproduced + "  " + iterations*0.10);
+
+        assertTrue(reproduced >= (iterations*0.10 - (iterations* 0.01)) && reproduced <= (iterations*0.1 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
+
 
 
 
@@ -88,17 +101,23 @@ class BearTest {
 
         w.setCurrentLocation(location0);
         w.setTile(location1, bear1);
-        while (w.getEntities().size() > 1) {
+
+        int bears = 2;
+        for (int i = 0; i < 60; i++) {
+            bears = 0;
+            for (Object obj : w.getEntities().keySet()){
+
+                if (obj instanceof Bear) {
+                    bears++;
+                }}
+            bear.setWantsToBreed(false);
+            bear1.setWantsToBreed(false);
             bear1.act(w);
             bear.act(w);
-            System.out.println(w.getEntities());
-        }
-        int bears = 0;
-        for (Object obj : w.getEntities().keySet()){
 
-            if (obj instanceof Bear) {
-                bears++;
-            }}
+        }
+
+
         assertEquals(1, bears );
 
 
@@ -109,19 +128,21 @@ class BearTest {
 
     @Test
     void staysInTerritory(){
-        World w = new World(20);
-        w.setCurrentLocation(location0);
-        w.setTile(location0, bear);
-        Set<Location> territoryAndSurroundings = new HashSet<>();
+        World world = new World(20);
+        Location location = new Location(0, 0);
+        world.setCurrentLocation(location);
+        Bear b = new Bear(world, false);
+        world.setTile(location, b);
 
-        for (int i = 0; i < 120; i++) {
-            
+        b.fight();
+        while (b.getEnergyLevel() > 1) {
 
 
-            bear.act(w);
-            w.step();
-            // location0, is the center of the bears territory, the territory is 4, and we are checking if the  bear gets further away than one tile from its territory.
-            assertTrue(Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5 && Math.abs(w.getLocation(bear).getX() - location0.getX()) < 5);
+            world.step();
+            b.act(world);
+
+            // location is the center of the bears territory, the territory is , and we are checking if the  bear gets further away than one tile from its territory.
+            assertTrue(Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/3+1) && Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1));
 
 
 

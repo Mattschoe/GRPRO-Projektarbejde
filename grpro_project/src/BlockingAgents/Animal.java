@@ -267,10 +267,10 @@ public abstract class Animal implements Actor {
         if (hasFoundFood) { //If the animal has already found food
             try {
                 if (world.getSurroundingTiles().contains(world.getLocation(food))) {
-                    if (food instanceof Bush bush) { //If its a bush it just eats the berries
+                    if (food instanceof Bush bush) { //If it's a bush it just eats the berries
                         bush.getEaten();
                         hasFoundFood = false;
-                    } else { //If its something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
+                    } else { //If it's something else it deletes it and afterwards the animal moves into the food tile, as long as the animal isnt a bear
                         Location tempLocation = world.getLocation(food);
                         world.delete(food);
                         moveTo(tempLocation);

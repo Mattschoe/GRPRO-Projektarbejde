@@ -253,8 +253,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
      */
     protected void fight() {
-        if (opponentWolf != null) { //Makes sure it doesnt fight a wolf in the same pack
-            if (wolfpack != null && !wolfpack.getWolvesInPack().contains(opponentWolf)) {
+        if (opponentWolf != null) {
+            if (wolfpack != null && !wolfpack.getWolvesInPack().contains(opponentWolf)) { //Makes sure it doesnt fight a wolf in the same pack
                 //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 try {
                     currentlyFighting = true;

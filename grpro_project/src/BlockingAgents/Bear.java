@@ -8,6 +8,7 @@ import itumulator.world.World;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 
 public class Bear extends Predator implements DynamicDisplayInformationProvider, Herbivore, Carnivore {
@@ -15,27 +16,29 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private boolean wantsToBreed;
     private int breedingDelay;
     private Animal opponent;
+    private Bear mate;
 
     public Bear(World world ){
-        super(20, world, 50, 50);
+        super(20, world, 60, 60);
         this.world = world;
         territory = new ArrayList<>();
         wantsToBreed = false;
         breedingDelay = 5;
+
     }
 
     //Skal lige op i den gamle
     public Bear(World world, boolean isInfected){
-        super(20, world, 50, 50, isInfected);
+        super(20, world, 60, 60, isInfected);
         this.world = world;
         territory = new ArrayList<>();
         wantsToBreed = false;
-        breedingDelay = 5;
+        breedingDelay = 0;
     }
 
     @Override
     public void act(World world){
-        try {
+
         if (territory.isEmpty()){
             setTerritory();
         }
@@ -43,15 +46,20 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //Daytime activities
         if (world.isDay()) {
             isSleeping = false;
-            protectTerritory();
+            //protectTerritory();
+            if (breedingDelay <= 0) {
+                wantsToBreed = true;
+                findMate();
+
+            }
+            System.out.println("energy: " + energyLevel);
             if (world.getCurrentTime() == 10) {
-                energyLevel--;
+                //energyLevel--;
                 breedingDelay--;
-                if (breedingDelay <= 0) {
-                    wantsToBreed = true;
-                }
+
             }
             if (energyLevel <= 0) { //Dies when out of energy
+
                 System.out.println("BAIII");
                 die();
                 return;
@@ -62,7 +70,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             } else if (currentlyFighting) { //Fighting. Bear fights to death.
                 fight();
             } else if (isInTerritory()) { //Moves around in territory and protects it
-                //protectTerritory();
+                protectTerritory();
             } else if (!isInTerritory()) { //If it's not in its territory it moves towards it
                 moveTo(territory.getFirst());
             }
@@ -79,8 +87,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (world.isNight() && !isInfected) {
             updateMaxEnergy();
             sleep();
-        }} catch (IllegalArgumentException e) {
-
         }
     }
 
@@ -109,7 +115,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     private void setTerritory(){
 
-        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), 4);
+        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), world.getSize()/2);
 
         territory.add(world.getLocation(this));
 
@@ -137,16 +143,36 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private boolean isInTerritory() {
         return territory.contains(world.getLocation(this));
     }
-
+    private void findMate(){
+        if (mate != null) {
+            try {
+                System.out.println("mate: " + mate);
+                moveTo(world.getLocation(mate));
+            }
+            catch (IllegalArgumentException e){
+                mate = null;
+                System.out.println("the mate has died");
+            }
+        }
+    }
     private void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
 
-            if (entity instanceof Bear){
+            if (entity instanceof Bear && entity != this){
                 if (territory.contains(world.getLocation(entity))){
-                    if (!wantsToBreed){ fight(); }
-                    else if (((Bear) entity).wantsToBreed){
+                    if (!wantsToBreed){
+                        opponent = (Bear) entity;
+                        fight();
+                    System.out.println("Fight fight fight");
+                    }
+                    else if (((Bear) entity).wantsToBreed && wantsToBreed){
+                        System.out.println("baby??");
+                        mate = (Bear) entity;
+                        //moveTo(world.getLocation(entity));
                         if (world.getSurroundingTiles().contains(world.getLocation(entity))){
+                            if (new Random().nextInt(10) == 0 ){
                             reproduce(world.getLocation(this), new Bear(world,isInfected));
+                            }
                         }
                     }
                 }
@@ -160,6 +186,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
             wantsToBreed = false;
             breedingDelay = 5;
+            mate = null;
 
     }
 
@@ -167,7 +194,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      * Checks if the wolf is near its opponent and fight otherwise it moves towards to opponent. If it doesn't have an opponent it finds one
      */
     protected void fight() {
-        if (opponent != null) { //Makes sure it doesnt fight a wolf in the same pack
+        if (opponent != null) {
             try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 currentlyFighting = true;
                 if (world.getSurroundingTiles(2).contains(world.getLocation(opponent))) { //If the opponent is close by they fighht
@@ -177,6 +204,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 }
             } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
                 currentlyFighting = false;
+                System.out.println("the opponent does not exist anymore");
             }
         } else {
             currentlyFighting = false;
