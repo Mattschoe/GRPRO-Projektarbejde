@@ -3,9 +3,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
-import data.BlockingAgents.*;
-import data.NonblockingAgents.*;
-import data.Testning.ParseTest;
+import BlockingAgents.*;
+import NonblockingAgents.*;
+import Testning.ParseTest;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -26,7 +26,7 @@ public class Main {
 
         //File setup, saves all files dropped in folder
         File[] files;
-        File directory = new File ("./src/data/Testning/DropTestHere");
+        File directory = new File ("./src/Testning/DropTestHere");
         files = directory.listFiles();
 
         ArrayList<ParseTest> tests = new ArrayList<>();
