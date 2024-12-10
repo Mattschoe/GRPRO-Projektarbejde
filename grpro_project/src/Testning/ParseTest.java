@@ -26,7 +26,6 @@ public class ParseTest {
     World world;
     Object testObject;
 
-
     public ParseTest(File testFile, int displaySize, int delay) {
         this.file = testFile;
         this.delay = delay;
@@ -40,6 +39,9 @@ public class ParseTest {
 
     }
 
+    /**
+     * Reads the file and inserts everything into the world according to what is written in the file
+     */
     public void readFile() throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         Random random = new Random();
@@ -146,9 +148,11 @@ public class ParseTest {
                 }
                 testObject = world.getTile(location);
             }
-
         }
     }
+    /**
+     * Simulates the test
+     */
     public void simulateTest() {
         program.show();
     }
