@@ -27,6 +27,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         breedingDelay = 0;
     }
 
+    /**
+     * Initialises the world and sets up what actions the Bear should do for every action
+     */
     @Override
     public void act(World world){
 
@@ -37,7 +40,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         //Daytime activities
         if (world.isDay()) {
             isSleeping = false;
-            //protectTerritory();
             if (breedingDelay <= 0) {
                 wantsToBreed = true;
                 findMate();
@@ -45,7 +47,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
             System.out.println("energy: " + energyLevel);
             if (world.getCurrentTime() == 10) {
-                //energyLevel--;
                 breedingDelay--;
 
             }
@@ -81,11 +82,18 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
 
+    /**
+     * Puts the Bear to sleep
+     */
     @Override
     protected void sleep() {
         isSleeping = true;
     }
 
+    /**
+     * Outputs the view of the Bear depending on whether it is infected and sleeping
+     * @return DisplayInformation
+     */
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
@@ -139,6 +147,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     }
 
 
+    /**
+     * The Bear walks toward it's mate. If it does not have a mate, it does nothing.
+     */
     private void findMate(){
         if (mate != null) {
             try {
@@ -180,6 +191,11 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
 
+    /**
+     * Creates a new Bear on the desired location
+     * @param location the location where the new Bear spawns
+     * @param animal technically any animal, but is intended to be a Bear
+     */
     @Override
     protected void reproduce(Location location, Animal animal) {
         super.reproduce(location, animal);

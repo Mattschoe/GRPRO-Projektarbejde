@@ -36,7 +36,9 @@ public abstract class Animal implements Actor {
         hasFoundFood = false;
         this.isInfected = isInfected;
     }
-
+    /**
+     * Initialises the world
+     */
     @Override
     public void act(World world){
         this.world = world;
@@ -59,14 +61,9 @@ public abstract class Animal implements Actor {
             }
             world.delete(this);
         } else {
-            //try {
-                Location tempLocation = world.getLocation(this);
-                world.delete(this);
-                world.setTile(tempLocation, new Meat(world, this));
-            //} catch (IllegalArgumentException e) {
-                //System.out.println("It seems " + this + " didn't have a location upon death");
-
-            //}
+            Location tempLocation = world.getLocation(this);
+            world.delete(this);
+            world.setTile(tempLocation, new Meat(world, this, false));
         }
     }
 

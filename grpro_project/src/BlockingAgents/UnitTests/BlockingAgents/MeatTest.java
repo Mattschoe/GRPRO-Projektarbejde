@@ -24,7 +24,7 @@ class MeatTest {
     void decayingProcess() {
 
         Wolf wolf = new Wolf(w, false);
-        Meat meat = new Meat(w, wolf);
+        Meat meat = new Meat(w, wolf, false);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
         w.setTile(location,meat);
@@ -47,7 +47,7 @@ class MeatTest {
         //Random r = new Random();
         //boolean infected = r.nextBoolean();
         //Wolf wolf = new Wolf(w, false);
-        Meat meat = new Meat(w, wolf);
+        Meat meat = new Meat(w, wolf, false);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
         w.setTile(location,meat);
@@ -67,7 +67,7 @@ class MeatTest {
     void meatGetsEaten (){
         Wolf wolf = new Wolf(w, false);
         Rabbit rabbit = new Rabbit(w, false);
-        Meat meat = new Meat(w, rabbit);
+        Meat meat = new Meat(w, rabbit, false);
         Location location = new Location(0, 0);
         Location location2 = new Location(0, 1);
         w.setCurrentLocation(location);

@@ -18,6 +18,9 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         fleeRadius = 2;
     }
 
+    /**
+     * Initialises the world and sets up what actions the Rabbit should do for every action.
+     */
     @Override
     public void act(World world) {
             if (!isHiding) {
@@ -125,10 +128,16 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         }
     }
 
+    /**
+     * Puts the Rabbit to sleep, by removing it from the world (Because it goes into its burrow)
+     */
     protected void sleep() {
         world.remove(this);
     }
 
+    /**
+     * Makes the Rabbit have a different look depending on whether it is infected or sleeping
+     */
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping){

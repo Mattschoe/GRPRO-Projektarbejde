@@ -16,21 +16,6 @@ public class Meat implements Actor, DynamicDisplayInformationProvider {
     private int age;
     private int fungiLife;
 
-    public Meat(World world, Animal animal) {
-        this.world = world;
-        this.animal = animal;
-        this.isInfected = false;
-        this.fungiLife = 0;
-        age = 0;
-
-        if (this.animal instanceof Carnivore) {
-            this.energyLevel = 50;
-        } else { //Prey
-            this.energyLevel = 20;
-        }
-
-    }
-
     public Meat(World world, Animal animal, boolean isInfected) {
         this.world = world;
         this.animal = animal;
@@ -46,6 +31,9 @@ public class Meat implements Actor, DynamicDisplayInformationProvider {
 
     }
 
+    /**
+     * Initialises the world and sets up what actions the Meat should do for every action. This is mainly to lose energy until death as well as a few extra changes in case it is infected
+     */
     @Override
     public void act(World world) {
         this.world = world;
@@ -71,6 +59,9 @@ public class Meat implements Actor, DynamicDisplayInformationProvider {
         }
     }
 
+    /**
+     * Makes the Meat look different depending on what animal it is of
+     */
     @Override
     public DisplayInformation getInformation() {
         if (this.animal instanceof Carnivore) {
