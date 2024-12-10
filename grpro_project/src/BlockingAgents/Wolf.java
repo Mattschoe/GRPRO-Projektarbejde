@@ -93,7 +93,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 if (isThereFreshMeat()) {
                     eatFood();
                 } else if (isPreyInHuntRadius(huntRadius)) {
-                    hunt(findPrey());
+                    hunt(findPrey(huntRadius));
                 }
             }
         }
