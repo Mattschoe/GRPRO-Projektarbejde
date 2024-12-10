@@ -13,15 +13,15 @@ import itumulator.world.World;
 
 public class Main {
     public static void main(String[] args) {
-        //ShowDropTestHereTests();
+        ShowDropTestHereTests();
         //MattTempTest();
         //JosvaTempTest();
-        Week2Test();
+        //Week2Test();
     }
     //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
     public static void ShowDropTestHereTests() {
         //Program descriptions
-        int delay = 200;
+        int delay = 5;
         int displaySize = 1000;
 
         //File setup, saves all files dropped in folder
@@ -56,7 +56,6 @@ public class Main {
         program.setDisplayInformation(Wolf.class, new DisplayInformation(Color.red, "wolf" ));
         program.setDisplayInformation(Bear.class, new DisplayInformation(Color.red, "bear" ));
         program.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass" ));
-        program.setDisplayInformation(Territory.class, new DisplayInformation(Color.red));
         program.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush-berries"));
         program.setDisplayInformation(Den.class, new DisplayInformation(Color.black, "hole"));
         program.setDisplayInformation(Meat.class, new DisplayInformation(Color.green, "carcass" ));

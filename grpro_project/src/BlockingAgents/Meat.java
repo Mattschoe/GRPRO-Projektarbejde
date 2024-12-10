@@ -57,8 +57,6 @@ public class Meat implements Actor {
             if (this.isInfected) { // spawns mushroom if infected, otherwise just dies
                 Location tempLocation = world.getLocation(this);
                 world.delete(this);
-                System.out.println(tempLocation);
-
                 spawnMushroom(tempLocation);
             }
             else {

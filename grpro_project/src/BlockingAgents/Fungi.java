@@ -45,7 +45,9 @@ public class Fungi implements Actor {
     private void die() {
         location = world.getLocation(this);
         world.delete(this);
-        world.setTile(location, new Grass(world)); // Spawns grass upon death
+        if (world.getTile(location) == null) {
+            world.setTile(location, new Grass(world)); // Spawns grass upon death unless there already is grass
+        }
     }
 
     @Override
