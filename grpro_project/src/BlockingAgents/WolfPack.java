@@ -29,11 +29,6 @@ public class WolfPack {
         if (newWolfToPack.getWolfpack() != null && newWolfToPack.getWolfpack() != this) {
             newWolfToPack.setWolfpack(this);
         }
-
-        //Sets the Den of the new Wolf in the pack to the Alpha Wolf's
-        /*if (alphaWolf.getDen() != null) {
-            newWolfToPack.setDen(alphaWolf.getDen());
-        }*/
     }
 
     /**

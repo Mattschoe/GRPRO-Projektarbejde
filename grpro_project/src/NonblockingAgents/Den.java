@@ -101,7 +101,10 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
 
         return null;
     }
-
+    /**
+     * Returns whether this is a RabbitBurrow or a WolfDen
+     * @return String
+     */
     public String getDenType(){
         return denType;
     }

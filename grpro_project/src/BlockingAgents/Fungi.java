@@ -21,6 +21,10 @@ public class Fungi implements Actor {
         this.radius = 2;
     }
 
+
+    /**
+     * Initialises the world and tries to spread for every step until death
+     */
     public void act(World world) {
         this.world = world;
         spread(); // Skal kunne sprede sig til Meat i nærheden
@@ -56,6 +60,10 @@ public class Fungi implements Actor {
         }
     }
 
+    /**
+     * Returns how the Fungi looks.
+     * @return DisplayInformation
+     */
     @Override
     public DisplayInformation getInformation() {
         return new DisplayInformation(Color.GRAY, "fungi");

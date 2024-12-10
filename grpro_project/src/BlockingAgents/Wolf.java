@@ -31,6 +31,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         this.wolfpack = wolfpack;
     }
 
+    /**
+     * Initialises the world and sets up what actions the Wolf should do for every action
+     */
     public void act(World world) {
         //If the wolf got damaged last act it goes into fighting mode. Else it makes sure that it's still not in fight mode
         if (tookDamage) {
@@ -156,6 +159,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         wolfpack = newPack;
     }
 
+    /**
+     * Makes the Wolf look different depending on whether it is infected or sleeping
+     */
     @Override
     public DisplayInformation getInformation() {
         if (isSleeping) {
@@ -173,6 +179,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         }
     }
 
+    /**
+     * Puts the Wolf to sleep by removing it from the world (Because it is in a Den)
+     */
     @Override
     protected void sleep() {
         world.remove(this);
@@ -304,15 +313,24 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     }
 
     /**
-     * @return boolean
+     * @return boolean currentlyFighting
      */
     public boolean getCurrentlyFighting() {
         return currentlyFighting;
     }
 
+    /**
+     * Returns how much health the Wolf has left
+     * @return int health
+     */
     public int getHealth() {
         return health;
     }
+
+    /**
+     * Returns how much health the Wolf can have in total
+     * @return int maxHealth
+     */
     public int getMaxHealth() {
         return maxHealth;
     }
