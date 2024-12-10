@@ -191,12 +191,6 @@ class RabbitTest {
 
         assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.01)) && reproduced <= (iterations*0.1*2 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
 
-
-
-
-
-
-
     }
 
     @AfterEach
@@ -206,6 +200,5 @@ class RabbitTest {
         location0 = null;
         location01 = null;
         location11 = null;
-
     }
 }

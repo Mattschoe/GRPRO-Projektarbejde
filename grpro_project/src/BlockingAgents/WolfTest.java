@@ -62,23 +62,17 @@ class WolfTest {
         while (rabbits > 0) {
             rabbits = 0;
             for (Object obj : w.getEntities().keySet()){
-
                 if (obj instanceof Rabbit) {
                     rabbits++;
-                }}
+                }
+            }
             System.out.println(w.getEntities());
             assertEquals(1,rabbits);
             w.step();
             rabbit.act(w);
             wolf.act(w);
-
-
         }
         assertEquals(0, rabbits);
-
-
-
-
     }
 
     /*@Test

@@ -77,7 +77,7 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
 
     /**
      * Returns all the animals that belong to the Den
-     * @return Set</Animal>
+     * @return Set<@Animal>
      */
     public Set<Animal> getAnimalsBelongingToDen() {
         return animalsBelongingToDen;
