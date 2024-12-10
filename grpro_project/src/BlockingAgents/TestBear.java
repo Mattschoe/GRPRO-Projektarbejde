@@ -18,8 +18,8 @@ public class TestBear {
 
     @Test
     void TestReproduction(){
-        Bear bear1 = new Bear(w);
-        Bear bear2 = new Bear(w);
+        Bear bear1 = new Bear(w, false);
+        Bear bear2 = new Bear(w, false);
         w.setTile(new Location(0,0), bear1);
         w.setTile(new Location(1,1), bear2);
         if (bear1.getAge() > 1 && bear2.getAge() > 1 ){

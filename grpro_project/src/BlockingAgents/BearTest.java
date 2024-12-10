@@ -22,7 +22,7 @@ class BearTest {
     @BeforeEach
     void Setup() {
         w = new World(2);
-        bear = new Bear(w);
+        bear = new Bear(w, false);
         location0 = new Location(0, 0);
         location1 = new Location(1, 1);
     }
@@ -134,7 +134,7 @@ class BearTest {
     void TestHunting(){
 
 
-            Rabbit rabbit = new Rabbit(w);
+            Rabbit rabbit = new Rabbit(w, false);
             w.setTile(location0,bear);
             w.setTile(location1,rabbit);
             w.setCurrentLocation(location0);

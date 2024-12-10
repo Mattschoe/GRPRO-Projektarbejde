@@ -70,7 +70,6 @@ public class ParseTest {
             boolean isInfected = false;
             //Saves object and amount
             String line = scanner.nextLine();
-            System.out.println(line);
             String[] lineSplit = line.split("[-\\s(),]+");
             System.out.println(Arrays.toString(lineSplit));
 
@@ -90,8 +89,6 @@ public class ParseTest {
                 amount = Integer.parseInt(lineSplit[1 + infectedAnimalCounter]);
             } else if (lineSplit.length == 3 + infectedAnimalCounter) { //If it is a min max
                 object = lineSplit[0 + infectedObjectCounter];
-                System.out.println(object);
-                System.out.println(isInfected);
                 int min = Integer.parseInt(lineSplit[1 + infectedAnimalCounter]);
                 int max = Integer.parseInt(lineSplit[2 + infectedAnimalCounter]);
                 amount = random.nextInt(max - min + 1) + min;
@@ -104,29 +101,22 @@ public class ParseTest {
             // XXX
             if (object.equals("wolf")) {
                 WolfPack wolfPack = new WolfPack(world);
-                //Setting Alpha Wolf
-                wolfPack.setAlphaWolf(new Wolf(world, isInfected));
 
-                Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
-                while (world.getTile(location) != null) {
-                    location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
-                }
-                world.setTile(location, wolfPack.getAlphaWolf());
-
-                world.setCurrentLocation(location);
-                wolfPack.getAlphaWolf().digDen();
-                wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
-
-                //Adding Wolf's to pack
+                //Adding Wolves to pack
                 for (int i = 0; i < amount; i++) {
-                    Wolf wolf = new Wolf(world, isInfected);
-
+                    Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
                     while (world.getTile(location) != null) {
                         location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
                     }
-
+                    Wolf wolf = new Wolf(world, isInfected);
                     wolfPack.addWolfToPack(wolf);
                     world.setTile(location, wolf);
+                    if (wolfPack.getAlphaWolf() == null) {
+                        wolfPack.setAlphaWolf(wolf);
+                        wolf.digDen();
+                        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+                        System.out.println("Alpha: " + wolfPack.getAlphaWolf());
+                    }
                 }
 
 
@@ -149,8 +139,8 @@ public class ParseTest {
                     else if (object.equals("burrow")) world.setTile(location, new Den(world, "rabbit"));
                     else if (object.equals("bear")) world.setTile(location, new Bear(world, isInfected));
                     else if (object.equals("berry")) world.setTile(location, new Bush(world));
-                    else if (object.equals("Carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected), isInfected)); // Der findes 1 test hvor carcass er med stort. Der giver ikke mening
-                    else if (object.equals("carcass")) world.setTile(location, new Meat(world, new Rabbit(world, isInfected), isInfected));
+                    else if (object.equals("Carcass")) world.setTile(location, new Meat(world, new Rabbit(world, false), isInfected)); // Der findes 1 test hvor carcass er med stort. Der giver ikke mening
+                    else if (object.equals("carcass")) world.setTile(location, new Meat(world, new Rabbit(world, false), isInfected));
                 }
                 testObject = world.getTile(location);
             }

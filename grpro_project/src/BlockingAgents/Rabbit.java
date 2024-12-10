@@ -13,11 +13,6 @@ import java.util.Random;
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
     private Den burrow;
 
-    public Rabbit(World world) {
-        super(world,1,40, 1);
-        fleeRadius = 2;
-    }
-
     public Rabbit(World world, boolean isInfected) {
         super(world,1,40, 1, isInfected);
         fleeRadius = 2;

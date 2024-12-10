@@ -66,7 +66,7 @@ class MeatTest {
     @Test
     void meatGetsEaten (){
         Wolf wolf = new Wolf(w, false);
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Meat meat = new Meat(w, rabbit);
         Location location = new Location(0, 0);
         Location location2 = new Location(0, 1);

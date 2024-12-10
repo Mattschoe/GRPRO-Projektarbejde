@@ -67,8 +67,8 @@ public class Main {
             WolfPack wp = new WolfPack(world);
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Fungi(world, 20));
             //world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Meat( world, new Rabbit(world)));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world, false));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world, false));
             Wolf wolf = new Wolf(world, wp, false);
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), wolf);
 
@@ -87,8 +87,8 @@ public class Main {
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Den(world, "wolf"));
         } catch (IllegalArgumentException e) {
             Random random = new Random();
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
-            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world, false));
+            world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world, false));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bush(world));
             world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Wolf(world, false));
@@ -101,8 +101,8 @@ public class Main {
 
     static void JosvaTempTest() {
         //Program descriptions
-        int size = 10;
-        int delay = 200;
+        int size = 20;
+        int delay = 5;
         int displaySize = 1000;
 
         //Sets up world
@@ -119,7 +119,14 @@ public class Main {
 
         //Adds agents
         Random random = new Random();
-        world.setTile(new Location(2,0), new Rabbit(world, false));
+        WolfPack wolfPack = new WolfPack(world);
+        // Create X rabbits
+        for (int i = 0; i < 0; i++) {Rabbit rabbit = new Rabbit(world, false);Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));while (world.getTile(location) != null) {location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));}world.setTile(location, rabbit);}
+        // Create X wolves in one pack
+        for (int i = 0; i < 50; i++) {Wolf wolf = new Wolf(world, false);Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));while (world.getTile(location) != null) {location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));}wolfPack.addWolfToPack(wolf);world.setTile(location, wolf);}
+        // Create X bears
+        for (int i = 0; i < 0; i++) {Bear bear = new Bear(world, false);Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));while (world.getTile(location) != null) {location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));}world.setTile(location, bear);}
+
         /*world.setTile(new Location(0,0), new Wolf(world, false));
         world.setTile(new Location(3,0), new Rabbit(world, true));
         world.setTile(new Location(2,2), new Wolf(world, false));
@@ -154,8 +161,8 @@ public class Main {
 
 
         //Adds agents
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
-        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world, false));
+        world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Bear(world, false));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Rabbit(world));
         // world.setTile(new Location(random.nextInt(size), random.nextInt(size)), new Grass(world));

@@ -16,14 +16,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private int breedingDelay;
     private Animal opponent;
 
-    public Bear(World world ){
-        super(20, world, 50, 50);
-        this.world = world;
-        territory = new ArrayList<>();
-        wantsToBreed = false;
-        breedingDelay = 5;
-    }
-
     //Skal lige op i den gamle
     public Bear(World world, boolean isInfected){
         super(20, world, 50, 50, isInfected);
