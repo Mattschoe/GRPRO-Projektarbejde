@@ -1,13 +1,14 @@
 package BlockingAgents;
 
 import itumulator.executable.DisplayInformation;
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
 
-public class Meat implements Actor {
+public class Meat implements Actor, DynamicDisplayInformationProvider {
     private World world;
     private int energyLevel;
     private Animal animal;

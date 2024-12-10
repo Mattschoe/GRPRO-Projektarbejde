@@ -24,7 +24,7 @@ class AnimalTest {
      */
     @Test
     void TestMoveTo() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location = new Location(0,0);
         Location newLocation = new Location(2,2);
         w.setCurrentLocation(location);
@@ -41,7 +41,7 @@ class AnimalTest {
      */
     @Test
     void sprintTo() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location = new Location(0,0);
         Location newLocation = new Location(2,2);
         w.setCurrentLocation(location);
@@ -58,7 +58,7 @@ class AnimalTest {
 
     @Test
     void moveAwayFrom() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location = new Location(1,1);
         Location enemyLocation = new Location(0,0);
         Location expectedLocation = new Location(2,2);
@@ -79,7 +79,7 @@ class AnimalTest {
      */
     @Test
     void move() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         w.setCurrentLocation(location1);
         w.setTile(location1,rabbit);
@@ -93,7 +93,7 @@ class AnimalTest {
     }
     @Test
     void standingOnGrassTest(){
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         Grass grass = new Grass(w);
         w.setCurrentLocation(location1);
@@ -104,7 +104,7 @@ class AnimalTest {
     }
     @Test
     void standingOnDenTest(){
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         Den den = new Den(w, "rabbit");
         w.setCurrentLocation(location1);
@@ -115,7 +115,7 @@ class AnimalTest {
     }
     @Test
     void TestDeath(){
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         w.setCurrentLocation(location1);
         w.setTile(location1,rabbit);

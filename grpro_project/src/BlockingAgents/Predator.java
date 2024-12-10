@@ -11,16 +11,6 @@ public abstract class Predator extends Animal{
     protected boolean hasFoundPrey;
 
 
-
-    Predator(int strength , World world, int maxEnergy, int maxHealth){
-        super(world,0,maxEnergy, maxHealth);
-        this.strength = strength;
-        this.world = world;
-        currentlyFighting = false;
-        preyAnimal = null;
-        hasFoundPrey = false;
-    }
-
     Predator(int strength , World world, int maxEnergy, int maxHealth, boolean isInfected){
         super(world,0,maxEnergy, maxHealth, isInfected);
         this.strength = strength;

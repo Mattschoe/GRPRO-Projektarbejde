@@ -22,7 +22,7 @@ class RabbitTest {
     @BeforeEach
     void setUp() {
         w = new World(2);
-        rabbit = new Rabbit(w);
+        rabbit = new Rabbit(w, false);
         location0 = new Location(0,0);
         location01 = new Location(0,1);
         location11 = new Location(1,1);
@@ -78,7 +78,7 @@ class RabbitTest {
     @RepeatedTest(20)
     void TestSleepingInDens(){
 
-        Rabbit rabbit1 = new Rabbit(w); // ekstra rabbit, that is not used in the other tests.
+        Rabbit rabbit1 = new Rabbit(w, false); // ekstra rabbit, that is not used in the other tests.
         Den burrow = new Den(w,"rabbit");
 
         w.setCurrentLocation(location0);
@@ -156,12 +156,12 @@ class RabbitTest {
 
 
             World world = new World(2);
-            Rabbit rabbit = new Rabbit(world);
+            Rabbit rabbit = new Rabbit(world, false);
             Location location = new Location(0, 0);
 
             world.setTile(location, rabbit);
             world.setCurrentLocation(location);
-            Rabbit rabbit1 = new Rabbit(world);
+            Rabbit rabbit1 = new Rabbit(world, false);
             Location location1 = new Location(0, 1);
 
             world.setTile(location1, rabbit1);

@@ -24,20 +24,6 @@ public abstract class Animal implements Actor {
     protected Location foodLocation;
 
 
-
-
-    Animal(World world, int age, int maxEnergy, int maxHealth) {
-        this.world = world;
-        this.age = age;
-        this.energyLevel = maxEnergy;
-        this.maxEnergy = maxEnergy;
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-        sleepingLocation = null;
-        isSleeping = false;
-        hasFoundFood = false;
-    }
-
     Animal(World world, int age, int maxEnergy, int maxHealth, boolean isInfected) {
         this.world = world;
         this.age = age;

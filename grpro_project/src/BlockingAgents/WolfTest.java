@@ -52,7 +52,7 @@ class WolfTest {
 
     @Test
     void TestHunt() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         w.setTile(location0,wolf);
         w.setTile(location01,rabbit);
         w.setCurrentLocation(location0);
