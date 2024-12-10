@@ -29,6 +29,9 @@ public class Fungi implements Actor {
         }
     }
 
+    /**
+     * Infects nearby Meat
+     */
     private void spread() {
         for (Object entity : world.getEntities().keySet()) {
             if (entity instanceof Meat meat) { // Makes sure it infects only meat, which is close
@@ -42,6 +45,9 @@ public class Fungi implements Actor {
         energyLevel--;
     }
 
+    /**
+     * Deletes this Fungi from the world. Places a patch of grass at its location, if possible
+     */
     private void die() {
         location = world.getLocation(this);
         world.delete(this);

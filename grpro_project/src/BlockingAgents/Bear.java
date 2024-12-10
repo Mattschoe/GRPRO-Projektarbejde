@@ -99,6 +99,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
+    /**
+     * Sets the territory of the bear to be all tiles within a radius of 4
+     */
     private void setTerritory(){
 
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), 4);
@@ -130,6 +133,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         return territory.contains(world.getLocation(this));
     }
 
+    /**
+     * Attack other Bears if they come inside the territory and this Bear does not want to breed. If both want to breed, and they are beside each other, they do
+     */
     private void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
 
@@ -146,6 +152,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
         }
     }
+
     @Override
     protected void reproduce(Location location, Animal animal) {
         super.reproduce(location, animal);
@@ -188,6 +195,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
 
+    /**
+     * Sets whether the Bear wants to breed
+     * @param wantsToBreed whether the Bear wants to breed
+     */
     public void setWantsToBreed(Boolean wantsToBreed) {
         this.wantsToBreed = wantsToBreed;
     }

@@ -48,7 +48,4 @@ public abstract class Prey extends Animal {
         return false;
     }
 
-    public boolean getIsHiding() {
-        return isHiding;
-    }
 }

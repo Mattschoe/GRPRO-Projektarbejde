@@ -173,6 +173,10 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         return world.getLocation(burrow);
     }
 
+    /**
+     * Returns the burrow
+     * @return Den
+     */
     public Den getBurrow() {
         return burrow;
     }

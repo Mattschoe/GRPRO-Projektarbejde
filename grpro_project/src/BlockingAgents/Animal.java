@@ -43,6 +43,10 @@ public abstract class Animal implements Actor {
 
     }
 
+
+    /**
+     * This is deleted from the world. If it were infected, it spreads the infection to any nearby animals. If not infected, it is replaced by fresh Meat
+     */
     protected void die() {
         if (this.isInfected) {
             int infectionRadius = 2;
@@ -52,9 +56,7 @@ public abstract class Animal implements Actor {
                         animal.infectAnimal();
                     }
                 }
-
             }
-
             world.delete(this);
         } else {
             try {
@@ -67,11 +69,18 @@ public abstract class Animal implements Actor {
         }
     }
 
+    /**
+     * Loses health equal to the amount of damage taken
+     * @param damage how much health it loses
+     */
     protected void takeDamage(int damage) {
         health = health - damage;
         tookDamage = true;
     }
 
+    /**
+     * Falls asleep
+     */
     protected abstract void sleep();
 
     /**
@@ -99,7 +108,6 @@ public abstract class Animal implements Actor {
                 world.move(this, location);
                 world.setCurrentLocation(location);
 
-
                 if (isInfected) {
                     energyLevel--;
                     health--;
@@ -109,6 +117,9 @@ public abstract class Animal implements Actor {
 
     }
 
+    /**
+     * Finds the Object, which is closest to this. Does not count infected Objects. Returns null if the input is empty
+     */
     protected Object findClosestInSet(Map<Object, Location> everyAnimalInSet) {
         int closestDistance = Integer.MAX_VALUE;
         Object closestAnimal = null;
@@ -126,7 +137,10 @@ public abstract class Animal implements Actor {
         }
         return closestAnimal;
     }
-
+    /**
+     * Finds every Animal of the same species as this
+     * @return Map
+     */
     protected Map<Object, Location> findEveryAnimalInSpecies() {
         Map<Object, Location> map = new HashMap<>();
         for (Object object : world.getEntities().keySet()) {
@@ -145,6 +159,9 @@ public abstract class Animal implements Actor {
         return map;
     }
 
+    /**
+     * Should only be called by an infected Animal. Moves toward the closest, non-infected, animal in the species. If there are none, moves randomly
+     */
     protected void infectedMove() {
         if (findClosestInSet(findEveryAnimalInSpecies()) != null) {
             moveTo(world.getLocation(findClosestInSet(findEveryAnimalInSpecies())));
@@ -155,6 +172,7 @@ public abstract class Animal implements Actor {
 
     /***
      * Moves to a chosen location one tile. Call this method in "act" to move repeatable towards a location
+     * @param moveToLocation Where this should move toward
      */
     protected void moveTo(Location moveToLocation) {
         energyLevel--;
@@ -194,7 +212,7 @@ public abstract class Animal implements Actor {
 
     /**
      * Moves twice towards chosen location
-     * @param moveToLocation
+     * @param moveToLocation The chosen location
      */
     protected void sprintTo(Location moveToLocation) {
         moveTo(moveToLocation);
@@ -324,6 +342,11 @@ public abstract class Animal implements Actor {
         return false;
     }
 
+    /**
+     * Creates a new animal and adds it to the world
+     * @param birthplace Where the new animal should be placed
+     * @param animal Which animal should be placed
+     */
     protected void reproduce(Location birthplace, Animal animal) {
         Set<Location> neighbours = world.getEmptySurroundingTiles(birthplace);
         List<Location> neighbourList = new ArrayList<>(neighbours);
@@ -334,26 +357,44 @@ public abstract class Animal implements Actor {
 
     }
 
+    /**
+     * @return int
+     */
     public int getAge(){
         return age;
     }
 
+    /**
+     * @return int
+     */
     public int getEnergyLevel() {
         return energyLevel;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean getIsSleeping() {
         return isSleeping;
     }
 
+    /**
+     * @return int
+     */
     public int getMaxEnergy() {
         return maxEnergy;
     }
 
+    /**
+     * @return Location
+     */
     public Location getSleepingLocation() {
         return sleepingLocation;
     }
 
+    /**
+     * Makes this animal infected
+     */
     public void infectAnimal() {
         isInfected = true;
     }

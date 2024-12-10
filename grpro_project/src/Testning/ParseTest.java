@@ -98,10 +98,9 @@ public class ParseTest {
                 bearTerritoryCentrum = new Location(Integer.parseInt(lineSplit[2 + infectedAnimalCounter]), Integer.parseInt(lineSplit[3 + infectedAnimalCounter]));
             }
 
-            // XXX
+            // In case of wolf
             if (object.equals("wolf")) {
                 WolfPack wolfPack = new WolfPack(world);
-
                 //Adding Wolves to pack
                 for (int i = 0; i < amount; i++) {
                     Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
