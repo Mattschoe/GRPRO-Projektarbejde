@@ -13,11 +13,6 @@ import java.util.Random;
 public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplayInformationProvider {
     private Den burrow;
 
-    public Rabbit(World world) {
-        super(world,1,40, 1);
-        fleeRadius = 2;
-    }
-
     public Rabbit(World world, boolean isInfected) {
         super(world,1,40, 1, isInfected);
         fleeRadius = 2;
@@ -57,7 +52,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         flee();
                         hide();
                     } else if (energyLevel + 5 < maxEnergy) { //If hungry
-                        findFood();
                         if (food == null) {
                             move();
                         } else {
@@ -178,6 +172,10 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
         return world.getLocation(burrow);
     }
 
+    /**
+     * Returns the burrow
+     * @return Den
+     */
     public Den getBurrow() {
         return burrow;
     }

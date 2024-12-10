@@ -78,7 +78,7 @@ class WolfTest {
      */
     @Test
     void TestHunt() {
-        Rabbit rabbit = new Rabbit(w);
+        Rabbit rabbit = new Rabbit(w, false);
         w.setTile(location0,wolf);
         w.setTile(location01,rabbit);
         w.setCurrentLocation(location0);
@@ -88,23 +88,17 @@ class WolfTest {
         while (rabbits > 0) {
             rabbits = 0;
             for (Object obj : w.getEntities().keySet()){
-
                 if (obj instanceof Rabbit) {
                     rabbits++;
-                }}
+                }
+            }
             System.out.println(w.getEntities());
             assertEquals(1,rabbits);
             w.step();
             rabbit.act(w);
             wolf.act(w);
-
-
         }
         assertEquals(0, rabbits);
-
-
-
-
     }
 
 

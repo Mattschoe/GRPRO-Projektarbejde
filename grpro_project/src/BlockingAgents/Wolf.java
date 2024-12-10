@@ -100,7 +100,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                 if (isThereFreshMeat()) {
                     eatFood();
                 } else if (isPreyInHuntRadius(huntRadius)) {
-                    hunt(findPrey());
+                    hunt(findPrey(huntRadius));
                 }
             }
         }
@@ -179,7 +179,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     }
 
     /**
-     * If there are any Den's in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.
+     * If there are any Dens in the world and the Wolf is the owner of it, this will find them, otherwise the wolf will dig a new one.
      */
     @Override
     public Location findDen() {
@@ -200,7 +200,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     }
 
     /**
-     * instantiates a new dens on the current location.
+     * instantiates a new Dens on the current location.
      */
     @Override
     public Location digDen() {
@@ -225,7 +225,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
 
     /**
      * Returns the wolfs den
-     * @return
+     * @return Den
      */
     public Den getDen() {
         return den;
@@ -233,7 +233,8 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
 
     /**
      * Returns the wolf's
-     * @return
+     * @return wolfpack
+     * @throws IllegalStateException
      */
     public WolfPack getWolfpack() {
         if (wolfpack != null) {
@@ -242,8 +243,15 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         throw new IllegalStateException("Wolfpack is null!");
     }
 
+    /**
+     * Makes the Wolf part of a specified pack.
+     * @param wolfpack The WolfPack this Wolf should join
+     */
     public void setWolfpack(WolfPack wolfpack) {
         this.wolfpack = wolfpack;
+        if (!this.wolfpack.isWolfInPack(this)) {
+            this.wolfpack.addWolfToPack(this);
+        }
     }
 
     /**
@@ -294,6 +302,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         }
     }
 
+    /**
+     * @return boolean
+     */
     public boolean getCurrentlyFighting() {
         return currentlyFighting;
     }

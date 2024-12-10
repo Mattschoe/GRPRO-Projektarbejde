@@ -11,16 +11,6 @@ public abstract class Predator extends Animal{
     protected boolean hasFoundPrey;
 
 
-
-    Predator(int strength , World world, int maxEnergy, int maxHealth){
-        super(world,0,maxEnergy, maxHealth);
-        this.strength = strength;
-        this.world = world;
-        currentlyFighting = false;
-        preyAnimal = null;
-        hasFoundPrey = false;
-    }
-
     Predator(int strength , World world, int maxEnergy, int maxHealth, boolean isInfected){
         super(world,0,maxEnergy, maxHealth, isInfected);
         this.strength = strength;
@@ -31,9 +21,9 @@ public abstract class Predator extends Animal{
     }
 
     /**
-     * Hunts after prey. Calls the kill method if its close enough, otherwise it chases it.
+     * Hunts prey. Calls the kill method if it's close enough, otherwise it chases it.
      */
-    protected void hunt (Animal preyAnimal){
+    protected void hunt (Animal preyAnimal) {
         this.preyAnimal = preyAnimal;
         try {
             if (preyAnimal.sleepingLocation == null && !preyAnimal.isSleeping && world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
@@ -59,7 +49,7 @@ public abstract class Predator extends Animal{
     /**
      * Fights the Opponent close to it, if not close it moves towards it. If the predator doesn't have an opponent it finds one
      */
-    protected abstract void fight ();
+    protected abstract void fight();
 
     /**
      * Detects prey in a "huntRadius" radius.
@@ -76,11 +66,11 @@ public abstract class Predator extends Animal{
     /**
      * Finds prey nearby and returns it. Also saves it so that the class knows it already found a prey
      */
-    protected Animal findPrey() {
+    protected Animal findPrey(int huntRadius) {
         if (hasFoundPrey) {
             return preyAnimal;
         } else {
-            for (Object object : world.getEntities().keySet()) {
+            for (Object object : world.getSurroundingTiles(huntRadius)) {
                 if (object instanceof Prey prey) {
                     hasFoundPrey = true;
                     return prey;

@@ -9,13 +9,6 @@ public abstract class Prey extends Animal {
     Predator predator;
     int fleeRadius;
 
-    Prey(World world, int age, int maxEnergy, int health) {
-        super(world, age, maxEnergy, health);
-        this.world = world;
-        isHiding = false;
-        predator = null;
-    }
-
     Prey(World world, int age, int maxEnergy, int health, boolean isInfected) {
         super(world, age, maxEnergy, health, isInfected);
         this.world = world;
@@ -55,7 +48,4 @@ public abstract class Prey extends Animal {
         return false;
     }
 
-    public boolean getIsHiding() {
-        return isHiding;
-    }
 }

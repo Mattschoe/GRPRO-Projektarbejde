@@ -21,11 +21,13 @@ public class WolfPack {
 
     /**
      * Adds a new wolf to the Alpha Wolf's pack, also adds it to the AlphaWolf Den if it has a Den
-     * @param newWolfToPack
+     * @param newWolfToPack The new Wolf
      */
     public void addWolfToPack(Wolf newWolfToPack) {
         pack.add(newWolfToPack);
-        newWolfToPack.setWolfpack(this);
+        if (newWolfToPack.getWolfpack() != this) {
+            newWolfToPack.setWolfpack(this);
+        }
 
         //Sets the Den of the new Wolf in the pack to the Alpha Wolf's
         /*if (alphaWolf.getDen() != null) {
@@ -36,7 +38,7 @@ public class WolfPack {
     /**
      * Checks if a certain wolf is in pack.
      * @param wolf
-     * @return
+     * @return boolean
      */
     public boolean isWolfInPack(Wolf wolf) {
         for (Wolf packWolfs : getWolvesInPack() ) {
@@ -78,18 +80,33 @@ public class WolfPack {
         }
     }
 
+    /**
+     * Returns the alphaWolf of the pack
+     * @return Wolf
+     */
     public Wolf getAlphaWolf() {
         return alphaWolf;
     }
 
+    /**
+     * Makes a Den be the Pack's Den
+     * @param newDen The Pack's new Den
+     */
     public void setDen(Den newDen) {
         packDen = newDen;
     }
 
+    /**
+     * Returns the Pack's Den
+     * @return Den
+     */
     public Den getPackDen() {
         return packDen;
     }
 
+    /**
+     * Returns an empty tile around the alpha
+     */
     public Location getPackLocation() {
         for (Location location : world.getEmptySurroundingTiles(world.getLocation(alphaWolf))) {
             this.location = location;

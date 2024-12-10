@@ -18,15 +18,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private Animal opponent;
     private Bear mate;
 
-    public Bear(World world ){
-        super(20, world, 60, 60);
-        this.world = world;
-        territory = new ArrayList<>();
-        wantsToBreed = false;
-        breedingDelay = 5;
-
-    }
-
     //Skal lige op i den gamle
     public Bear(World world, boolean isInfected){
         super(20, world, 60, 60, isInfected);
@@ -113,6 +104,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
     }
 
+    /**
+     * Sets the territory of the bear to be all tiles within a radius of 4
+     */
     private void setTerritory(){
 
         Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this), world.getSize()/2);
@@ -143,6 +137,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private boolean isInTerritory() {
         return territory.contains(world.getLocation(this));
     }
+
+
     private void findMate(){
         if (mate != null) {
             try {
@@ -155,6 +151,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
         }
     }
+    /**
+     * Attack other Bears if they come inside the territory and this Bear does not want to breed. If both want to breed, and they are beside each other, they do
+     */
     private void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
 
@@ -180,6 +179,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
         }
     }
+
     @Override
     protected void reproduce(Location location, Animal animal) {
         super.reproduce(location, animal);
@@ -224,6 +224,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         }
     }
 
+    /**
+     * Sets whether the Bear wants to breed
+     * @param wantsToBreed whether the Bear wants to breed
+     */
     public void setWantsToBreed(Boolean wantsToBreed) {
         this.wantsToBreed = wantsToBreed;
     }
