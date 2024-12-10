@@ -162,7 +162,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                     if (!wantsToBreed){
                         opponent = (Bear) entity;
                         fight();
-                    System.out.println("Fight fight fight");
+                    //System.out.println("Fight fight fight");
                     }
                     else if (((Bear) entity).wantsToBreed && wantsToBreed){
                         System.out.println("baby??");
@@ -197,6 +197,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (opponent != null) {
             try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 currentlyFighting = true;
+                System.out.println("fighting: " + opponent);
                 if (world.getSurroundingTiles(2).contains(world.getLocation(opponent))) { //If the opponent is close by they fighht
                     opponent.takeDamage(strength);
                 } else { //Else it moves towards the opponent
@@ -230,5 +231,8 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      */
     public void setWantsToBreed(Boolean wantsToBreed) {
         this.wantsToBreed = wantsToBreed;
+    }
+    public void setBreedingDelay(Integer breedingDelay) {
+        this.breedingDelay = breedingDelay;
     }
 }

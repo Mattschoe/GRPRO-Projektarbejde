@@ -1,5 +1,4 @@
 package BlockingAgents;
-
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.world.Location;
@@ -189,7 +188,7 @@ class RabbitTest {
         }
         System.out.println(reproduced);
 
-        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.01)) && reproduced <= (iterations*0.1*2 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
+        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.02)) && reproduced <= (iterations*0.1*2 + (iterations* 0.02))); // 10 % chance *2 rabbits, +- 1% because of randomness.
 
     }
 

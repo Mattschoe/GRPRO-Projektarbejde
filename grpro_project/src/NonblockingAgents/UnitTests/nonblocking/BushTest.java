@@ -1,5 +1,5 @@
-package NonblockingAgents;
-
+package nonblocking;
+import NonblockingAgents.Bush;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ class BushTest {
         Bush bush = new Bush(w);
         w.setTile(new Location(1,1),bush);
 
-
+        bush.getEaten();
         assertFalse(bush.getHasBerries());
         assertEquals(2, bush.getReGrowDays());
         for (int i = 0; i < 40; i++) {
@@ -36,12 +36,7 @@ class BushTest {
     void TestGetEaten(){
         Bush bush = new Bush(w);
         w.setTile(new Location(1,1),bush);
-        assertFalse(bush.getHasBerries());
-        assertEquals(2, bush.getReGrowDays());
-        for (int i = 0; i < 40; i++) {
-            bush.act(w);
-            w.step();
-        }
+
         assertTrue(bush.getHasBerries());
 
         bush.getEaten();

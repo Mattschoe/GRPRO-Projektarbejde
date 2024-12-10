@@ -60,7 +60,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                             }
                             if (wolfpack == wolf.getWolfpack()) {
                                 System.out.println("Wolfpack is the same as the wolfpack");
-                                getWolfpack().addWolfToPack(babyWolf);
+                                wolfpack.addWolfToPack(babyWolf);
                                 if (new Random().nextInt(10) == 0) {
                                     reproduce(world.getLocation(den), babyWolf);
                                 }
@@ -234,14 +234,15 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     /**
      * Returns the wolf's
      * @return wolfpack
-     * @throws IllegalStateException
+     *
      */
     public WolfPack getWolfpack() {
         if (wolfpack != null) {
             return wolfpack;
         }
-        throw new IllegalStateException("Wolfpack is null!");
-    }
+        else {
+     return null;
+    }}
 
     /**
      * Makes the Wolf part of a specified pack.
@@ -249,9 +250,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     public void setWolfpack(WolfPack wolfpack) {
         this.wolfpack = wolfpack;
-        if (!this.wolfpack.isWolfInPack(this)) {
+        /*if (!this.wolfpack.isWolfInPack(this)) {
             this.wolfpack.addWolfToPack(this);
-        }
+        }*/
     }
 
     /**

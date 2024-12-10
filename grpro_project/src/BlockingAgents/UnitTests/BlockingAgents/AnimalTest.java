@@ -1,5 +1,4 @@
 package BlockingAgents;
-
 import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.world.Location;
