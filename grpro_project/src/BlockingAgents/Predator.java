@@ -26,10 +26,10 @@ public abstract class Predator extends Animal{
     protected void hunt (Animal preyAnimal) {
         this.preyAnimal = preyAnimal;
         try {
-            if (preyAnimal.sleepingLocation == null && !preyAnimal.isSleeping && world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
+            if (preyAnimal != null && preyAnimal.sleepingLocation == null && !preyAnimal.isSleeping && world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
                 kill(preyAnimal);
                 System.out.println("Killed the " + preyAnimal);
-            } else if (preyAnimal.sleepingLocation == null) { //Otherwise it just chases it
+            } else if (preyAnimal != null && preyAnimal.sleepingLocation == null) { //Otherwise it just chases it
                 moveTo(world.getLocation(preyAnimal));
                 System.out.println("Moving towards " + preyAnimal);
             }
@@ -67,12 +67,14 @@ public abstract class Predator extends Animal{
      * Finds prey nearby and returns it. Also saves it so that the class knows it already found a prey
      */
     protected Animal findPrey(int huntRadius) {
-        if (hasFoundPrey) {
+        if (hasFoundPrey && preyAnimal != null) {
             return preyAnimal;
         } else {
-            for (Object object : world.getSurroundingTiles(huntRadius)) {
+            for (Location location : world.getSurroundingTiles(huntRadius)) {
+                Object object = world.getTile(location);
                 if (object instanceof Prey prey) {
                     hasFoundPrey = true;
+                    this.preyAnimal = prey;
                     return prey;
                 }
             }

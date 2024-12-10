@@ -101,6 +101,7 @@ public class ParseTest {
             // In case of wolf
             if (object.equals("wolf")) {
                 WolfPack wolfPack = new WolfPack(world);
+
                 //Adding Wolves to pack
                 for (int i = 0; i < amount; i++) {
                     Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
@@ -108,13 +109,15 @@ public class ParseTest {
                         location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
                     }
                     Wolf wolf = new Wolf(world, isInfected);
-                    wolfPack.addWolfToPack(wolf);
                     world.setTile(location, wolf);
-                    if (wolfPack.getAlphaWolf() == null) {
-                        wolfPack.setAlphaWolf(wolf);
-                        wolf.digDen();
-                        wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
-                        System.out.println("Alpha: " + wolfPack.getAlphaWolf());
+                    if (amount > 1) {
+                        wolfPack.addWolfToPack(wolf);
+                        if (wolfPack.getAlphaWolf() == null) {
+                            wolfPack.setAlphaWolf(wolf);
+                            wolf.digDen();
+                            wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
+                            System.out.println("Alpha: " + wolfPack.getAlphaWolf());
+                        }
                     }
                 }
 
