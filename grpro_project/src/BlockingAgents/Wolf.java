@@ -85,7 +85,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                     System.out.println("i am changing pack ");
                     changePack(opponentWolf.getWolfpack());
                 } else { //If it doesn't have a pack if just moves away from the opponent
-                    moveAwayFrom(world.getLocation(opponentWolf));
+                    try {
+                        moveAwayFrom(world.getLocation(opponentWolf));
+                    } catch (IllegalArgumentException e) {
+                        move();
+                    }
                 }
             } else if (wolfpack != null) { //Tries to move towards the alpha wolf as long as it's in a pack else it just moves randomly
                 try {
