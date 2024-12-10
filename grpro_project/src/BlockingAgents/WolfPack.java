@@ -24,8 +24,9 @@ public class WolfPack {
      * @param newWolfToPack The new Wolf
      */
     public void addWolfToPack(Wolf newWolfToPack) {
+        System.out.println(newWolfToPack);
         pack.add(newWolfToPack);
-        if (newWolfToPack.getWolfpack() != this) {
+        if (newWolfToPack.getWolfpack() != null && newWolfToPack.getWolfpack() != this) {
             newWolfToPack.setWolfpack(this);
         }
 
