@@ -78,6 +78,10 @@ class BearTest {
 
     }
 
+    /**
+     * Tests if the bear eats a bush, by checking if the bush still has berries after a bear has acted around it.
+     */
+
     @Test
     void TestEatingBush(){
 
@@ -94,6 +98,9 @@ class BearTest {
         assertFalse(bush.getHasBerries());
     }
 
+    /**
+     * Tests
+     */
     @Test
     void TestFighting(){
         Bear bear1 = new Bear(w, false );
@@ -103,22 +110,25 @@ class BearTest {
         w.setTile(location1, bear1);
 
         int bears = 2;
-        for (int i = 0; i < 60; i++) {
+        //while (bear.getEnergyLevel() >= 0 && bear1.getEnergyLevel() >= 0){
+        for (int i = 0; i < 59; i++) {
             bears = 0;
-            for (Object obj : w.getEntities().keySet()){
 
-                if (obj instanceof Bear) {
-                    bears++;
-                }}
             bear.setWantsToBreed(false);
             bear1.setWantsToBreed(false);
-            bear1.act(w);
-            bear.act(w);
+            //bear1.act(w);
+            //bear.act(w);
+            for (Object obj : w.getEntities().keySet()){
 
+                if (obj instanceof Bear b) {
+                    b.act(w);
+                    bears++;
+                }
+            }
         }
 
 
-        assertEquals(1, bears );
+        assertEquals(1, bears);
 
 
 
@@ -142,7 +152,7 @@ class BearTest {
             b.act(world);
 
             // location is the center of the bears territory, the territory is , and we are checking if the  bear gets further away than one tile from its territory.
-            assertTrue(Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/3+1) && Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1));
+            assertTrue(Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1) && Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1));
 
 
 

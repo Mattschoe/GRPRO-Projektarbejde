@@ -2,6 +2,7 @@ package BlockingAgents;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ class MeatTest {
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
-        w.setTile(location,wolf);
+        w.setTile(location,meat);
 
         while (meat.getEnergyLevel() > 1){
             meat.act(w);
@@ -43,23 +44,23 @@ class MeatTest {
     void decayingProcessIfInfected() {
         //Random r = new Random();
         //boolean infected = r.nextBoolean();
-        Wolf wolf = new Wolf(w, false);
+        Wolf wolf = new Wolf(w, true);
         //Random r = new Random();
         //boolean infected = r.nextBoolean();
         //Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
-        w.setTile(location,wolf);
+        w.setTile(location,meat);
         //if (infected){
-            meat.setInfected(true);
+        meat.setInfected(true);
         //}
 
-        while (meat.getEnergyLevel() > 1){
+        while (meat.getEnergyLevel() > 0){
             meat.act(w);
         }
         //if (infected)
-        assertInstanceOf(Fungi.class, w.getNonBlocking(location));
+        assertInstanceOf(Fungi.class, w.getTile(location));
         //else assertNull(w.getNonBlocking(location));
     }
 
@@ -85,6 +86,11 @@ class MeatTest {
 
 
 
+
+    }
+    @AfterEach
+    void tearDown() {
+        w = null;
 
     }
 

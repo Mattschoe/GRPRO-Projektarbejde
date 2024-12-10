@@ -58,8 +58,13 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                                 wolfpack = new WolfPack(world);
                                 wolfpack.addWolfToPack(this);
                             }
-                            getWolfpack().addWolfToPack(babyWolf);
-                            if (new Random().nextInt(10) == 0){reproduce(world.getLocation(den), babyWolf);}
+                            if (wolfpack == wolf.getWolfpack()) {
+                                System.out.println("Wolfpack is the same as the wolfpack");
+                                getWolfpack().addWolfToPack(babyWolf);
+                                if (new Random().nextInt(10) == 0) {
+                                    reproduce(world.getLocation(den), babyWolf);
+                                }
+                            }
                         }
                     }
                 }
@@ -68,16 +73,18 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
             } else if (isInfected) {
                 // Makes sure it doesn't do wolf things when infected
                 infectedMove();
-            } else if (currentlyFighting || new Random().nextInt(4) == 1 || wolfpack != null && wolfpack.isWolfPackFighting()) { //Fighting, keeps on fighting or starts fighting with a 1/4% chance. Wolfs fight if their pack fights. Fight while it's not critically low on health, else runs away.;
+            } else if (currentlyFighting || new Random().nextInt(4) == 1 ||( wolfpack != null && wolfpack.isWolfPackFighting())) { //Fighting, keeps on fighting or starts fighting with a 1/4% chance. Wolfs fight if their pack fights. Fight while it's not critically low on health, else runs away.;
                 if (health > 5) {
+
                     fight();
-                } else if (wolfpack != null) { //Changes pack when its too low HP
+                } else if (wolfpack != null && health <=5 ) { //Changes pack when its too low HP
                     currentlyFighting = false;
+                    System.out.println("i am changing pack ");
                     changePack(opponentWolf.getWolfpack());
                 } else { //If it doesn't have a pack if just moves away from the opponent
                     moveAwayFrom(world.getLocation(opponentWolf));
                 }
-            } else if (wolfpack != null) { //Tries to move towards the alpha wolf as long as its in a pack else it just moves randomly
+            } else if (wolfpack != null) { //Tries to move towards the alpha wolf as long as it's in a pack else it just moves randomly
                 try {
                     moveTo(wolfpack.getPackLocation());
                 } catch (IllegalArgumentException e) {
@@ -102,9 +109,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         if (world.isNight() && !isInfected) {
             if (world.getCurrentTime() == 10) {
                 if ( den == null ){
-                    if ( wolfpack == null  ||wolfpack.getPackDen() == null) {//wolfpack.getAlphaWolf() == this){
+                    if ( wolfpack == null  || wolfpack.getPackDen() == null) {//wolfpack.getAlphaWolf() == this){
+                        System.out.println("findDen");
                         findDen();
                     } else if (wolfpack != null){
+                        System.out.println("get pack den ");
                     den = wolfpack.getPackDen();
                     }
 
@@ -128,7 +137,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
                     sleepingLocation = world.getLocation(den);
                     isSleeping = true;
 
-                } else if (!isSleeping) {
+                } else if (!isSleeping && den != null) {
                     moveTo(world.getLocation(den));
                 }
             } else if (world.getCurrentTime() == 15 && !isSleeping && !den.isAnimalOnDen(this)) { //Didnt reach the burrow
@@ -191,7 +200,7 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
     }
 
     /**
-     * instantiates a new RabbitDens on the current location.
+     * instantiates a new dens on the current location.
      */
     @Override
     public Location digDen() {
@@ -253,12 +262,14 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     protected void fight() {
         if (opponentWolf != null) {
-            if (wolfpack != null && !wolfpack.getWolvesInPack().contains(opponentWolf)) { //Makes sure it doesnt fight a wolf in the same pack
+            if (wolfpack != null && wolfpack != opponentWolf.getWolfpack()){//!wolfpack.getWolvesInPack().contains(opponentWolf)) { //Makes sure it doesnt fight a wolf in the same pack
                 //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 try {
+
                     currentlyFighting = true;
                     if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fight
                         opponentWolf.takeDamage(strength);
+                        System.out.println("fighting");
                     } else { //Else it moves towards the opponent
                         moveTo(world.getLocation(opponentWolf));
                     }
@@ -285,5 +296,12 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
 
     public boolean getCurrentlyFighting() {
         return currentlyFighting;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

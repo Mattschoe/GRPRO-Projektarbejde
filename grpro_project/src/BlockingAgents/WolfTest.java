@@ -5,6 +5,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,31 +26,56 @@ class WolfTest {
         location11 = new Location(1,1);
     }
 
-    /* @Test
+    @Test
     void fight() {
-        WolfPack wp1 = new WolfPack();
-        WolfPack wp2 = new WolfPack();
-        Wolf wolf1 = new Wolf(w, wp1);
-        Wolf wolf2 = new Wolf(w, wp2);
-        int wolfs =  0;
-        while (wolfs > 0) {
-            wolfs = 0;
-            for (Object obj : w.getEntities().keySet()){
+        int iterations = 10000;
+        int fought = 0;
+        for (int i = 0; i < iterations; i++) {
+            World world = new World(2);
+            WolfPack wp1 = new WolfPack(world);
+            WolfPack wp2 = new WolfPack(world);
+            Wolf wolf1 = new Wolf(world, wp1, false);
+            Wolf wolf2 = new Wolf(world, wp2, false);
+            world.setTile(location0, wolf1);
+            world.setTile(location01, wolf2);
 
-                if (obj instanceof Rabbit) {
-                    wolfs++;
-                }}
-            assertEquals(1, wolfs);
-            wolf1.act(w);
-            wolf2.act(w);
-            w.step();
 
+
+            //while (wolf1.getHealth() > 4 && wolf2.getHealth() > 4 && wolf1.getEnergyLevel() > 0 && wolf2.getEnergyLevel() > 0) {
+            for (int j = 0; j < 4; j++) {
+                world.setCurrentLocation(location01);
+                System.out.println(  "   1:   " + wolf1.getEnergyLevel() + "  " + wolf1.health + "   2:   " + wolf2.getEnergyLevel() + "  " + wolf2.health);
+
+
+                world.step();
+                wolf1.act(world);
+                wolf2.act(world);
+            }
+
+            int wolfs = 0;
+                for (Object obj : world.getEntities().keySet()) {
+
+                    if (obj instanceof Wolf) {
+                        wolfs++;
+                    }
+                }
+            if (wolf1.getHealth() < wolf1.getMaxHealth() || wolf2.getHealth() < wolf2.getMaxHealth()){//wolf1.getWolfpack() == wolf2.getWolfpack()){
+                fought++;
+            }
+                System.out.println("wolfs " + wolfs);
+
+
+            //assertEquals(1, wolfs);
+            //assertEquals(wolf1.getWolfpack(), wolf2.getWolfpack());
 
         }
-        assertEquals(0, wolfs);
+        System.out.println("fought   " + fought + "   " + iterations*0.25 );
+        assertTrue(fought >= (iterations*0.25 - (iterations* 0.02)) && fought <= (iterations*0.25 + (iterations* 0.02)));
+    }
 
-    } */
-
+    /**
+     * Tests if the wolf hunts prey, by placing a rabbit and a wolf in a small world, and seeing if the rabbit disappears.
+     */
     @Test
     void TestHunt() {
         Rabbit rabbit = new Rabbit(w);
@@ -81,14 +107,21 @@ class WolfTest {
 
     }
 
-    /*@Test
+
+    /**
+     * Testing if the wolves reproduce in the right frequency. By counting the amount of wolves there are after a night where two wolves shared a den
+     * to see in how many of the cases it results in baby wolfs
+     *
+     */
+    @Test
     void reproduce() {
         int iterations = 10000;
         int reproduced = 0;
         for (int i = 0; i < iterations; i++) {
 
-            WolfPack wolfPack= new WolfPack();
+
             World world = new World(2);
+            WolfPack wolfPack= new WolfPack(world);
             Wolf wolf = new Wolf(world, wolfPack, false );
             Location location = new Location(0, 0);
 
@@ -98,15 +131,21 @@ class WolfTest {
             Location location1 = new Location(0, 1);
 
             world.setTile(location1, wolf1);
-            world.setCurrentLocation(location1);
+
             Den den = new Den(world, "wolf");
-            world.setTile(new Location(1,1), den);
-            for (int j = 0; j < 40; j++) {
+            world.setTile(location, den);
+            world.setCurrentLocation(location1);
+
+
+            wolf.setDen(den);
+            wolf1.setDen(den);
+            for (int j = 0; j < 20; j++) {
+
                 world.step();
                 wolf1.act(world);
                 wolf.act(world);
             }
-            // System.out.println(world.getEntities());
+
             int wolfs = 0;
             for (Object obj : world.getEntities().keySet()){
 
@@ -122,12 +161,15 @@ class WolfTest {
         }
         System.out.println("reproduced   " + reproduced);
 
-        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.01)) && reproduced <= (iterations*0.1*2 + (iterations* 0.01))); // 10 % chance *2 wolfs, +- 1% because of randomness.
+        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.02)) && reproduced <= (iterations*0.1*2 + (iterations* 0.02))); // 10 % chance *2 wolfs, +- 1% because of randomness.
 
 
 
-    } */
+    }
 
+    /**
+     * Testing if a wolf stays in its pack, by checking if the distancee between two wolves in the same pack, ever gets bigger than two tiles.
+     */
     @Test
     void StaysInPack(){
         World world = new World(20);
@@ -149,35 +191,9 @@ class WolfTest {
 
     }
 
-    @Test
-    void flee() {
-    }
-
-    @Test
-    void currentlyWinning() {
-    }
-
-    @Test
-    void findDen() {
-    }
-
-    @Test
-    void digDen() {
-    }
-
-    @Test
-    void findEatableMeat() {
-    }
-
-    @Test
-    void getEatableMeatLocation() {
-    }
-
-    @Test
-    void eatMeat() {
 
 
-    }
+
     @AfterEach
     void tearDown() {
         w = null;

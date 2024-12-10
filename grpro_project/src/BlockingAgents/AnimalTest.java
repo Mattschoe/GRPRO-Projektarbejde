@@ -119,7 +119,7 @@ class AnimalTest {
         Location location1 = new Location(0,0);
         w.setCurrentLocation(location1);
         w.setTile(location1,rabbit);
-        while (rabbit.getEnergyLevel() >= 0)
+        while (rabbit.getEnergyLevel() > 0)
          {
             rabbit.act(w);
             System.out.println(rabbit.getEnergyLevel());

@@ -71,13 +71,14 @@ public abstract class Animal implements Actor {
 
             world.delete(this);
         } else {
-            try {
+            //try {
                 Location tempLocation = world.getLocation(this);
                 world.delete(this);
                 world.setTile(tempLocation, new Meat(world, this));
-            } catch (IllegalArgumentException e) {
-                System.out.println("It seems " + this + " didn't have a location upon death");
-            }
+            //} catch (IllegalArgumentException e) {
+                //System.out.println("It seems " + this + " didn't have a location upon death");
+
+            //}
         }
     }
 
