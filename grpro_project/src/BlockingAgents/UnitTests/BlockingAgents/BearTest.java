@@ -88,11 +88,17 @@ class BearTest {
         w.setTile(new Location(1,1), bush);
         w.setCurrentLocation(location0);
         assertTrue(bush.getHasBerries());
-        for (int i = 0; i < 20; i++) {
+        int energyBefore = bear.getEnergyLevel();
+
+        while (bear.getEnergyLevel() <= energyBefore) {
+            energyBefore = bear.getEnergyLevel();
+
             bear.act(w);
             bush.act(w);
             w.step();
         }
+
+        assertTrue(bear.getEnergyLevel() > energyBefore);
         assertFalse(bush.getHasBerries());
     }
 
