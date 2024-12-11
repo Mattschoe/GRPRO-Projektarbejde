@@ -91,12 +91,8 @@ class MeatTest {
         assertTrue(wolfEnergyBeforeEating < wolf.getEnergyLevel());
 
         assertTrue(w.getAll(Meat.class, w.getSurroundingTiles(2)).isEmpty());
-
-
-
-
-
     }
+
     @AfterEach
     void tearDown() {
         w = null;

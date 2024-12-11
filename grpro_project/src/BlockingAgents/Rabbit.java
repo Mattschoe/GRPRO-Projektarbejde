@@ -27,15 +27,12 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                 //Daytime activities:
                 if (world.isDay()) {
                     isSleeping = false;
-
                     if (sleepingLocation != null) { //Adds rabbit back to world after sleeping
-
                         try {
                             world.setTile(sleepingLocation, this);
                             world.setCurrentLocation(sleepingLocation);
                             sleepingLocation = null;
-                        } catch (IllegalArgumentException e) { // if someone is standing on their burrow
-                        }
+                        } catch (IllegalArgumentException e) {} // if someone is standing on their burrow
                         for (Object obj : world.getEntities().keySet()){
                             if (obj instanceof Rabbit rabbit){
                                 if ((rabbit.getBurrow() == this.getBurrow() && rabbit != this)){
@@ -43,9 +40,6 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                                 }
                             }
                         }
-
-
-
                     } else if (energyLevel <= 0) {
                         die();
                     } else if (isInfected) {
@@ -55,11 +49,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         flee();
                         hide();
                     } else if (energyLevel + 5 < maxEnergy) { //If hungry
-                        if (food == null) {
-                            move();
-                        } else {
-                            eatFood();
-                        }
+                        eatFood();
                     } else if (!isInfected) { //Else moves randomly
                         move();
                     }
