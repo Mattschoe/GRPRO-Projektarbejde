@@ -65,9 +65,9 @@ class AnimalTest {
         w.setCurrentLocation(location);
         w.setTile(location,rabbit);
         rabbit.moveAwayFrom(enemyLocation);
-        assertNull(w.getTile(location));
-        assertNull(w.getTile(enemyLocation));
-        assertNotNull(w.getTile(expectedLocation));
+        assertNull(w.getTile(location)); // the old location
+        assertNull(w.getTile(enemyLocation)); // the enemy's location
+        assertNotNull(w.getTile(expectedLocation)); // the place it should be
 
 
 
