@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Bush;
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
@@ -179,25 +180,35 @@ class BearTest {
             Rabbit rabbit = new Rabbit(w, false);
             w.setTile(location0,bear);
             w.setTile(location1,rabbit);
-            w.setCurrentLocation(location0);
 
-            int rabbits = 0;
 
+            int rabbits = 1;
+            int energyBefore = bear.getEnergyLevel();
             while (rabbits > 0) {
+                energyBefore = bear.getEnergyLevel();
+                System.out.println(energyBefore + "     " + rabbit.getEnergyLevel());
+                w.setCurrentLocation(location0);
                 rabbits = 0;
                 for (Object obj : w.getEntities().keySet()){
                     if (obj instanceof Rabbit) {
                         rabbits++;
                     }
+                    if (obj instanceof Actor actor) {
+                        actor.act(w);
+                    }
+
                 }
                if (bear.getEnergyLevel() >= bear.getMaxEnergy()){ // if it is not hungry
                     assertEquals(1,rabbits);
                }
+
                w.step();
-               rabbit.act(w);
-               bear.act(w);
+               //rabbit.act(w);
+               //bear.act(w);
             }
+
             assertEquals(0, rabbits);
+            assertTrue(bear.getEnergyLevel() > energyBefore);
     }
 
     @AfterEach

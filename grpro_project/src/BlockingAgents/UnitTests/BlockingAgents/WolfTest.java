@@ -1,6 +1,7 @@
 package BlockingAgents;
 
 import NonblockingAgents.Den;
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
@@ -84,20 +85,28 @@ class WolfTest {
         w.setTile(location01,rabbit);
         w.setCurrentLocation(location0);
 
-        int rabbits = 0;
-
+        int rabbits = 1;
+        int energyBefore = wolf.getEnergyLevel();
         while (rabbits > 0) {
+            energyBefore = wolf.getEnergyLevel();
+            System.out.println(wolf.getEnergyLevel());
+            assertEquals(1,rabbits);
             rabbits = 0;
             for (Object obj : w.getEntities().keySet()){
                 if (obj instanceof Rabbit) {
                     rabbits++;
+
+                }
+                if (obj instanceof Actor actor) {
+                    actor.act(w);
                 }
             }
-            assertEquals(1,rabbits);
+
             w.step();
-            rabbit.act(w);
-            wolf.act(w);
+
         }
+        System.out.println(wolf.getEnergyLevel());
+        assertTrue(energyBefore < wolf.getEnergyLevel());
         assertEquals(0, rabbits);
     }
 
