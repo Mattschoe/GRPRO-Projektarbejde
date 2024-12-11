@@ -24,7 +24,7 @@ public abstract class Prey extends Animal {
         if (isHiding) {
             world.setCurrentLocation(sleepingLocation);
         } else if (world.contains(this)) {
-            System.out.println("contains");
+
             world.setCurrentLocation(world.getLocation(this));
         }
 

@@ -48,6 +48,7 @@ class RabbitTest {
 
     /**
      * tests if the rabbit can find an already existing den.
+     *
      */
     @Test
     void TestFindDen() {
@@ -65,6 +66,7 @@ class RabbitTest {
 
     /**
      * Test whether the rabbit dig a den if there are no dens in the  world.
+     *
      */
 
     @Test
@@ -77,7 +79,28 @@ class RabbitTest {
     }
 
     /**
-     * Tests if the rabbit is removed from the map if sleeping and there is a burrow close by.
+     * Test if the rabbits max energy is dependent on how old the rabbit is.
+     */
+    @Test
+    void TestEnergyDependsOnAge(){
+        w.setTile(location0, rabbit);
+        w.setCurrentLocation(location0);
+        int yesterdayMax = rabbit.getMaxEnergy();
+        while (rabbit.getEnergyLevel() > 0){
+            w.step();
+            rabbit.act(w);
+            if (w.getCurrentTime() == 11) {
+
+                assertTrue(yesterdayMax > rabbit.getMaxEnergy());
+                yesterdayMax = rabbit.getMaxEnergy();
+            }
+        }
+
+    }
+
+    /**
+     * Tests if the rabbit is removed from the map if sleeping and there is a burrow close by. and that they share them.
+     *
      */
     @RepeatedTest(20)
     void TestSleepingInDens(){
@@ -115,6 +138,7 @@ class RabbitTest {
 
     /**
      * tests if the rabbit can eat the grass it is standing on, and if that results in the grass being deleted from the world. and the rabbit getting more energy.
+     *
      */
     @Test
     void eatPlant() {
@@ -143,6 +167,7 @@ class RabbitTest {
 
     /**
      * test to see if the rabbits reproduce, and if they do it at the right frequency.
+     *
      */
     @Test
     void TestReproduce() {

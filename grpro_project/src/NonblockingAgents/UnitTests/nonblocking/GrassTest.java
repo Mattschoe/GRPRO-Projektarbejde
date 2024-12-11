@@ -17,7 +17,7 @@ class GrassTest {
 
 
     /**
-     * Tests if the grass spreads
+     * Tests if the grass spreads.
      */
     @RepeatedTest(20)
 

@@ -1,3 +1,0 @@
-2
-wolf 1
-grass 2

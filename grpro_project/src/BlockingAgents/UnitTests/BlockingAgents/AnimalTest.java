@@ -95,6 +95,7 @@ class AnimalTest {
 
     /**
      * Test to see if a blockingObject can stand on a nonblocking object.(Rabbit on grass)
+     *
      */
     @Test
     void TestStandingOnGrass(){
@@ -109,6 +110,7 @@ class AnimalTest {
     }
     /**
      * Test to see if a blockingObject can stand on a nonblocking object.(Rabbit on Den)
+     *
      */
     @Test
     void TestStandingOnDen(){
@@ -124,6 +126,7 @@ class AnimalTest {
 
     /**
      * Test to see if an animal can die. and if that results in a carcass(Meat)
+     *
      */
 
     @Test

@@ -70,6 +70,7 @@ class WolfTest {
 
     /**
      * Tests if the wolf hunts prey, by placing a rabbit and a wolf in a small world, and seeing if the rabbit disappears.
+     *
      */
     @RepeatedTest(20)
     void TestHunt() {
@@ -110,7 +111,6 @@ class WolfTest {
     /**
      * Testing if the wolves reproduce in the right frequency. By counting the amount of wolves there are after a night where two wolves shared a den
      * to see in how many of the cases it results in baby wolfs
-     *
      */
     @Test
     void TestReproduce() {
@@ -167,6 +167,7 @@ class WolfTest {
 
     /**
      * Testing if a wolf stays in its pack, by checking if the distancee between two wolves in the same pack, ever gets bigger than two tiles.
+     *
      */
     @Test
     void TestStaysInPack(){
