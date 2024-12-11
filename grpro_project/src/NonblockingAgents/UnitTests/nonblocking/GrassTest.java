@@ -15,6 +15,10 @@ class GrassTest {
         w = new World(2);
     }
 
+
+    /**
+     * Tests if the grass spreads
+     */
     @RepeatedTest(20)
 
     void TestSpread() {

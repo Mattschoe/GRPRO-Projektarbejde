@@ -22,7 +22,9 @@ class BearTest {
         location1 = new Location(1, 1);
     }
 
-
+    /**
+     * Tests if two bears reproduce, and if they do it at the right frequency.
+     */
     @Test
     void TestReproduction(){
 
@@ -96,7 +98,7 @@ class BearTest {
     }
 
     /**
-     * Tests
+     * Tests if two bears fight if none of them want babies, and they are in eachothers territory.
      */
     @Test
     void TestFighting(){
@@ -133,10 +135,12 @@ class BearTest {
 
     }
 
-
+    /**
+     * Test to see if the bear ever moves more than one tile awya from its territory.
+     */
 
     @Test
-    void staysInTerritory(){
+    void TestStaysInTerritory(){
         World world = new World(20);
         Location location = new Location(0, 0);
         world.setCurrentLocation(location);
@@ -150,7 +154,7 @@ class BearTest {
             world.step();
             b.act(world);
 
-            // location is the center of the bears territory, the territory is , and we are checking if the  bear gets further away than one tile from its territory.
+            // location is the center of the bears territory, the territory is the tiles around the bear with a radius of half the world, this is quite big, but otherwise there is no action.We are checking if the  bear gets further away than one tile from its territory.
             assertTrue(Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1) && Math.abs(world.getLocation(b).getX() - location.getX()) < (world.getSize()/2+1));
 
 
@@ -159,6 +163,9 @@ class BearTest {
         }
     }
 
+    /**
+     * test to see if a bear hunts a rabbit, and if that results in the rabbit disappearing
+     */
 
     @Test
     void TestHunting(){

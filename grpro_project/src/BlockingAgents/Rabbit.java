@@ -32,7 +32,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                             world.setTile(sleepingLocation, this);
                             world.setCurrentLocation(sleepingLocation);
                             sleepingLocation = null;
-                        } catch (IllegalArgumentException e) {}
+                        } catch (IllegalArgumentException e) {} // if someone is standing on their burrow
                         for (Object obj : world.getEntities().keySet()){
                             if (obj instanceof Rabbit rabbit){
                                 if ((rabbit.getBurrow() == this.getBurrow() && rabbit != this)){
@@ -70,6 +70,7 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                         if (!isSleeping && burrow.isAnimalOnDen(this)) {
                             world.remove(this);
                             sleepingLocation = world.getLocation(burrow);
+                            isSleeping = true;
                         } else if (!isSleeping && burrow != null && world.contains(burrow)) {
                             moveTo(world.getLocation(burrow));
                         }

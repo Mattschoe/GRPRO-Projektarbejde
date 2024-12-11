@@ -19,9 +19,11 @@ class MeatTest {
 
     }
 
-
+    /**
+     * Test to see if meat disappears over time.
+     */
     @Test
-    void decayingProcess() {
+    void TestDecayingProcess() {
 
         Wolf wolf = new Wolf(w, false);
         Meat meat = new Meat(w, wolf, false);
@@ -39,32 +41,36 @@ class MeatTest {
 
 
     }
+
+    /**
+     * Test to see if Meat becomes Fungi if it was infected.
+     */
     @Test
-    void decayingProcessIfInfected() {
-        //Random r = new Random();
-        //boolean infected = r.nextBoolean();
+    void TestDecayingProcessIfInfected() {
+
         Wolf wolf = new Wolf(w, true);
-        //Random r = new Random();
-        //boolean infected = r.nextBoolean();
-        //Wolf wolf = new Wolf(w, false);
+
         Meat meat = new Meat(w, wolf, false);
         Location location = new Location(0, 0);
         w.setCurrentLocation(location);
         w.setTile(location,meat);
-        //if (infected){
+
         meat.setInfected(true);
-        //}
+
 
         while (meat.getEnergyLevel() > 0){
             meat.act(w);
         }
-        //if (infected)
+
         assertInstanceOf(Fungi.class, w.getTile(location));
-        //else assertNull(w.getNonBlocking(location));
+
     }
 
+    /**
+     * Test to see if a wolf will eat meat, standing next to it.
+     */
     @Test
-    void meatGetsEaten (){
+    void TestMeatGetsEaten (){
         Wolf wolf = new Wolf(w, false);
         Rabbit rabbit = new Rabbit(w, false);
         Meat meat = new Meat(w, rabbit, false);
@@ -73,12 +79,16 @@ class MeatTest {
         w.setCurrentLocation(location);
         w.setTile(location,wolf);
         w.setTile(location2,meat);
-
+        int wolfEnergyBeforeEating = wolf.getEnergyLevel();
         while (!w.getAll(Meat.class, w.getSurroundingTiles(2)).isEmpty()) {
+            wolfEnergyBeforeEating = wolf.getEnergyLevel();
+
+
             meat.act(w);
             wolf.act(w);
             w.step();
         }
+        assertTrue(wolfEnergyBeforeEating < wolf.getEnergyLevel());
 
         assertTrue(w.getAll(Meat.class, w.getSurroundingTiles(2)).isEmpty());
     }
