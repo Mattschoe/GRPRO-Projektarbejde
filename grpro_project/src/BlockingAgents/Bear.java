@@ -32,6 +32,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      */
     @Override
     public void act(World world){
+        System.out.println(energyLevel);
         if (territory.isEmpty()){
             setTerritory();
         }

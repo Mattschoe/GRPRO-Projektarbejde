@@ -316,7 +316,7 @@ public abstract class Animal implements Actor {
         }
         if (this instanceof Carnivore) { //Animal is Meat eater
             for (Object object : world.getEntities().keySet()) {
-                if (object instanceof Meat meat && meat.getAge() == 0) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
+                if (object instanceof Meat meat && meat.getAge() < 2) { //Finds meat in the world and goes towards it, as long as it isn't older than a day
                     food = meat;
                     foodLocation = world.getLocation(food);
                     hasFoundFood = true;

@@ -9,6 +9,9 @@ public class Main {
         ShowDropTestHereTests();
     }
 
+    /**
+     * Shows the tests that have been put in the folder "DropTestHere" under "./Testning"
+     */
     public static void ShowDropTestHereTests() {
         //Program descriptions
         int delay = 50;
