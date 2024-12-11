@@ -85,7 +85,6 @@ class WolfTest {
        // int energyBefore = wolf.getEnergyLevel();
         while (rabbits > 0) {
            // energyBefore = wolf.getEnergyLevel();
-            System.out.println(wolf1.getEnergyLevel());
             assertEquals(1,rabbits);
             rabbits = 0;
             for (Object obj : world.getEntities().keySet()){
@@ -102,7 +101,6 @@ class WolfTest {
 
         }
         //wolf.act(w);
-        System.out.println(wolf1.getEnergyLevel());
         //assertTrue(energyBefore < wolf.getEnergyLevel());
         assertEquals(0, rabbits);
     }

@@ -137,7 +137,6 @@ class AnimalTest {
         w.setTile(location1,rabbit);
         while (rabbit.getEnergyLevel() > 0)
          {
-             System.out.println(rabbit.getEnergyLevel());
             rabbit.act(w);
         }
         rabbit.act(w);

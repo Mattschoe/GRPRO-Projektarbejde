@@ -39,7 +39,6 @@ class RabbitTest {
         w.setTile(location0, rabbit);
         w.setTile(location11, burrow);
         rabbit.findDen();
-        System.out.println(w.getLocation(rabbit.getBurrow()));
         rabbit.flee();
 
         assertEquals(location11, w.getLocation(rabbit));
