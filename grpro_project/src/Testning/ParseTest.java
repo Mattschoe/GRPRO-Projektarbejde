@@ -73,7 +73,6 @@ public class ParseTest {
             //Saves object and amount
             String line = scanner.nextLine();
             String[] lineSplit = line.split("[-\\s(),]+");
-            System.out.println(Arrays.toString(lineSplit));
 
             if (lineSplit.length > 1 && (lineSplit[0].length() == 9)) { // 9 is cordyceps
                 infectedObjectCounter = 1;
@@ -112,13 +111,11 @@ public class ParseTest {
                     }
                     Wolf wolf = new Wolf(world, isInfected);
                     world.setTile(location, wolf);
-                    System.out.println(wolfPack);
                     wolfPack.addWolfToPack(wolf);
                     if (wolfPack.getAlphaWolf() == null) {
                         wolfPack.setAlphaWolf(wolf);
                         wolf.digDen();
                         wolfPack.setDen(wolfPack.getAlphaWolf().getDen());
-                        System.out.println("Alpha: " + wolfPack.getAlphaWolf());
 
                     }
                 }
