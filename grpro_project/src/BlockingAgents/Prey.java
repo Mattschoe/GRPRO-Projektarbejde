@@ -21,9 +21,7 @@ public abstract class Prey extends Animal {
      */
     protected boolean detectPredator(int fleeRadius) {
         this.fleeRadius = fleeRadius;
-
         if (isHiding) {
-            System.out.println("hiding");
             world.setCurrentLocation(sleepingLocation);
         } else if (world.contains(this)) {
             System.out.println("contains");
@@ -32,7 +30,6 @@ public abstract class Prey extends Animal {
 
         for (Location location : world.getSurroundingTiles(fleeRadius)) {
             if (world.getTile(location) instanceof Predator predator) {
-                System.out.println("Detecting predator...");
                 this.predator = predator;
                 return true;
             }
