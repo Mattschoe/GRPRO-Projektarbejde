@@ -217,9 +217,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
         }
         den.spawnDen(this);//world.setTile(world.getLocation(this), den);
         return world.getLocation(den);
-   /* }   else {
-        return null;//findDen();
-    }*/
     }
 
     /**
@@ -256,9 +253,6 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     public void setWolfpack(WolfPack wolfpack) {
         this.wolfpack = wolfpack;
-        /*if (!this.wolfpack.isWolfInPack(this)) {
-            this.wolfpack.addWolfToPack(this);
-        }*/
     }
 
     /**
@@ -277,10 +271,9 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      */
     protected void fight() {
         if (opponentWolf != null) {
-            if (wolfpack != null && wolfpack != opponentWolf.getWolfpack()){//!wolfpack.getWolvesInPack().contains(opponentWolf)) { //Makes sure it doesnt fight a wolf in the same pack
+            if (wolfpack != null && wolfpack != opponentWolf.getWolfpack()){//Makes sure it doesnt fight a wolf in the same pack
                 //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 try {
-
                     currentlyFighting = true;
                     if (world.getSurroundingTiles(2).contains(world.getLocation(opponentWolf))) { //If the opponent is close by they fight
                         opponentWolf.takeDamage(strength);

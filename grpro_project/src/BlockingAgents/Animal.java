@@ -87,9 +87,7 @@ public abstract class Animal implements Actor {
     protected void move() {
         energyLevel--;
 
-        //The Holy Grail. DEN HER STATEMENT MÅ IKKE RØRES, se TF2 Coconut.jpg
         if (sleepingLocation == null && world.getCurrentLocation() != null && world.getEntities().containsKey(this)) {
-
             //Gets all empty locations
             Set<Location> neighbours = world.getEmptySurroundingTiles();
             List<Location> neighbourList = new ArrayList<>(neighbours);

@@ -96,13 +96,13 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
      */
     protected void flee() {
         //Moves towards its burrow if it's close by, otherwise it runs closer to the burrow
-        if (burrow != null) {
+        try {
             if (world.getSurroundingTiles(world.getLocation(this)).contains(burrow)) {
                 moveTo(world.getLocation(burrow));
             } else {
-                moveTo(world.getLocation(burrow));
+                sprintTo(world.getLocation(burrow));
             }
-        } else { //Runs the opposite direction of the predator if it doesn't have a burrow
+        } catch (IllegalArgumentException e) { //Runs the opposite direction of the predator if it doesn't have a burrow
             moveAwayFrom(world.getLocation(predator));
         }
     }

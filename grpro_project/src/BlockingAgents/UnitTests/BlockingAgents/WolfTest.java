@@ -45,8 +45,6 @@ class WolfTest {
             world.setTile(location01, wolf2);
 
 
-
-            //while (wolf1.getHealth() > 4 && wolf2.getHealth() > 4 && wolf1.getEnergyLevel() > 0 && wolf2.getEnergyLevel() > 0) {
             for (int j = 0; j < 4; j++) {
                 world.setCurrentLocation(location01);
 
@@ -63,14 +61,9 @@ class WolfTest {
                         wolfs++;
                     }
                 }
-            if (wolf1.getHealth() < wolf1.getMaxHealth() || wolf2.getHealth() < wolf2.getMaxHealth()){//wolf1.getWolfpack() == wolf2.getWolfpack()){
+            if (wolf1.getHealth() < wolf1.getMaxHealth() || wolf2.getHealth() < wolf2.getMaxHealth()){
                 fought++;
             }
-
-
-            //assertEquals(1, wolfs);
-            //assertEquals(wolf1.getWolfpack(), wolf2.getWolfpack());
-
         }
         assertTrue(fought >= (iterations*0.25 - (iterations* 0.02)) && fought <= (iterations*0.25 + (iterations* 0.02)));
     }
