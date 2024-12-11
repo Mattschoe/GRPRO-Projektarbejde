@@ -269,10 +269,13 @@ public abstract class Animal implements Actor {
      * Eats food if standing or close to it (Depending on the food), otherwise it moves towards it.
      */
     protected void eatFood() {
+        System.out.println("Her?");
         if (hasFoundFood) { //If the animal has already found food
+            System.out.println("Finder jeg nogensinde mad?");
             try {
                 if (world.getSurroundingTiles().contains(world.getLocation(food))) {
                     if (food instanceof Bush bush) { //If it's a bush it just eats the berries
+                        System.out.println("Kommer jeg herind?");
                         energyLevel = energyLevel + 10;
                         bush.getEaten();
                         hasFoundFood = false;

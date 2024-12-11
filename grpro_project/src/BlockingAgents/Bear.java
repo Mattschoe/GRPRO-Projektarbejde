@@ -32,7 +32,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      */
     @Override
     public void act(World world){
-        System.out.println(energyLevel);
         if (territory.isEmpty()){
             setTerritory();
         }
@@ -63,11 +62,13 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
 
             if (isHungry() && !isInfected) { //Eats food if it's hungry
-                //First checks if there is any easy meat close, otherwise it starts hunting. If neither it just moves.
+                //First checks if there is any easy meat close, otherwise it starts hunting. If there isnt any animals it eats berries
                 if (isThereFreshMeat()) {
                     eatFood();
                 } else if (isPreyInHuntRadius(territory.size())) {
                     hunt(findPrey(territory.size()));
+                } else {
+                    eatFood();
                 }
             }
             if (!isInfected) {
