@@ -179,7 +179,6 @@ class RabbitTest {
             Den burrow = new Den(world, "rabbit");
             world.setTile(new Location(1,1), burrow);
             for (int j = 0; j < 30; j++) {
-                System.out.println(rabbit1.getEnergyLevel() + "  " + world.getCurrentTime());
 
                 rabbit1.act(world);
                 rabbit.act(world);
@@ -199,7 +198,6 @@ class RabbitTest {
 
 
         }
-        System.out.println(reproduced);
 
         assertTrue(reproduced >= (iterations*0.10 - (iterations* 0.05)) && reproduced <= (iterations*0.1 + (iterations* 0.05))); // 10 % chance, +- 5% because of randomness.
 

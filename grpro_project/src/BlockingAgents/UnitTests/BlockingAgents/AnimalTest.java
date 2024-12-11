@@ -133,7 +133,6 @@ class AnimalTest {
         while (rabbit.getEnergyLevel() > 0)
          {
             rabbit.act(w);
-            System.out.println(rabbit.getEnergyLevel());
         }
         rabbit.act(w);
 

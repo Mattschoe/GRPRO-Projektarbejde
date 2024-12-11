@@ -47,8 +47,6 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
          * @return
          */
     public boolean isAnimalOnDen (Animal animal) {
-            //try {
-                //System.out.println("isAnimalOnDen " + world.getLocation(animal));
         try {
             world.getLocation(animal);
             world.getLocation(this);
@@ -60,9 +58,6 @@ public class Den implements NonBlocking, DynamicDisplayInformationProvider {
                         return true;
                     }
                 }
-            //} catch (IllegalArgumentException e) {
-              //  System.out.println("Error!: " + e.getMessage() + ". Remember that i need a owner and need to exist before you call this method!");
-            //}
             return false;
 
     }

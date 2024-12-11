@@ -48,7 +48,6 @@ class WolfTest {
             //while (wolf1.getHealth() > 4 && wolf2.getHealth() > 4 && wolf1.getEnergyLevel() > 0 && wolf2.getEnergyLevel() > 0) {
             for (int j = 0; j < 4; j++) {
                 world.setCurrentLocation(location01);
-                System.out.println(  "   1:   " + wolf1.getEnergyLevel() + "  " + wolf1.health + "   2:   " + wolf2.getEnergyLevel() + "  " + wolf2.health);
 
 
                 world.step();
@@ -66,14 +65,12 @@ class WolfTest {
             if (wolf1.getHealth() < wolf1.getMaxHealth() || wolf2.getHealth() < wolf2.getMaxHealth()){//wolf1.getWolfpack() == wolf2.getWolfpack()){
                 fought++;
             }
-                System.out.println("wolfs " + wolfs);
 
 
             //assertEquals(1, wolfs);
             //assertEquals(wolf1.getWolfpack(), wolf2.getWolfpack());
 
         }
-        System.out.println("fought   " + fought + "   " + iterations*0.25 );
         assertTrue(fought >= (iterations*0.25 - (iterations* 0.02)) && fought <= (iterations*0.25 + (iterations* 0.02)));
     }
 
@@ -96,7 +93,6 @@ class WolfTest {
                     rabbits++;
                 }
             }
-            System.out.println(w.getEntities());
             assertEquals(1,rabbits);
             w.step();
             rabbit.act(w);
@@ -157,7 +153,6 @@ class WolfTest {
 
 
         }
-        System.out.println("reproduced   " + reproduced);
 
         assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.03)) && reproduced <= (iterations*0.1*2 + (iterations* 0.03))); // 10 % chance *2 wolfs, +- 1% because of randomness.
 

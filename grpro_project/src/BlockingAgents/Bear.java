@@ -45,14 +45,11 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 findMate();
 
             }
-            System.out.println("energy: " + energyLevel);
             if (world.getCurrentTime() == 10) {
                 breedingDelay--;
 
             }
             if (energyLevel <= 0) { //Dies when out of energy
-
-                System.out.println("BAIII");
                 die();
                 return;
             }
@@ -153,12 +150,10 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
     private void findMate(){
         if (mate != null) {
             try {
-                System.out.println("mate: " + mate);
                 moveTo(world.getLocation(mate));
             }
             catch (IllegalArgumentException e){
                 mate = null;
-                System.out.println("the mate has died");
             }
         }
     }
@@ -173,12 +168,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                     if (!wantsToBreed){
                         opponent = (Bear) entity;
                         fight();
-                    //System.out.println("Fight fight fight");
                     }
                     else if (((Bear) entity).wantsToBreed && wantsToBreed){
-                        System.out.println("baby??");
                         mate = (Bear) entity;
-                        //moveTo(world.getLocation(entity));
                         if (world.getSurroundingTiles().contains(world.getLocation(entity))){
                             if (new Random().nextInt(10) == 0 ){
                             reproduce(world.getLocation(this), new Bear(world,isInfected));
@@ -213,7 +205,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
         if (opponent != null) {
             try { //If it killed the opponent last act or the opponent died it stops fighting, else it fights
                 currentlyFighting = true;
-                System.out.println("fighting: " + opponent);
                 if (world.getSurroundingTiles(2).contains(world.getLocation(opponent))) { //If the opponent is close by they fighht
                     opponent.takeDamage(strength);
                 } else { //Else it moves towards the opponent
@@ -221,7 +212,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
                 }
             } catch (IllegalArgumentException e) { //If the opponentAnimal doesn't exist anymore
                 currentlyFighting = false;
-                System.out.println("the opponent does not exist anymore");
             }
         } else {
             currentlyFighting = false;

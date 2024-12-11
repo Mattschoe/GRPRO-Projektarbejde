@@ -66,7 +66,6 @@ class BearTest {
 
 
         }
-        System.out.println(reproduced + "  " + iterations*0.10);
 
         assertTrue(reproduced >= (iterations*0.10 - (iterations* 0.01)) && reproduced <= (iterations*0.1 + (iterations* 0.01))); // 10 % chance *2 rabbits, +- 1% because of randomness.
 
@@ -191,7 +190,6 @@ class BearTest {
                         rabbits++;
                     }
                 }
-                System.out.println(w.getEntities());
                if (bear.getEnergyLevel() >= bear.getMaxEnergy()){ // if it is not hungry
                     assertEquals(1,rabbits);
                }
