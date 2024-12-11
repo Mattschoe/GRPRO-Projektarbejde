@@ -151,9 +151,11 @@ public class Wolf extends Predator implements DenAnimal, Carnivore, DynamicDispl
      * @param newPack WolfPack
      */
     private void changePack(WolfPack newPack) {
-        wolfpack.removeWolfFromPack(this);
-        newPack.addWolfToPack(this);
-        wolfpack = newPack;
+        if (newPack != null) {
+            wolfpack.removeWolfFromPack(this);
+            newPack.addWolfToPack(this);
+            wolfpack = newPack;
+        }
     }
 
     /**
