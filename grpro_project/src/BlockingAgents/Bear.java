@@ -78,7 +78,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
         //Nighttime activities
         if (world.isNight() && !isInfected) {
-            updateMaxEnergy();
+            if (world.getCurrentTime() == 10) {
+                updateMaxEnergy();
+            }
             sleep();
         }
     }
