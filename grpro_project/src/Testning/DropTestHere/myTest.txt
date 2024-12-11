@@ -1,3 +1,0 @@
-2
-bear 1
-berry 2
