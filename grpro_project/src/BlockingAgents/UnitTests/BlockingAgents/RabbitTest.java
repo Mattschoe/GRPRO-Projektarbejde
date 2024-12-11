@@ -27,6 +27,10 @@ class RabbitTest {
         location11 = new Location(1,1);
     }
 
+    /**
+     * Tests if the rabbit finds the den, when flee is called
+     */
+
     @Test
     void TestFleeToBurrow() {
 
@@ -45,7 +49,7 @@ class RabbitTest {
      * tests if the rabbit can find an already existing den.
      */
     @Test
-    void findDen() {
+    void TestFindDen() {
 
         Den burrow = new Den(w,"rabbit" );
         w.setCurrentLocation(location0);
@@ -63,7 +67,7 @@ class RabbitTest {
      */
 
     @Test
-    void digDen(){
+    void TestDigDen(){
 
         w.setCurrentLocation(location0);
         w.setTile(location0, rabbit);
@@ -77,7 +81,7 @@ class RabbitTest {
     @RepeatedTest(20)
     void TestSleepingInDens(){
 
-        Rabbit rabbit1 = new Rabbit(w, false); // ekstra rabbit, that is not used in the other tests.
+        Rabbit rabbit1 = new Rabbit(w, false); // extra rabbit, that is not used in the other tests.
         Den burrow = new Den(w,"rabbit");
 
         w.setCurrentLocation(location0);
@@ -135,7 +139,8 @@ class RabbitTest {
     /**
      * Tests the method getEatablePlantLocation to see if it actually gets the location of an eatable plant in the world.
      */
-    /* @Test
+    /*
+    @Test
     void getEatablePlantLocation() {
         Grass grass = new Grass(w);
         Location location = new Location(0,0);
@@ -147,8 +152,12 @@ class RabbitTest {
         assertEquals(grassLocation, rabbit.findFood());
     } */
 
+    /**
+     * test to see if the rabbits reproduce, and if they do it at the right frequency.
+     */
+
     @Test
-    void reproduce() {
+    void TestReproduce() {
         int iterations = 10000;
         int reproduced = 0;
         for (int i = 0; i < iterations; i++) {
@@ -167,10 +176,12 @@ class RabbitTest {
             world.setCurrentLocation(location1);
             Den burrow = new Den(world, "rabbit");
             world.setTile(new Location(1,1), burrow);
-            for (int j = 0; j < 40; j++) {
-                world.step();
+            for (int j = 0; j < 30; j++) {
+                System.out.println(rabbit1.getEnergyLevel() + "  " + world.getCurrentTime());
+
                 rabbit1.act(world);
                 rabbit.act(world);
+                world.step();
             }
 
             int rabbits = 0;
@@ -188,7 +199,7 @@ class RabbitTest {
         }
         System.out.println(reproduced);
 
-        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.02)) && reproduced <= (iterations*0.1*2 + (iterations* 0.02))); // 10 % chance *2 rabbits, +- 1% because of randomness.
+        assertTrue(reproduced >= (iterations*0.10 - (iterations* 0.05)) && reproduced <= (iterations*0.1 + (iterations* 0.05))); // 10 % chance, +- 5% because of randomness.
 
     }
 

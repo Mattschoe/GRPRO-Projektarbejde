@@ -39,7 +39,7 @@ class AnimalTest {
      * The same as moveTo, but with sprint.
      */
     @Test
-    void sprintTo() {
+    void TestSprintTo() {
         Rabbit rabbit = new Rabbit(w, false);
         Location location = new Location(0,0);
         Location newLocation = new Location(2,2);
@@ -56,7 +56,7 @@ class AnimalTest {
      */
 
     @Test
-    void moveAwayFrom() {
+    void TestMoveAwayFrom() {
         Rabbit rabbit = new Rabbit(w, false);
         Location location = new Location(1,1);
         Location enemyLocation = new Location(0,0);
@@ -77,7 +77,7 @@ class AnimalTest {
      * checks whether the rabbit, does in fact move, when move is called, and that it isn't just standing.
      */
     @Test
-    void move() {
+    void TestMove() {
         Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         w.setCurrentLocation(location1);
@@ -90,8 +90,12 @@ class AnimalTest {
         assertNull(w.getTile(location1));
 
     }
+
+    /**
+     * Test to see if a blockingObject can stand on a nonblocking object.(Rabbit on grass)
+     */
     @Test
-    void standingOnGrassTest(){
+    void TestStandingOnGrass(){
         Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         Grass grass = new Grass(w);
@@ -101,8 +105,11 @@ class AnimalTest {
         assertEquals(w.getLocation(grass), w.getLocation(rabbit));
 
     }
+    /**
+     * Test to see if a blockingObject can stand on a nonblocking object.(Rabbit on Den)
+     */
     @Test
-    void standingOnDenTest(){
+    void TestStandingOnDen(){
         Rabbit rabbit = new Rabbit(w, false);
         Location location1 = new Location(0,0);
         Den den = new Den(w, "rabbit");
@@ -112,6 +119,11 @@ class AnimalTest {
         assertEquals(w.getLocation(den), w.getLocation(rabbit));
 
     }
+
+    /**
+     * Test to see if an animal can die. and if that results in a carcass(Meat)
+     */
+
     @Test
     void TestDeath(){
         Rabbit rabbit = new Rabbit(w, false);

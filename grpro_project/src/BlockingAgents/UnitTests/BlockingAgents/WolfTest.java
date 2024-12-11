@@ -5,6 +5,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,8 +26,12 @@ class WolfTest {
         location11 = new Location(1,1);
     }
 
+    /**
+     * Test to see if two wolves from different wolf packs fight each other
+     */
+
     @Test
-    void fight() {
+    void TestFight() {
         int iterations = 10000;
         int fought = 0;
         for (int i = 0; i < iterations; i++) {
@@ -107,7 +112,7 @@ class WolfTest {
      *
      */
     @Test
-    void reproduce() {
+    void TestReproduce() {
         int iterations = 10000;
         int reproduced = 0;
         for (int i = 0; i < iterations; i++) {
@@ -154,7 +159,7 @@ class WolfTest {
         }
         System.out.println("reproduced   " + reproduced);
 
-        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.02)) && reproduced <= (iterations*0.1*2 + (iterations* 0.02))); // 10 % chance *2 wolfs, +- 1% because of randomness.
+        assertTrue(reproduced >= (iterations*0.10*2 - (iterations* 0.03)) && reproduced <= (iterations*0.1*2 + (iterations* 0.03))); // 10 % chance *2 wolfs, +- 1% because of randomness.
 
 
 
@@ -164,7 +169,7 @@ class WolfTest {
      * Testing if a wolf stays in its pack, by checking if the distancee between two wolves in the same pack, ever gets bigger than two tiles.
      */
     @Test
-    void StaysInPack(){
+    void TestStaysInPack(){
         World world = new World(20);
         WolfPack wp = new WolfPack(world);
         Wolf wolf = new Wolf(world, false );

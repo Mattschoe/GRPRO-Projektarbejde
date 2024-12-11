@@ -19,8 +19,11 @@ class FungiTest {
         fungi = new Fungi(w, 20);
     }
 
+    /**
+     * Test to see if a fungi increases its lifespan if it can spread to meat around it.
+     */
     @Test
-    void FungiLifespan(){ // spreading infection.
+    void TestFungiLifespan(){ // spreading infection.
 
         Rabbit r = new Rabbit(w, false);
         Meat meat = new Meat(w, r, false);
@@ -62,8 +65,13 @@ class FungiTest {
 
 
     }
+
+    /**
+     * Test to see if a Fungi dies quicker when there is no meat around it.
+     */
+
     @Test
-    void FungiLifespanNoMeat(){
+    void TestFungiLifespanNoMeat(){
 
         Location location = new Location(1,1);
         w.setTile(location, fungi);

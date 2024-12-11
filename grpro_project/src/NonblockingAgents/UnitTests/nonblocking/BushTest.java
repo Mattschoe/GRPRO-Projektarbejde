@@ -15,7 +15,9 @@ class BushTest {
     }
 
 
-
+    /**
+     * Tests if the berries grow back, after being eaten.
+     */
     @Test
     void TestRegrowth(){
         Bush bush = new Bush(w);
@@ -32,6 +34,10 @@ class BushTest {
         assertEquals(0, bush.getReGrowDays());
         assertTrue(bush.getHasBerries());
     }
+
+    /**
+     * Tests if being eaten results in the berries disappearing.
+     */
     @Test
     void TestGetEaten(){
         Bush bush = new Bush(w);
