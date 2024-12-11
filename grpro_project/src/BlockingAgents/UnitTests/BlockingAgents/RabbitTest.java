@@ -113,7 +113,7 @@ class RabbitTest {
 
 
     /**
-     * tests if the rabbit can eat the grass it is standing on, and if that results in the grass being deleted from the world.
+     * tests if the rabbit can eat the grass it is standing on, and if that results in the grass being deleted from the world. and the rabbit getting more energy.
      */
     @Test
     void eatPlant() {
@@ -125,11 +125,13 @@ class RabbitTest {
         w.setTile(location0, rabbit);
 
         assertNotNull(w.getNonBlocking(location0));
+        int energyBefore = rabbit.getEnergyLevel();
+
         rabbit.eatFood();
         rabbit.act(w);
         rabbit.eatFood();
 
-
+        assertTrue(rabbit.getEnergyLevel() > energyBefore);
         assertNull(w.getNonBlocking(location0));
 
 
