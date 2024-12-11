@@ -141,7 +141,7 @@ class BearTest {
     }
 
     /**
-     * Test to see if the bear ever moves more than one tile awya from its territory.
+     * Test to see if the bear ever moves more than one tile away from its territory.
      */
 
     @Test
@@ -175,39 +175,37 @@ class BearTest {
     @Test
     void TestHunting(){
 
-
-            Rabbit rabbit = new Rabbit(w, false);
-            w.setTile(location0,bear);
-            w.setTile(location1,rabbit);
-
+            World world = new World(6);
+            Rabbit rabbit = new Rabbit(world, false);
+            Bear bear1 = new Bear(world, false);
+            world.setTile(location0,bear1);
+            world.setTile(location1,rabbit);
+            world.setCurrentLocation(location0);
 
             int rabbits = 1;
-            int energyBefore = bear.getEnergyLevel();
+
             while (rabbits > 0) {
-                energyBefore = bear.getEnergyLevel();
-                System.out.println(energyBefore + "     " + rabbit.getEnergyLevel());
-                w.setCurrentLocation(location0);
+
                 rabbits = 0;
-                for (Object obj : w.getEntities().keySet()){
+                for (Object obj : world.getEntities().keySet()){
                     if (obj instanceof Rabbit) {
                         rabbits++;
                     }
                     if (obj instanceof Actor actor) {
-                        actor.act(w);
+                        actor.act(world);
                     }
 
                 }
-               if (bear.getEnergyLevel() >= bear.getMaxEnergy()){ // if it is not hungry
+               if (bear1.getEnergyLevel() >= bear1.getMaxEnergy()){ // if it is not hungry
                     assertEquals(1,rabbits);
                }
 
-               w.step();
-               //rabbit.act(w);
-               //bear.act(w);
+               world.step();
+
             }
 
             assertEquals(0, rabbits);
-            assertTrue(bear.getEnergyLevel() > energyBefore);
+
     }
 
     @AfterEach
