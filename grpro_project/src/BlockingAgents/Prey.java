@@ -23,8 +23,9 @@ public abstract class Prey extends Animal {
         this.fleeRadius = fleeRadius;
         if (isHiding) {
             world.setCurrentLocation(sleepingLocation);
-        } else world.setCurrentLocation(world.getLocation(this));
-
+        } else {
+            world.setCurrentLocation(world.getLocation(this));
+        }
 
         for (Location location : world.getSurroundingTiles(fleeRadius)) {
             if (world.getTile(location) instanceof Predator predator) {
