@@ -28,10 +28,8 @@ public abstract class Predator extends Animal{
         try {
             if (preyAnimal != null && preyAnimal.sleepingLocation == null && !preyAnimal.isSleeping && world.getSurroundingTiles().contains(world.getLocation(preyAnimal))) { //Kills prey if its in one of the surrounding tiles
                 kill(preyAnimal);
-                System.out.println("Killed the " + preyAnimal);
             } else if (preyAnimal != null && preyAnimal.sleepingLocation == null) { //Otherwise it just chases it
                 moveTo(world.getLocation(preyAnimal));
-                System.out.println("Moving towards " + preyAnimal);
             }
         } catch (IllegalArgumentException e) {
             // Prey has died
@@ -42,7 +40,6 @@ public abstract class Predator extends Animal{
      * Kills prey if it's nearby.
      */
     protected void kill(Animal animalToKill) {
-        System.out.println("Killing " + animalToKill);
         animalToKill.die();
     }
 
