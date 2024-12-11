@@ -43,13 +43,14 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
                     } else if (energyLevel <= 0) {
                         die();
                     } else if (isInfected) {
-                        // Makes sure it doesn't do wolf things when infected
+                        // Makes sure it doesn't do rabbit things when infected
                         infectedMove();
                     } else if (detectPredator(2)) { //If predator nearby
                         flee();
                         hide();
                     } else if (energyLevel + 5 < maxEnergy) { //If hungry
                         eatFood();
+                        move();
                     } else if (!isInfected) { //Else moves randomly
                         move();
                     }
@@ -97,13 +98,16 @@ public class Rabbit extends Prey implements DenAnimal, Herbivore, DynamicDisplay
     protected void flee() {
         //Moves towards its burrow if it's close by, otherwise it runs closer to the burrow
         try {
-            if (world.getSurroundingTiles(world.getLocation(this)).contains(burrow)) {
+            if (world.getSurroundingTiles(world.getLocation(this)).contains(world.getLocation(burrow))) {
+
                 moveTo(world.getLocation(burrow));
             } else {
                 sprintTo(world.getLocation(burrow));
+
             }
         } catch (IllegalArgumentException e) { //Runs the opposite direction of the predator if it doesn't have a burrow
             moveAwayFrom(world.getLocation(predator));
+
         }
     }
 
