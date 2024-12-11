@@ -138,26 +138,11 @@ class RabbitTest {
     }
 
 
-    /**
-     * Tests the method getEatablePlantLocation to see if it actually gets the location of an eatable plant in the world.
-     */
-    /*
-    @Test
-    void getEatablePlantLocation() {
-        Grass grass = new Grass(w);
-        Location location = new Location(0,0);
-        Location grassLocation = new Location(1,1);
-        w.setCurrentLocation(location);
-        w.setTile(grassLocation, grass);
-        w.setTile(location, rabbit);
 
-        assertEquals(grassLocation, rabbit.findFood());
-    } */
 
     /**
      * test to see if the rabbits reproduce, and if they do it at the right frequency.
      */
-
     @Test
     void TestReproduce() {
         int iterations = 10000;

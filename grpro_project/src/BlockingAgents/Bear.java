@@ -120,19 +120,7 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
 
         for (int i = 0; i < surroundingTiles.toArray().length; i++) {
             territory.add((Location) surroundingTiles.toArray()[i]);
-            //world.setTile(territory.get(i), new Territory(territory.get(i), world, this));
         }
-
-
-        //world.setTile(world.getLocation(this), new Grass(world));//world.getLocation(this), new Territory(world.getLocation(this), world,this));
-
-        /*Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
-        for (int i = 0; i < surroundingTiles.toArray().length; i++) {
-            territory.add(new Territory(world.getLocation(surroundingTiles.toArray()[i]), world ,this));
-            world.setTile(world.getLocation(surroundingTiles.toArray()), territory.get(i));
-        }*/
-
-
     }
 
     /**

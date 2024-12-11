@@ -108,8 +108,7 @@ class BearTest {
         w.setTile(location1, bear1);
 
         int bears = 2;
-        while (bears > 1){ // .getEnergyLevel() >= 0 && bear1.getEnergyLevel() >= 0){
-        //for (int i = 0; i < 59; i++) {
+        while (bears > 1){
             bears = 0;
 
             bear.setWantsToBreed(false);
