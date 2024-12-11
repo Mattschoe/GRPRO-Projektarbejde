@@ -262,7 +262,7 @@ public abstract class Animal implements Actor {
      * Updates the amount of max energy the animal daily has. The method is called each night.
      */
     protected void updateMaxEnergy() {
-        maxEnergy = maxEnergy - age;
+        maxEnergy--;
     }
 
     /**

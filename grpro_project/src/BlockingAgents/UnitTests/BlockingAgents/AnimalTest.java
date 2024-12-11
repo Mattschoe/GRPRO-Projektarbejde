@@ -3,6 +3,8 @@ import NonblockingAgents.Den;
 import NonblockingAgents.Grass;
 import itumulator.world.Location;
 import itumulator.world.World;
+import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -132,6 +134,7 @@ class AnimalTest {
         w.setTile(location1,rabbit);
         while (rabbit.getEnergyLevel() > 0)
          {
+             System.out.println(rabbit.getEnergyLevel());
             rabbit.act(w);
         }
         rabbit.act(w);
@@ -144,6 +147,12 @@ class AnimalTest {
         assertEquals(0, rabbits.size());
 
 
+
+    }
+    @AfterEach
+    void tearDown() {
+
+        w = null;
 
     }
 }

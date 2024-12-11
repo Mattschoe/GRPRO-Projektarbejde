@@ -23,7 +23,8 @@ public abstract class Prey extends Animal {
         this.fleeRadius = fleeRadius;
         if (isHiding) {
             world.setCurrentLocation(sleepingLocation);
-        } else {
+        } else if (world.contains(this)) {
+            System.out.println("contains");
             world.setCurrentLocation(world.getLocation(this));
         }
 
