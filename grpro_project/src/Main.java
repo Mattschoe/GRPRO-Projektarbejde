@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         ShowDropTestHereTests();
     }
-    //OBS: Virker ikke da Den skal renames da klassen er blevet mere general
+
     public static void ShowDropTestHereTests() {
         //Program descriptions
         int delay = 50;

@@ -32,7 +32,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      */
     @Override
     public void act(World world){
-
         if (territory.isEmpty()){
             setTerritory();
         }
@@ -43,11 +42,9 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             if (breedingDelay <= 0) {
                 wantsToBreed = true;
                 findMate();
-
             }
             if (world.getCurrentTime() == 10) {
                 breedingDelay--;
-
             }
             if (energyLevel <= 0) { //Dies when out of energy
                 die();
@@ -65,7 +62,12 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
             }
 
             if (isHungry() && !isInfected) { //Eats food if it's hungry
-                eatFood();
+                //First checks if there is any easy meat close, otherwise it starts hunting. If neither it just moves.
+                if (isThereFreshMeat()) {
+                    eatFood();
+                } else if (isPreyInHuntRadius(territory.size())) {
+                    hunt(findPrey(territory.size()));
+                }
             }
             if (!isInfected) {
                 move();
@@ -150,7 +152,6 @@ public class Bear extends Predator implements DynamicDisplayInformationProvider,
      */
     private void protectTerritory(){
         for (Object entity : world.getEntities().keySet()){
-
             if (entity instanceof Bear && entity != this){
                 if (territory.contains(world.getLocation(entity))){
                     if (!wantsToBreed){
